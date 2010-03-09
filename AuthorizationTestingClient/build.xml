@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="AuthorizationRMI" default="help" basedir=".">
+	<property name="classes.dir" location="bin"/>
+	<property name="src.dir" location="src" />	
+	<property name="lib.dir" location="lib" />
+	<property name="host" value="127.0.0.1" />
+	<property name="port" value="1099" />
+	<property name="server" value="AuthorizationService" />
+	<property name="policy" value="java.policy" />
+	
+	<path id="auth.classpath">
+   		<pathelement location="${lib.dir}\AuthorizationRMIClient.jar"/>
+	</path>
+
+	<target name="clean" description="Clean all build products." >
+		<delete dir="${classes.dir}"/>
+		<delete dir="${dist.dir}"/>
+   	</target>
+
+	<target name="compile">
+    	<mkdir dir="${classes.dir}"/>
+        <javac destdir="${classes.dir}" srcdir="${src.dir}" classpathref="auth.classpath"/>
+  	</target>
+
+	<target name="test" depends="compile">
+		<java classname="testAuthorization.TestCase" classpath="${classes.dir}" fork="true">
+			<jvmarg value="-Djava.security.policy=${src.dir}\${policy}" />
+			<arg value="${host}" />
+			<arg value="${port}" />
+			<arg value="${server}" />
+			<classpath refid="auth.classpath"/>
+		</java>
+	</target>
+    
+	<target name="help" >
+		<echo>
+  			You must introduce the target to perform: ant [target]:
+			- clean
+      		- compile
+        	- test
+		</echo>
+    </target>
+</project>
