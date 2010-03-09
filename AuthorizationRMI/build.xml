@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="AuthorizationManager" default="help" basedir=".">
+    <property environment="env"/>
+    <property name="policy" location="java.policy" />
+    <property name="auth.manager" location="AuthorizationService.jar" />
+
+    <property name="host" value="127.0.0.1" />
+    <property name="port" value="1099" />
+    <property name="server" value="AuthorizationService" />
+
+    <target name="authorization">
+        <java jar="AuthorizationService.jar" fork="true" >
+            <jvmarg value="-Djava.security.policy=${policy}"/>
+	    	<jvmarg value="-Djava.rmi.server.codebase=file:${auth.manager}"/>
+	    <arg value="${host}" />
+            <arg value="${port}" />
+            <arg value="${server}" />   
+        </java>
+    </target>
+	
+    <target name="help" >
+  		<echo>
+  		The task to execute must be selected: ant [target]:
+			- authorization
+  		</echo>    
+    </target>
+</project>
