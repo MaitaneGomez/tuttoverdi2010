@@ -1,0 +1,6 @@
+CREATE TABLE STUDT(USER VARCHAR(8) NOT NULL PRIMARY KEY,NAME VARCHAR(20),PASS VARCHAR(15));
+
+INSERT INTO studt VALUES('stud1','Ann Emerson','1111');
+INSERT INTO studt VALUES('stud2','Rod Vandergelt','2222');
+INSERT INTO studt VALUES('stud3','Lynn Joyce','3333');
+INSERT INTO studt VALUES('stud4','Sue Pearson','4444');
