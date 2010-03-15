@@ -34,6 +34,7 @@
     
 	<target name="help" >
 		<echo>
+			Usage: ant [clean | compile | test ]
   			You must introduce the target to perform: ant [target]:
 			- clean
       		- compile
