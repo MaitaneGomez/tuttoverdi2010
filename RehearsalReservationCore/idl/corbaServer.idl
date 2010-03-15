@@ -1,16 +1,23 @@
-module corbaServer{
-    module corba{
+module corbaServer
+{
+    module corba
+    {
 
    		// Data transfer object to be transmitted
-        struct corbaServerRehearsalDTO{
+        struct corbaServerRehearsalDTO
+        {
            string operaName;
 	       string date;	
 	       long seats;
         };
         
-                  	
-  //  The rest of the IDL file must be completed by the students
-            
+        interface ICorbaServer
+        {
+        	typedef sequence <corbaServerRehearsalDTO> rehearsalsList;
+        	rehearsalsList getRehearsals();
         };
-    };
+        
+                  	
+  //  The rest of the IDL file must be completed by the students     
+	};
 };
