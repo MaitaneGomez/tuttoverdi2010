@@ -15,11 +15,13 @@ public class CorbaOperaHouseDAO implements ICorbaOperaHouseDAO {
 	
 	Connection conn;
 	Statement stat;
+	String dataBaseName="";
 	
-	public void connect() throws ClassNotFoundException, SQLException {
+	public void connect(String dataBase) throws ClassNotFoundException, SQLException {
 		
 		Class.forName("org.sqlite.JDBC");
-		conn = DriverManager.getConnection("jdbc:sqlite:db/corba-db/scalaMilano.db");
+		conn = DriverManager.getConnection("jdbc:sqlite:db/corba-db/" + dataBase + ".db");
+		dataBaseName = dataBase;
 
 	}
 
