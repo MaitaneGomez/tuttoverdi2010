@@ -18,7 +18,7 @@ public class prueba {
 		
 		try 
 		{
-			base.connect();
+			base.connect("scalaMilano");
 			lista = base.getRehearsals();
 			
 			for(int i = 0; i< lista.size();i++)
