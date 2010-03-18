@@ -13,8 +13,8 @@ import corbaServer.RehearsalDO;
 
 public class CorbaOperaHouseDAO implements ICorbaOperaHouseDAO {
 	
-	Connection conn;
-	Statement stat;
+	private Connection conn;
+	private Statement stat;
 	String dataBaseName="";
 	
 	public void connect(String dataBase) throws ClassNotFoundException, SQLException {
