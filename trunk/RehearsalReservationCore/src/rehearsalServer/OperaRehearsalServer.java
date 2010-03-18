@@ -28,12 +28,13 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	 */
 	private static final long serialVersionUID = 1L;
 	private util.observer.rmi.RemoteObservable remoteObservable;
+	private Map<String, Map<String, RehearsalRMIDTO>> rehearsalCache;
 	
 	/**
 	 * CACHE OF RehearsalRMIDTO objects, organized by Opera House Name To be
 	 * loaded at the initialization process
 	 */
-	private Map<String, Map<String, RehearsalRMIDTO>> rehearsalCache;
+	
 
 	
 	public OperaRehearsalServer() throws RemoteException{

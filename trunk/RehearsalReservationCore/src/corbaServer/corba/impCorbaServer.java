@@ -10,8 +10,15 @@ import corbaServer.dao.CorbaOperaHouseDAO;
 //esta clase es la que implementa el metodo remoto de la interfaz idl
 
 public class impCorbaServer extends ICorbaServerPOA{
+	
+	private String DBName="";
 
-	@Override
+	
+	public impCorbaServer(String dataBaseName)
+	{
+		DBName = dataBaseName;
+	}
+	
 	public corbaServerRehearsalDTO[] getRehearsals() {
 		
 		//creaamos un obejto para llamar a los metodos de la base de datos
@@ -27,7 +34,7 @@ public class impCorbaServer extends ICorbaServerPOA{
 		
 		try
 		{
-			COHD.connect();
+			COHD.connect(DBName);
 			DOList = COHD.getRehearsals();
 			DTOList = new corbaServerRehearsalDTO [DOList.size()];
 			

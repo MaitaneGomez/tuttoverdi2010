@@ -18,13 +18,14 @@ import corbaServer.corba.ICorbaServerHelper;
 import corbaServer.corba.impCorbaServer;
 
 //en esta clase creamos un objeto CORBA y lo metemos en el NameService
+//atencion el nombre del objeto a registrar debe ser el mismo que el de la base de datos
 
 public class CorbaOperaHouse {
 
 	public static void main(String[] args) {
 		
 		//Nos creamos un objeto ORB para manejar todo lo siguiente
-		String [] orb_args = {"-ORBInitialHost" , "127.0.0.1" , "_ORBInitialPort" , "900"};
+		String [] orb_args = {"-ORBInitialHost" , args[0] , "_ORBInitialPort" , args[1]};
 		ORB orb = ORB.init(orb_args, null);
 		
 		try
@@ -39,7 +40,7 @@ public class CorbaOperaHouse {
 			poa.the_POAManager().activate();
 			
 			//crear un objeto CORBA (Llamaremos al constructor del servidor (impCorbaServer))
-			impCorbaServer server = new impCorbaServer();
+			impCorbaServer server = new impCorbaServer(args[2]);
 			
 			//vincular el objeto CORBA con el POA
 			//registrar el objeto CORBA en el POA
@@ -54,14 +55,13 @@ public class CorbaOperaHouse {
 			NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
 			
 			//ponerle un nombre al objeto a registrar
-			String name = "ScalaMILANO";
-			NameComponent [] path = ncRef.to_name(name);
+			NameComponent [] path = ncRef.to_name(args[2]);
 			
 			//registro
 			ncRef.rebind(path, operaRef);
 			
 			//dejar el proceso servidor esperando peticiones
-			System.out.println("funciono....");
+			System.out.println("servidor"+ args[2]+ "funcionando y esperando peticiones...");
 			orb.run();
 		}
 		

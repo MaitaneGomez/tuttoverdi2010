@@ -24,7 +24,6 @@ public class prueba {
 			for(int i = 0; i< lista.size();i++)
 			{
 				System.out.println(lista.get(i).getOperaName() + lista.get(i).getDate() + lista.get(i).getSeats());
-				
 			}
 			
 			base.disconnect();

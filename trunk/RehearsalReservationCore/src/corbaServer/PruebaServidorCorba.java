@@ -15,14 +15,13 @@ public class PruebaServidorCorba {
 	 */
 	public static void main(String[] args) 
 	{
-		String[] orb_args = {"-ORBInitialHost" , "127.0.0.1" , "-ORBInitialPort" , "900"};
+		String[] orb_args = {"-ORBInitialHost" , args[0] , "-ORBInitialPort" , args[1]};
 		ORB orb = ORB.init(orb_args, null);
 		try
 		{
 		org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
 		NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
-		String name = "ScalaMILANO";
-		ICorbaServer objServer = ICorbaServerHelper.narrow(ncRef.resolve_str(name));
+		ICorbaServer objServer = ICorbaServerHelper.narrow(ncRef.resolve_str(args[2]));
 		corbaServerRehearsalDTO [] rehearsals = objServer.getRehearsals();
 		
 		for(int i = 0 ; i < rehearsals.length ; i++)
