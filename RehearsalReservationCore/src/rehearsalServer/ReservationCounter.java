@@ -1,4 +1,4 @@
-package rehearsalServer.saxParser;
+package rehearsalServer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -30,8 +30,7 @@ public class ReservationCounter {
 		ResultSet rs = stat.executeQuery(query);
 		rs.next();
 		int reservedSeats = rs.getInt(1);
-		
-		//esto esta mal fijo
+	
 		return reservedSeats;
 	}
 	
