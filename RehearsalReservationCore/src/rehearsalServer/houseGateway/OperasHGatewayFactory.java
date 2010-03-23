@@ -7,9 +7,30 @@ public class OperasHGatewayFactory {
 	 * ip, port and name of the service String serverTech = technology of the
 	 * server, 'corba' or 'ws'
 	 */
-	public IOperaHGateway getOperaHGateway(String serviceUri, String serverTech) {
+	
+	private static OperasHGatewayFactory instance = null;
+	
+	public static OperasHGatewayFactory getInstance()
+	{
+		if(instance == null)
+		{
+			instance = factoryInstance();
+		}
+		return instance;
+	}
+	
+	private static OperasHGatewayFactory factoryInstance() 
+	{
+		return new OperasHGatewayFactory();
+	}
+	
+	public IOperaHGateway getOperaHGateway(String serviceUri, String serverTech) 
+	{
 		IOperaHGateway the_gateway = null;
-
+		
+		if(serverTech.equalsIgnoreCase("corba"))
+			the_gateway = new CorbaHouseGateway("ScalaMilano");
+		
 		return the_gateway;
 	}
 }

@@ -103,15 +103,25 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	
 	
 	@Override
-	public void addRemoteObserver(IRemoteObserver arg0) throws RemoteException {
-		// TODO Auto-generated method stub
+	public void addRemoteObserver(IRemoteObserver observer) throws RemoteException 
+	{
+		this.remoteObservable.addRemoteObserver(observer);
+		
+		try
+		{
+			//preguntar de que tipo es el parametro (sitios availables?)
+			//observer.update(new Integer(this))
+		}
+		catch(RemoteException e)
+		{
+			System.err.println("ERROR en notificacion al registrarse: " + e.getMessage() );
+		}
 		
 	}
 
 	@Override
-	public void deleteRemoteObserver(IRemoteObserver arg0)
-			throws RemoteException {
-		// TODO Auto-generated method stub
-		
+	public void deleteRemoteObserver(IRemoteObserver observer) throws RemoteException 
+	{
+		this.remoteObservable.deleteRemoteObserver(observer);
 	}
 }
