@@ -6,9 +6,25 @@ package rehearsalServer.loginGateway;
  * interface.
  */
 
+
 public class AuthorizationGatewayFactory {
 	// Add your code here
 	// THIS CLASS MUST BE A SINGLETON
+	private static AuthorizationGatewayFactory instance = null;
+	
+	public static AuthorizationGatewayFactory getInstance()
+	{
+		if(instance == null)
+		{
+			instance = factoryInstance();
+		}
+		return instance;
+	}
+	
+	private static AuthorizationGatewayFactory factoryInstance() 
+	{
+		return new AuthorizationGatewayFactory();
+	}
 
 	public IAuthorizeGateway getAuthGateway(String serviceUri,
 			String serviceTech) {

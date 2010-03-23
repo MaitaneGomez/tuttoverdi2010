@@ -1,5 +1,7 @@
 package rehearsalServer;
 
+import java.io.Serializable;
+
 /**
  * The aim of this class is to implement the DTO Pattern So, object from this
  * class will be transferred using RMI, from the server to the client
@@ -10,8 +12,12 @@ package rehearsalServer;
  * TIP: PARAMETER PASSING IN RMI.
  */
 
-public class RehearsalRMIDTO {
+public class RehearsalRMIDTO implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String operaHouse;
 	private String operaName;
 	private String date;
