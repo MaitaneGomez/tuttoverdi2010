@@ -6,11 +6,16 @@ public class AuthRMIGateway implements IAuthorizeGateway {
 	 * must use the interface and exceptions contained in
 	 * AuthorizationRMIClient.jar THIS SECTION BELONGS TO THE FIRST ASSIGNMENT
 	 */
-	public AuthRMIGateway(String serviceUri) {
-
+	
+	private String server;
+	
+	public AuthRMIGateway(String serviceUri) 
+	{
+		server = serviceUri;
 	}
 
-	public String login(String user, String pass) throws ValidationException {
+	public String login(String user, String pass) throws ValidationException 
+	{
 		String studentName = null;
 		
 		return studentName;

@@ -28,7 +28,7 @@ public class impCorbaServer extends ICorbaServerPOA{
 		List<RehearsalDO> DOList = new ArrayList<RehearsalDO>();
 		
 		//creamos la lista que va a ser retornada:
-		corbaServerRehearsalDTO [] DTOList = null ; 
+		corbaServerRehearsalDTO [] DTOArray = null ; 
 		
 		//llevamos a cabo la invocacion de conectar, obtencion y desconexion
 		
@@ -36,11 +36,11 @@ public class impCorbaServer extends ICorbaServerPOA{
 		{
 			COHD.connect(DBName);
 			DOList = COHD.getRehearsals();
-			DTOList = new corbaServerRehearsalDTO [DOList.size()];
+			DTOArray = new corbaServerRehearsalDTO [DOList.size()];
 			
 			for(int i = 0; i< DOList.size();i++)
 			{
-				DTOList[i] = new corbaServerRehearsalDTO(DOList.get(i).getOperaName(),DOList.get(i).getDate(),DOList.get(i).getSeats());	
+				DTOArray[i] = new corbaServerRehearsalDTO(DOList.get(i).getOperaName(),DOList.get(i).getDate(),DOList.get(i).getSeats());	
 			}
 		}
 		catch (ClassNotFoundException e) 
@@ -54,7 +54,7 @@ public class impCorbaServer extends ICorbaServerPOA{
 			e.printStackTrace();
 		}
 		
-		return DTOList;
+		return DTOArray;
 	}
 
 }

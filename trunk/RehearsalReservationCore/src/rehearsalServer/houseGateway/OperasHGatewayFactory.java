@@ -28,8 +28,8 @@ public class OperasHGatewayFactory {
 	{
 		IOperaHGateway the_gateway = null;
 		
-		if(serverTech.equalsIgnoreCase("corba"))
-			the_gateway = new CorbaHouseGateway("ScalaMilano");
+		if(serverTech.equals("corba"))
+			the_gateway = new CorbaHouseGateway("scalaMilano");
 		
 		return the_gateway;
 	}

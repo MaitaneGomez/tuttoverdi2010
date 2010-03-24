@@ -14,7 +14,7 @@ public class PruebaParaMAP {
 		
 		try 
 		{
-			OperaRehearsalServer server = new OperaRehearsalServer();
+			OperaRehearsalServer server = new OperaRehearsalServer();	
 			Map<String, Map<String, RehearsalRMIDTO>> cache = server.getRehearsalCache();
 			
 
