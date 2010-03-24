@@ -26,14 +26,19 @@ public class AuthorizationGatewayFactory {
 		return new AuthorizationGatewayFactory();
 	}
 
-	public IAuthorizeGateway getAuthGateway(String serviceUri,
-			String serviceTech) {
-		if (serviceTech.equals("rmi")) {
+	public IAuthorizeGateway getAuthGateway(String serviceUri, String serviceTech) 
+	{
+		if (serviceTech.equals("rmi")) 
+		{
 			return new AuthRMIGateway(serviceUri);
-		} else if (serviceTech.equals("ws")) {
-			return new AuthWSGateway(serviceUri);
-		} else {
-			return null;
 		}
+		else if (serviceTech.equals("ws")) 
+			 {
+				return new AuthWSGateway(serviceUri);
+			 } 
+			 else 
+			 {
+				 return null;
+			 }
 	}
 }
