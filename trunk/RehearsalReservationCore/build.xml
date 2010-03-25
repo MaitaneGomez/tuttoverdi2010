@@ -2,10 +2,10 @@
 <project basedir="." default="help" name="observerCORBA">
 	
 	<property environment="env"/>
-	<property name="idlDestination.dir" location="src/corbaServer/corba"/>
-	<property name="source.dir" location="src/corbaServer"/>
+	<property name="idlDestination.dir" location="src"/>
+	<property name="source.dir" location="src"/>
     <property name="build.dir" location="bin"/>
-	<property name="classpath" location="bin;lib"/>
+	<property name="classpath" location="bin;lib/AuthorizationRMIClient.jar;lib/sqlitejdbc-v056.jar;lib/util_iso2.jar"/>
 	<property name="idl.file" location="idl/corbaServer.idl"/>
 	<property name="nameservice.IP" value="127.0.0.1"/>
 	<property name="nameservice.port" value="900"/>
