@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="help" name="observerCORBA">
+	
+	<property environment="env"/>
+	<property name="idlDestination.dir" location="src/corbaServer/corba"/>
+	<property name="source.dir" location="src/corbaServer"/>
+    <property name="build.dir" location="bin"/>
+	<property name="classpath" location="bin;lib"/>
+	<property name="idl.file" location="idl/corbaServer.idl"/>
+	<property name="nameservice.IP" value="127.0.0.1"/>
+	<property name="nameservice.port" value="900"/>
+	<property name="serverScalaMilano.name" value="scalaMilano"/>
+	<property name="serverSanCarloNapoli.name" value="sanCarloNapoli"/>
+
+	<target name="help">
+		<echo>Usage: ant [idlj | build | tnameserv | scalaMilanoServer | client]</echo>
+	</target>
+
+	<target name="idlj" description="Builds IDL file">
+		<exec executable="${env.JAVA_HOME}\bin\idlj.exe">
+			<arg value="-fall" />
+			<arg value="-td" />
+			<arg value="${idlDestination.dir}" />
+			<arg value="${idl.file}" />
+		</exec>
+	</target>
+
+	<target name="tnameserv" description="Runs CORBA Name Service">
+		<echo message="CORBA Name Service running at port (${nameservice.port})..."/>
+		<exec executable="${env.JAVA_HOME}\bin\tnameserv.exe">
+			<arg value="-ORBInitialPort" />
+			<arg value="900" />
+		</exec>
+	</target>
+        
+	<target name="build" depends="idlj" description="Builds the project">
+		<delete dir="${build.dir}"/>
+		<mkdir dir="${build.dir}"/>
+		<javac srcdir="${source.dir}" destdir="${build.dir}" classpath="${classpath}" deprecation="true" fork="true"/>
+    </target>
+    
+	<target name="scalaMilanoServer" description="Executes SscalaMilanoServer program">
+		<java classname="corbaServer.CorbaOperaHouse" classpath="${classpath}" fork="true">			
+        	<arg value="${nameservice.IP}"/> 
+	 		<arg value="${nameservice.port}"/>
+	 		<arg value="${serverScalaMilano.name}"/>
+        </java>
+    </target>
+
+	<target name="client" description="Executes Client program">
+		<java classname="donaciones.cliente.Donante" classpath="${classpath}" fork="true">			
+        	<arg value="${nameservice.IP}"/> 
+	 		<arg value="${nameservice.port}"/>
+	 		<arg value="${server.name}"/>
+        </java>
+    </target>
+	
+</project>
