@@ -11,23 +11,20 @@ public class ReservationCounter {
 	private static Connection conn;
 	private static Statement stat;
 	
-	public static void connect()
+	public static void connect() 
 	{
-		try 
-		{
+		
+		try {
 			Class.forName("org.sqlite.JDBC");
 			conn = DriverManager.getConnection("jdbc:sqlite:db/rmi-db/reservations.db");
-		} 
-		catch (ClassNotFoundException e) 
-		{
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		 catch (SQLException e) 
-		 {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
 	}
 	
 	public static int obtainOcupiedSeats(String operaHouseName, String operaName) 
@@ -37,30 +34,27 @@ public class ReservationCounter {
 		//devolviendonos asi el numero de asientos ocupados
 		
 		//tenemos que conectarnos a la base de datos de reservas
+		String query = "select count (*) from reservationsT where operahouse = '" + operaHouseName + "' and operaname = '" + operaName + "'";
+		int reservedSeats=0;
 		
-		int reservedSeats = 0;
-		try
-		{
-			String query = "select count (*) from reservationsT where operahouse = '" + operaHouseName + "' and operaname = '" + operaName + "'";
+		try {
 			stat = conn.createStatement();
 			ResultSet rs = stat.executeQuery(query);
 			rs.next();
 			reservedSeats = rs.getInt(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		catch(SQLException e)
-		{}
 	
 		return reservedSeats;
 	}
 	
-	public static void disconnect() 
+	public static void disconnect()
 	{
-		try 
-		{
+		try {
 			conn.close();
-		} 
-		catch (SQLException e) 
-		{
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
