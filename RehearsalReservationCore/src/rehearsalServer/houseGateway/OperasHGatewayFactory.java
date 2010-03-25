@@ -27,10 +27,9 @@ public class OperasHGatewayFactory {
 	public IOperaHGateway getOperaHGateway(String serviceUri, String serverTech) 
 	{
 		IOperaHGateway the_gateway = null;
-		
+
 		if(serverTech.equals("corba"))
-			the_gateway = new CorbaHouseGateway("scalaMilano");
-		
+			the_gateway = new CorbaHouseGateway("scalaMilano");		
 		return the_gateway;
 	}
 }

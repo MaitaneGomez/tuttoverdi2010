@@ -4,6 +4,7 @@
  * CONNECTION TO: CORBA OPERA HOUSE COMPONENT
  * CONNECTION TO: EUSKALDUNA BIO WEB SERVICE
  * USE THE COMMAND INTERFACE TO KEEP A TRACE OF THE SERVER ACTIVITIES
+ * drymearñoiganhdfsoignañwioefniño
  */
 package rehearsalServer;
 
@@ -25,7 +26,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	private static final long serialVersionUID = 1L;
 	private util.observer.rmi.RemoteObservable remoteObservable;
 	private Map<String, Map<String, RehearsalRMIDTO>> rehearsalCache;
-	private OperasHGatewayFactory  gateway = null;
+	private OperasHGatewayFactory gateway = null; 
 
 
 	/**
@@ -33,8 +34,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	 * loaded at the initialization process
 	 */
 	
-	//******************************************************************************************
-	//******************************************************************************************
+
 	
 	public OperaRehearsalServer() throws RemoteException{
 		super();
@@ -42,31 +42,29 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		rehearsalCache = createCache();
 	}
 	
-	//******************************************************************************************
-	//******************************************************************************************
-	
 	
 	private Map<String, Map<String, RehearsalRMIDTO>> createCache()
 	{
 		List <RehearsalDO> rehearsalDOList;
 		Map<String, Map<String, RehearsalRMIDTO>> rehearsalsCache = new TreeMap<String, Map<String,RehearsalRMIDTO>>();
 		
-		//esto se hace para acceder al metodo que ofrece el servidor corba, de forma transparente
-		//a traves de los gateways y el singletone
-		gateway = OperasHGatewayFactory.getInstance();
-		IOperaHGateway corbaGate = gateway.getOperaHGateway("", "corba");
+		gateway= OperasHGatewayFactory.getInstance();
+		IOperaHGateway corbaGate= gateway.getOperaHGateway("","corba");
 		rehearsalDOList = corbaGate.getRehearsals();
-	
+				
+			
+			
 		ReservationCounter.connect();
-		
+			
 		//primero recorremos para scalaMilano y nos creamos su map interno
+		
 		Map<String, RehearsalRMIDTO> scalaMilanoMAP = new TreeMap<String, RehearsalRMIDTO>();
 		for(int i = 0; i<rehearsalDOList.size(); i++)
 		{
 			RehearsalDO x = rehearsalDOList.get(i);
 			int ocupiedSeats = ReservationCounter.obtainOcupiedSeats("ScalaMILANO", x.getOperaName());
-			RehearsalRMIDTO newRehearsalRMIDTO = new RehearsalRMIDTO("ScalaMILANO", x.getOperaName(),x.getDate(),x.getAvailableSeats()-ocupiedSeats);
-			scalaMilanoMAP.put(x.getOperaName(), newRehearsalRMIDTO);
+			RehearsalRMIDTO newRehearsalsRMIDTO = new RehearsalRMIDTO("ScalaMILANO", x.getOperaName(),x.getDate(),x.getAvailableSeats()-ocupiedSeats);
+			scalaMilanoMAP.put(x.getOperaName(), newRehearsalsRMIDTO);
 		}
 		ReservationCounter.disconnect();
 		rehearsalsCache.put("ScalaMilano", scalaMilanoMAP);
@@ -74,26 +72,15 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		return rehearsalsCache;
 	}
 	
-	//******************************************************************************************
-	//******************************************************************************************
-	
-	
 	public Map<String, Map<String, RehearsalRMIDTO>> getRehearsalCache() 
 	{
 		return rehearsalCache;
 	}
 
 	
-	//******************************************************************************************
-	//******************************************************************************************
 	
-	
-	public static void main(String[] args) 
-	{
-		//suponemos que args tiene la ip el pueto y el nombre del servidor
-		System.out.println("Getting access to the RMIAuthorization server...");
-		
-		//authorizationGate = AuthorizationGatewayFactory.getAuthGateway();
+	public static void main(String[] args) {
+
 	}
 
 	
@@ -103,27 +90,19 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	public void addRemoteObserver(IRemoteObserver observer) throws RemoteException 
 	{
 		this.remoteObservable.addRemoteObserver(observer);
+		
 	}
 
-	
-	//******************************************************************************************
-	//******************************************************************************************
-	
-	
 	@Override
 	public void deleteRemoteObserver(IRemoteObserver observer) throws RemoteException 
 	{
 		this.remoteObservable.deleteRemoteObserver(observer);
 	}
 
-	
-	//******************************************************************************************
-	//******************************************************************************************
 
-	
 	@Override
-	public String login(String username, String password) throws ValidationException, RemoteException 
-	{
+	public String login(String username, String password)
+			throws ValidationException, RemoteException {
 		// TODO Auto-generated method stub
 		return null;
 	}
