@@ -48,10 +48,10 @@
     </target>
 
 	<target name="client" description="Executes Client program">
-		<java classname="donaciones.cliente.Donante" classpath="${classpath}" fork="true">			
+		<java classname="rehearsalServer.PruebaParaMAP" classpath="${classpath}" fork="true">			
         	<arg value="${nameservice.IP}"/> 
 	 		<arg value="${nameservice.port}"/>
-	 		<arg value="${server.name}"/>
+	 		<arg value="${serverScalaMilano.name}"/>
         </java>
     </target>
 	

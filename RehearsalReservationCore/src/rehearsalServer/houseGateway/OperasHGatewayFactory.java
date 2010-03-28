@@ -29,7 +29,7 @@ public class OperasHGatewayFactory {
 		IOperaHGateway the_gateway = null;
 
 		if(serverTech.equals("corba"))
-			the_gateway = new CorbaHouseGateway("scalaMilano");		
+			the_gateway = new CorbaHouseGateway(serviceUri);		
 		return the_gateway;
 	}
 }
