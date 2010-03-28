@@ -2,6 +2,7 @@ package rehearsalServer.houseGateway;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import org.omg.CORBA.ORB;
 import org.omg.CosNaming.NamingContextExt;
@@ -13,23 +14,28 @@ import corbaServer.corba.corbaServerRehearsalDTO;
 
 public class CorbaHouseGateway implements IOperaHGateway {
 	
-	private String server;
+	private String serverName;
+	private String ip;
+	private String port;
 	
-	public CorbaHouseGateway(String nameServer)
+	public CorbaHouseGateway(String serviceUri)
 	{
-		server = nameServer;
+		StringTokenizer st = new StringTokenizer(serviceUri);
+		ip = st.nextToken();
+		port = st.nextToken();
+		serverName = st.nextToken();
 	}
 
 	public List<RehearsalDO> getRehearsals() {
 		List<RehearsalDO> result = new ArrayList<RehearsalDO>();
 		
-		String[] orb_args = {"-ORBInitialHost" , "127.0.0.1" , "-ORBInitialPort" , "900"};
+		String[] orb_args = {"-ORBInitialHost" , ip , "-ORBInitialPort" , port};
 		ORB orb = ORB.init(orb_args, null);
 		try
 		{
 		org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
 		NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
-		ICorbaServer objServer = ICorbaServerHelper.narrow(ncRef.resolve_str(server));
+		ICorbaServer objServer = ICorbaServerHelper.narrow(ncRef.resolve_str(serverName));
 		corbaServerRehearsalDTO [] rehearsals = objServer.getRehearsals();
 		
 		for(int i = 0 ; i < rehearsals.length ; i++)

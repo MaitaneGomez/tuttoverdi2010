@@ -36,20 +36,20 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	
 
 	
-	public OperaRehearsalServer() throws RemoteException{
+	public OperaRehearsalServer(String[] args) throws RemoteException{
 		super();
 		this.remoteObservable = new RemoteObservable();
-		rehearsalCache = createCache();
+		rehearsalCache = createCache(args);
 	}
 	
 	
-	private Map<String, Map<String, RehearsalRMIDTO>> createCache()
+	private Map<String, Map<String, RehearsalRMIDTO>> createCache(String [] args)
 	{
 		List <RehearsalDO> rehearsalDOList;
 		Map<String, Map<String, RehearsalRMIDTO>> rehearsalsCache = new TreeMap<String, Map<String,RehearsalRMIDTO>>();
 		
 		gateway= OperasHGatewayFactory.getInstance();
-		IOperaHGateway corbaGate= gateway.getOperaHGateway("","corba");
+		IOperaHGateway corbaGate= gateway.getOperaHGateway(args[0]+" "+args[1]+" "+args[2],"corba");
 		rehearsalDOList = corbaGate.getRehearsals();
 				
 			
