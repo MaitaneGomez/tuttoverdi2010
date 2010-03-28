@@ -12,35 +12,51 @@ public class TestCase {
 	private IAuthorizationRMI iauth;
 
 	/** Creates a new instance of Main */
-	public TestCase(String[] args) throws RemoteException {
+	public TestCase(String[] args) throws RemoteException 
+	{
 		getAuthManager(args[0], args[1], args[2]);
-		try {
+		try 
+		{
 			String name = iauth.login("stud1", "1111");
 			System.out.println("The name of the student is: " + name);
-		} catch (InvalidUserException e) {
+		}
+		catch (InvalidUserException e)
+		{
 			System.out.println("Invalid Username Exception");
-		} catch (InvalidPasswordException e) {
+		} 
+		catch (InvalidPasswordException e) 
+		{
 			System.out.println("Invalid Password Exception");
 		}
 	}
 
-	private void getAuthManager(String host, String port, String nam) {
-		if (System.getSecurityManager() == null) {
+	private void getAuthManager(String host, String port, String nam) 
+	{
+		if (System.getSecurityManager() == null) 
+		{
 			System.setSecurityManager(new RMISecurityManager());
 		}
-		try {
+		
+		try 
+		{
 			String name = "//" + host + ":" + port + "/" + nam + "";
 			iauth = (IAuthorizationRMI) Naming.lookup(name);
 
-		} catch (Exception e) {
+		} catch (Exception e) 
+		{
 			System.err.println("Error in Authorization Manager.  getAuthManager(): " + e.getMessage());
 		}
 	}
 
-	public static void main(String[] args) {
-		try {
+	public static void main(String[] args) 
+	{
+		try 
+		{
 			new TestCase(args);
-		} catch (Exception e) {
+		} 
+		
+		catch (Exception e) 
+		{
 			System.out.println("Error: " + e.getMessage());
 		}
 	}

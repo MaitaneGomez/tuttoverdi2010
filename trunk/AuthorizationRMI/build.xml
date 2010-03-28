@@ -4,11 +4,18 @@
     <property environment="env"/>
     <property name="policy" location="java.policy" />
     <property name="auth.manager" location="AuthorizationService.jar" />
-
+	<property name="rmiregistry.port" value="1099"/>
     <property name="host" value="127.0.0.1" />
     <property name="port" value="1099" />
     <property name="server" value="AuthorizationService" />
 
+	<target name="rmiregistry" description="Runs RMI Registry">
+		<echo message="RMI registry running at port (${rmiregistry.port})..."/>
+		<exec executable="${env.JAVA_HOME}\bin\rmiregistry.exe">
+			<arg value="${rmiregistry.port}"/>
+		</exec>
+	</target>
+	
     <target name="authorization">
         <java jar="AuthorizationService.jar" fork="true" >
             <jvmarg value="-Djava.security.policy=${policy}"/>
@@ -21,8 +28,7 @@
 	
     <target name="help" >
   		<echo>
-  		The task to execute must be selected: ant [target]:
-			- authorization
+  		Usage: ant [rmiregistry | authorization]
   		</echo>    
     </target>
 </project>
