@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import rehearsalServer.loginGateway.ValidationException;
+
 public class PruebaParaMAP {
 
 	/**
@@ -33,11 +35,17 @@ public class PruebaParaMAP {
 				}
 			}
 			
+			System.out.println("el usuario es: " + server.login("stud1", "1111"));
+			
 		} 
 		
 		
 		catch (RemoteException e) 
 		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ValidationException e)
+{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

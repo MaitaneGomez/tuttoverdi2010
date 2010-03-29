@@ -10,7 +10,7 @@ public class AuthWSGateway implements IAuthorizeGateway {
 	 * ValidationException
 	 * 
 	 */
-	public AuthWSGateway(String serviceUri) {
+	public AuthWSGateway() {
 
 	}
 
@@ -18,5 +18,11 @@ public class AuthWSGateway implements IAuthorizeGateway {
 		String studentName = null;
 		
 		return studentName;
+	}
+
+	@Override
+	public void bridge(String[] args) {
+		// TODO Auto-generated method stub
+		
 	}
 }

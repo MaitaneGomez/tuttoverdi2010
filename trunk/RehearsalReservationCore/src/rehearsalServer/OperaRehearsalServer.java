@@ -17,6 +17,8 @@ import java.util.TreeMap;
 import rehearsalServer.houseGateway.IOperaHGateway;
 import rehearsalServer.houseGateway.OperasHGatewayFactory;
 import rehearsalServer.houseGateway.RehearsalDO;
+import rehearsalServer.loginGateway.AuthorizationGatewayFactory;
+import rehearsalServer.loginGateway.IAuthorizeGateway;
 import rehearsalServer.loginGateway.ValidationException;
 import util.observer.rmi.IRemoteObserver;
 import util.observer.rmi.RemoteObservable;
@@ -27,6 +29,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	private util.observer.rmi.RemoteObservable remoteObservable;
 	private Map<String, Map<String, RehearsalRMIDTO>> rehearsalCache;
 	private OperasHGatewayFactory gateway = null; 
+	private static IAuthorizeGateway gatewayAuth = null;
 
 
 	/**
@@ -79,8 +82,27 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 
 	
 	
-	public static void main(String[] args) {
-
+	public static void main(String[] args) 
+	{
+		IAuthorizeGateway rmiAuth= AuthorizationGatewayFactory.getInstance().getAuthGateway("rmi");
+		rmiAuth.bridge(args);
+		OperaRehearsalServer server = null;
+		try {
+			server = new OperaRehearsalServer(args);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		try {
+			System.out.println(server.login("stud1","1111"));
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ValidationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	
@@ -101,9 +123,9 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 
 
 	@Override
-	public String login(String username, String password)
-			throws ValidationException, RemoteException {
-		// TODO Auto-generated method stub
-		return null;
+	public String login(String username, String password) throws ValidationException, RemoteException 
+	{
+		String studentName = gatewayAuth.login(username, password);
+		return   studentName;
 	}
 }
