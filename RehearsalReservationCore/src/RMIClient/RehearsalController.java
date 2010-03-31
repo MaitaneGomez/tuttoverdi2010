@@ -4,6 +4,7 @@ import RMIClient.gui.RMIClientGUI;
 
 import rehearsalServer.IOperaRehearsalServer;
 import rehearsalServer.RehearsalRMIDTO;
+import rehearsalServer.loginGateway.ValidationException;
 
 import util.observer.local.LocalObservable;
 import java.util.Observer;
@@ -14,7 +15,7 @@ import java.util.List;
 public class RehearsalController {
 	// Some data you may need
 	// Feel free to add what you need
-	private IOperaRehearsalServer server;
+	private static IOperaRehearsalServer server;
 	private LocalObservable observable;
 	private RehearsalRemoteObserver observer;
 
@@ -26,35 +27,71 @@ public class RehearsalController {
 	 * 
 	 * @throws RemoteException
 	 */
-	public RehearsalController(String[] args) throws RemoteException {
+	public RehearsalController(){
 
 		observable = new LocalObservable();
-
+		try
+		{
+			RehearsalRemoteObserver remoteServer = new RehearsalRemoteObserver(server, this);
+		}
+		catch (RemoteException e)
+		{
+			e.printStackTrace();
+		}
+		
+		//creating the GUI.....
+		RMIClientGUI gui = new RMIClientGUI(this);
+		gui.setVisible(true);
 	}
 
 	// --------------- System Events - Remote Method Invocation --------
 	// TO BE COMPLETELY PROGRAMMED BY THE STUDENTS - 1st Assignment
 
-	public String login(String user, String pass) {
+	public String login(String user, String pass)throws ValidationException, RemoteException {
 
-		// add your code here
+		stuName = server.login(user, pass);
+		
 		return stuName;
 	}
 
 	public List<RehearsalRMIDTO> getRehearsals() {
+		
 		List<RehearsalRMIDTO> subjects = null;
+		
+		try 
+		{
+			subjects = server.getRehearsals();
+		} 
+		catch (RemoteException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// add your code here
+		
 		return subjects;
 	}
 
 	public void reserveSeat(String operaHouse, String operaName) {
 		// add your code here
+		
+		try 
+		{
+			server.reserveSeat(stuName, operaHouse, operaName);
+		} 
+		catch (RemoteException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// -------- Remote Observer Notification ---------------
 	public void updateRehearsal(RehearsalRMIDTO reh) {
 		// propagate the changed rehearsal so that the GUI can update the
 		// rehearsal details
+		
+		this.notifyLocalObservers(reh);
 
 	}
 
@@ -85,6 +122,10 @@ public class RehearsalController {
 	 */
 	public static void main(String[] args) throws RemoteException {
 		// TODO code application logic here
-		new RehearsalController(args);
+		
+		String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
+		RMIServiceLocator servLocator = new RMIServiceLocator();
+		server = servLocator.getService(name);
+		new RehearsalController();
 	}
 }

@@ -43,13 +43,13 @@
 		</exec>
 	</target>
         
-	<target name="build" depends="idlj" description="Builds the project">
+	<target name="compile" depends="idlj" description="Builds the project">
 		<delete dir="${build.dir}"/>
 		<mkdir dir="${build.dir}"/>
 		<javac srcdir="${source.dir}" destdir="${build.dir}" classpath="${classpath}" deprecation="true" fork="true"/>
     </target>
     
-	<target name="rehearsalServer" description="Executes Rehearsal Server program">
+	<target name="run.reservations" description="Executes Rehearsal Server program">
 		<java classname="rehearsalServer.OperaRehearsalServer" classpath="${classpath}" fork="true">			
 			<jvmarg value="-Djava.security.policy=${policy.file}"/>			
             <jvmarg value="-Djava.rmi.server.codebase=file:${build.dir}/ file:${lib.dir}/util_iso2.jar"/>
@@ -66,7 +66,7 @@
         </java>
     </target>
 	
-	<target name="scalaMilanoServer" description="Executes SscalaMilanoServer program">
+	<target name="run.scala" description="Executes SscalaMilanoServer program">
 		<java classname="corbaServer.CorbaOperaHouse" classpath="${classpath}" fork="true">			
         	<arg value="${nameservice.IP}"/> 
 	 		<arg value="${nameservice.port}"/>
@@ -74,7 +74,7 @@
         </java>
     </target>
 
-	<target name="client" description="Executes Client program">
+	<target name="run.client" description="Executes Client program">
 		<java classname="rehearsalServer.PruebaParaLogin" classpath="${classpath}" fork="true">			
         	<arg value="${rmiregistry.IP}"/> 
 	 		<arg value="${rmiregistry.port}"/>
