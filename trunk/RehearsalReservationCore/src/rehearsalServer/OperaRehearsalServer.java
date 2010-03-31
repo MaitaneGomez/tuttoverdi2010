@@ -4,7 +4,6 @@
  * CONNECTION TO: CORBA OPERA HOUSE COMPONENT
  * CONNECTION TO: EUSKALDUNA BIO WEB SERVICE
  * USE THE COMMAND INTERFACE TO KEEP A TRACE OF THE SERVER ACTIVITIES
- * drymearñoiganhdfsoignañwioefniño
  */
 package rehearsalServer;
 
@@ -166,7 +165,6 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	{
 		Map <String, RehearsalRMIDTO> internalMap = rehearsalCache.get(OperaHouse);
 		RehearsalRMIDTO DTO = internalMap.get(OperaName);
-		System.out.println(" no llego");
 		if(DTO.getAvailableSeats()>0) //hay asientos libres
 		{
 			DTO.setAvailableSeats(DTO.getAvailableSeats()-1);

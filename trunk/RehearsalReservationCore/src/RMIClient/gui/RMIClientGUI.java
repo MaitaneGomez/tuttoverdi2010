@@ -15,7 +15,16 @@ import javax.swing.JFrame;
  */
 
 public class RMIClientGUI extends JFrame implements Observer {
+	
+	private RehearsalController controller;
 
+	public RMIClientGUI(RehearsalController controller)
+	{
+		//inicializar la ventana---lo podemos hacer en una funcion fuera
+		this.controller = controller;
+		this.controller.addLocalObserver(this);
+	}
+	
 	public void update(java.util.Observable o, Object arg) {
 
 	}
