@@ -8,6 +8,8 @@
  */
 package rehearsalServer;
 
+import java.net.MalformedURLException;
+import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
@@ -84,21 +86,20 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	
 	public static void main(String[] args) 
 	{
-		IAuthorizeGateway rmiAuth= AuthorizationGatewayFactory.getInstance().getAuthGateway("rmi");
-		rmiAuth.bridge(args);
-		OperaRehearsalServer server = null;
-		try {
-			server = new OperaRehearsalServer(args);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (System.getSecurityManager() == null) {
+			System.setSecurityManager(new RMISecurityManager());
 		}
+		
 		try {
-			System.out.println(server.login("stud1","1111"));
+			IOperaRehearsalServer server = new OperaRehearsalServer(args);
+			String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
+			java.rmi.Naming.rebind(name, server);
+			System.out.println("registrado");
+		
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ValidationException e) {
+		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
