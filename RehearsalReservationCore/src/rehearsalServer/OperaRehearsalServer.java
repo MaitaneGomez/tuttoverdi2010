@@ -31,7 +31,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	private util.observer.rmi.RemoteObservable remoteObservable;
 	private Map<String, Map<String, RehearsalRMIDTO>> rehearsalCache;
 	private OperasHGatewayFactory gateway = null; 
-	private static AuthorizationGatewayFactory gatewayAuth = null;
+	private static IAuthorizeGateway gatewayAuth = null;
 
 
 	/**
@@ -86,6 +86,11 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	
 	public static void main(String[] args) 
 	{
+		
+		gatewayAuth = (AuthorizationGatewayFactory.getInstance()).getAuthGateway(args[6]);
+		gatewayAuth.initializeParameters(args);
+		
+		
 		if (System.getSecurityManager() == null) {
 			System.setSecurityManager(new RMISecurityManager());
 		}
@@ -126,9 +131,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	@Override
 	public String login(String username, String password) throws ValidationException, RemoteException 
 	{
-		gatewayAuth = AuthorizationGatewayFactory.getInstance();
-		IAuthorizeGateway rmiGate = gatewayAuth.getAuthGateway("rmi");
-		return rmiGate.login(username, password);
-		
+		String studentName = gatewayAuth.login(username, password);
+		return studentName;
 	}
 }

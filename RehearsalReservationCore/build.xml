@@ -17,6 +17,10 @@
 	<property name="rehearsalServer.name" value="rehearsal"/>
 	<property name="serverScalaMilano.name" value="scalaMilano"/>
 	<property name="serverSanCarloNapoli.name" value="sanCarloNapoli"/>
+	<property name="RMIAuthServerTech" value="rmi"/>
+	<property name="rmiAuth.IP" value="127.0.0.1" />
+	<property name="rmiAuth.port" value="1099" />
+	<property name="rmiAuthServer" value="AuthorizationService" />
 
 	<target name="help">
 		<echo>Usage: ant [idlj | build | tnameserv | scalaMilanoServer | rehearsalServer |client]</echo>
@@ -55,6 +59,10 @@
 			<arg value="${rmiregistry.IP}"/> 
 	 		<arg value="${rmiregistry.port}"/>
 	 		<arg value="${rehearsalServer.name}"/>
+			<arg value="${RMIAuthServerTech}"/>
+			<arg value="${rmiAuth.IP}"/> 
+			<arg value="${rmiAuth.port}"/>
+			<arg value="${rmiAuthServer}"/>
         </java>
     </target>
 	

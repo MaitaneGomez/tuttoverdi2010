@@ -20,72 +20,61 @@ public class AuthRMIGateway implements IAuthorizeGateway {
 	//por lo que nos creamos un metodo qeu nos devuleve una instancia del objeto
 	//rmi y lo guarda para invocaciones del metodo login
 
-	private IAuthorizationRMI bridge = null;
-
-	public void bridge(String [] args){
-		
-		String name= "//" + args[3] + ":" + args[4] + "/" + args[5];
-		
-		
-		
-		if (System.getSecurityManager() == null) 
-		{
-			System.setSecurityManager(new RMISecurityManager());
-		}
-			
-		try 
-		{
-			System.out.println(name);	
-			bridge = (IAuthorizationRMI) java.rmi.Naming.lookup(name);
-
-		} 
-		catch (Exception e) 
-		{
-			System.err.println(e.getMessage());
-			e.printStackTrace();
-		}
-		
-		
-	}
+	private IAuthorizationRMI objAuth = null;
 
 
 	public String login(String user, String pass) throws ValidationException
 	{
 		String studentName = null;
-		if (System.getSecurityManager() == null) 
-		{
-			System.setSecurityManager(new RMISecurityManager());
-		}
 		
-		String name = "//127.0.0.1:1099/AuthorizationService";
 		try 
 		{	
-			IAuthorizationRMI objServer = (IAuthorizationRMI) java.rmi.Naming.lookup(name);
-			studentName = objServer.login(user, pass);
-		} 
-		catch (MalformedURLException e) 
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			studentName = objAuth.login(user, pass);
 		} 
 		catch (RemoteException e) 
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		catch (NotBoundException e) 
+		catch (InvalidUserException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidUserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidPasswordException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ValidationException(e.getMessage());
+		} 
+		catch (InvalidPasswordException e) 
+		{
+			throw new ValidationException(e.getMessage());
 		}
 		
 		return studentName;
+		
+	}
+
+
+	@Override
+	public void initializeParameters(String[] args) 
+	{
+		String name= "//" + args[7] + ":" + args[8] + "/" + args[9];
+		
+		if (System.getSecurityManager() == null) 
+		{
+			System.setSecurityManager(new RMISecurityManager());
+		}
+		
+		try 
+		{
+			objAuth = (IAuthorizationRMI) java.rmi.Naming.lookup(name);
+		}
+		catch (MalformedURLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 		

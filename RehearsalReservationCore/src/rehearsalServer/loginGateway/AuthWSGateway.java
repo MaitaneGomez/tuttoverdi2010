@@ -21,8 +21,10 @@ public class AuthWSGateway implements IAuthorizeGateway {
 	}
 
 	@Override
-	public void bridge(String[] args) {
+	public void initializeParameters(String[] args) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	
 }
