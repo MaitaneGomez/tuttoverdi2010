@@ -17,31 +17,32 @@ public class PruebaParaLogin {
 	 */
 	public static void main(String[] args) 
 	{
+		String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
 		try 
 		{
-			IAuthorizationRMI objAuth = (IAuthorizationRMI) java.rmi.Naming.lookup("//127.0.0.1:1099/AuthorizationService");
-			String studentName = objAuth.login("stud1", "1111");
+			IOperaRehearsalServer rehearsalServer = (IOperaRehearsalServer) java.rmi.Naming.lookup(name);
+			System.out.println("he encontrado el objeto rmi remoto...");
+			String studentName = rehearsalServer.login("stud1", "1111");
 			System.out.println(studentName);
 		} 
-		
-		catch (RemoteException e)
+		catch (MalformedURLException e) 
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (MalformedURLException e) {
+		} 
+		catch (RemoteException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (NotBoundException e) {
+		} 
+		catch (NotBoundException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (InvalidUserException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidPasswordException e) {
+		} catch (ValidationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 }
