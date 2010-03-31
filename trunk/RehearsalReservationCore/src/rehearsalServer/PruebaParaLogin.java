@@ -22,26 +22,22 @@ public class PruebaParaLogin {
 		{
 			IOperaRehearsalServer rehearsalServer = (IOperaRehearsalServer) java.rmi.Naming.lookup(name);
 			System.out.println("he encontrado el objeto rmi remoto...");
-			String studentName = rehearsalServer.login("stud1", "1111");
+			String studentName = rehearsalServer.login("stud5", "maigo");
 			System.out.println("el nombre del estudiante es: " + studentName);
 		} 
 		catch (MalformedURLException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("1");
 		} 
 		catch (RemoteException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("2");
 		} 
 		catch (NotBoundException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("3");
 		} catch (ValidationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("4");
 		}
 	}
 
