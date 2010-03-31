@@ -50,6 +50,22 @@ public class ReservationCounter {
 		return reservedSeats;
 	}
 	
+	public static void reserve(RehearsalRMIDTO DTO, String student)
+	{
+		String update = "insert into ReservationsT (STUDENT, OPERAHOUSE, OPERANAME, RESERVATIONDATE) VALUES( '" + student + "','" + DTO.getOperaHouse() + "','" + DTO.getOperaName() + "','" + DTO.getDate() + "')";
+		try 
+		{
+			stat = conn.createStatement();
+			stat.executeUpdate(update);
+		} 
+		catch (SQLException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
 	public static void disconnect()
 	{
 		try {
