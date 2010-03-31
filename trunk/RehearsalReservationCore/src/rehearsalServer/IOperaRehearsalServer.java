@@ -18,6 +18,7 @@ public interface IOperaRehearsalServer extends util.observer.rmi.IRemoteObservab
 {
 	public String login(String username, String password) throws ValidationException, RemoteException;
 	public List<RehearsalRMIDTO> getRehearsals() throws RemoteException;
+	public void reserveSeat(String studName, String OperaHouse, String OperaName) throws RemoteException;
 	
 	
 	

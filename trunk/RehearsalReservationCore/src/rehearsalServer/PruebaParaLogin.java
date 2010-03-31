@@ -31,6 +31,20 @@ public class PruebaParaLogin {
 			{
 				System.out.println(lista.get(i).getOperaHouse() + " "  + lista.get(i).getOperaName() + " " + lista.get(i).getDate() + " " + lista.get(i).getAvailableSeats());
 			}
+			
+			
+			
+			System.out.println("reservando.......");
+			
+			rehearsalServer.reserveSeat("Ann Emmerson", "ScalaMilano", "Nabucco");
+			
+			System.out.println("mostrando de nuevo");
+			lista = rehearsalServer.getRehearsals();
+			for(int i=0; i<lista.size();i++)
+			{
+				System.out.println(lista.get(i).getOperaHouse() + " "  + lista.get(i).getOperaName() + " " + lista.get(i).getDate() + " " + lista.get(i).getAvailableSeats());
+			}
+			
 		} 
 		catch (MalformedURLException e) 
 		{

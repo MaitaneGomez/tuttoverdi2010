@@ -159,4 +159,34 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		}
 		return rehearsals;
 	}
+
+
+	@Override
+	public synchronized void reserveSeat(String studName, String OperaHouse, String OperaName) throws RemoteException 
+	{
+		Map <String, RehearsalRMIDTO> internalMap = rehearsalCache.get(OperaHouse);
+		RehearsalRMIDTO DTO = internalMap.get(OperaName);
+		System.out.println(" no llego");
+		if(DTO.getAvailableSeats()>0) //hay asientos libres
+		{
+			DTO.setAvailableSeats(DTO.getAvailableSeats()-1);
+			System.out.println(DTO.getOperaName() + " " + DTO.getOperaHouse() + " " + DTO.getAvailableSeats());
+			internalMap.put(OperaName, DTO);
+			rehearsalCache.put(OperaHouse, internalMap);
+			ReservationCounter.connect();
+			ReservationCounter.reserve(DTO, studName);
+			ReservationCounter.disconnect();
+			
+			//notificamos a los demas clientes
+			this.notifyAll(DTO);
+
+		}
+		
+		
+	}
+	
+	private void notifyAll(RehearsalRMIDTO DTO)
+	{
+		this.remoteObservable.notifyRemoteObservers(DTO);
+	}
 }
