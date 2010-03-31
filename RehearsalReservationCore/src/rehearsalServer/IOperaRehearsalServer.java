@@ -1,6 +1,7 @@
 package rehearsalServer;
 
 import java.rmi.RemoteException;
+import java.util.List;
 
 import rehearsalServer.loginGateway.ValidationException;
 
@@ -16,6 +17,7 @@ import rehearsalServer.loginGateway.ValidationException;
 public interface IOperaRehearsalServer extends util.observer.rmi.IRemoteObservable 
 {
 	public String login(String username, String password) throws ValidationException, RemoteException;
+	public List<RehearsalRMIDTO> getRehearsals() throws RemoteException;
 	
 	
 	

@@ -12,9 +12,12 @@ import java.net.MalformedURLException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import rehearsalServer.houseGateway.IOperaHGateway;
 import rehearsalServer.houseGateway.OperasHGatewayFactory;
@@ -133,5 +136,27 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	{
 		String studentName = gatewayAuth.login(username, password);
 		return studentName;
+	}
+
+
+	@Override
+	public List<RehearsalRMIDTO> getRehearsals() throws RemoteException 
+	{
+		
+		List<RehearsalRMIDTO> rehearsals = new ArrayList<RehearsalRMIDTO>();
+		Iterator<Entry<String, Map<String, RehearsalRMIDTO>>> itGeneralMap = rehearsalCache.entrySet().iterator();
+		while(itGeneralMap.hasNext())
+		{
+			Map.Entry<String, Map<String, RehearsalRMIDTO>> entry = (Map.Entry<String, Map<String,RehearsalRMIDTO>>) itGeneralMap.next();
+			Map<String, RehearsalRMIDTO> internalMap = entry.getValue();
+			Iterator<Entry<String, RehearsalRMIDTO>> itInternalMap = internalMap.entrySet().iterator();
+			while(itInternalMap.hasNext())
+			{
+				Map.Entry<String, RehearsalRMIDTO> entry2 = (Entry<String, RehearsalRMIDTO>) itInternalMap.next();
+				RehearsalRMIDTO DTO = entry2.getValue();
+				rehearsals.add(DTO);
+			}
+		}
+		return rehearsals;
 	}
 }
