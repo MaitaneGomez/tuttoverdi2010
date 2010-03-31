@@ -1,5 +1,7 @@
 package rehearsalServer.loginGateway;
 
+import java.net.MalformedURLException;
+import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 
@@ -49,26 +51,42 @@ public class AuthRMIGateway implements IAuthorizeGateway {
 
 	public String login(String user, String pass) throws ValidationException
 	{
-		String studentName="";
-		
-		try 
+		String studentName = null;
+		if (System.getSecurityManager() == null) 
 		{
-			studentName = bridge.login(user, pass);
+			System.setSecurityManager(new RMISecurityManager());
+		}
+		
+		String name = "//127.0.0.1:1099/AuthorizationService";
+		try 
+		{	
+			IAuthorizationRMI objServer = (IAuthorizationRMI) java.rmi.Naming.lookup(name);
+			studentName = objServer.login(user, pass);
+		} 
+		catch (MalformedURLException e) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		} 
 		catch (RemoteException e) 
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		catch (InvalidUserException e) 
+		catch (NotBoundException e) 
 		{
-			throw new ValidationException(e.getMessage()); 
-		} 
-		catch (InvalidPasswordException e) 
-		{
-			throw new ValidationException(e.getMessage()); 
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidUserException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvalidPasswordException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return studentName; 
+		
+		return studentName;
+		
 	}
 		
 }
