@@ -49,6 +49,9 @@
 		<java classname="rehearsalServer.OperaRehearsalServer" classpath="${classpath}" fork="true">			
 			<jvmarg value="-Djava.security.policy=${policy.file}"/>			
             <jvmarg value="-Djava.rmi.server.codebase=file:${build.dir}/ file:${lib.dir}/util_iso2.jar"/>
+			<arg value="${nameservice.IP}"/>
+            <arg value="${nameservice.port}"/>
+            <arg value="${serverScalaMilano.name}"/>
 			<arg value="${rmiregistry.IP}"/> 
 	 		<arg value="${rmiregistry.port}"/>
 	 		<arg value="${rehearsalServer.name}"/>
@@ -64,10 +67,10 @@
     </target>
 
 	<target name="client" description="Executes Client program">
-		<java classname="rehearsalServer.PruebaParaMAP" classpath="${classpath}" fork="true">			
-        	<arg value="${nameservice.IP}"/> 
-	 		<arg value="${nameservice.port}"/>
-	 		<arg value="${serverScalaMilano.name}"/>
+		<java classname="rehearsalServer.PruebaParaLogin" classpath="${classpath}" fork="true">			
+        	<arg value="${rmiregistry.IP}"/> 
+	 		<arg value="${rmiregistry.port}"/>
+	 		<arg value="${rehearsalServer.name}"/>
         </java>
     </target>
 	

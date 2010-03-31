@@ -92,7 +92,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		
 		try {
 			IOperaRehearsalServer server = new OperaRehearsalServer(args);
-			String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
+			String name = "//" + args[3] + ":" + args[4] + "/" + args[5];
 			java.rmi.Naming.rebind(name, server);
 			System.out.println("registrado");
 		
