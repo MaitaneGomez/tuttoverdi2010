@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <project basedir="." default="help" name="observerCORBA">
 	
 	<property environment="env"/>
 	<property name="idlDestination.dir" location="src"/>
 	<property name="source.dir" location="src"/>
     <property name="build.dir" location="bin"/>
+    <property name="lib.dir" location="lib"/>	
 	<property name="classpath" location="bin;lib/AuthorizationRMIClient.jar;lib/sqlitejdbc-v056.jar;lib/util_iso2.jar"/>
 	<property name="idl.file" location="idl/corbaServer.idl"/>
 	<property name="nameservice.IP" value="127.0.0.1"/>
 	<property name="nameservice.port" value="900"/>
+	<property name="rmiregistry.IP" value="127.0.0.1"/>
+	<property name="rmiregistry.port" value="1099"/>
+	<property name="policy.file" value="java.policy"/>	
+	<property name="rehearsalServer.name" value="rehearsal"/>
 	<property name="serverScalaMilano.name" value="scalaMilano"/>
 	<property name="serverSanCarloNapoli.name" value="sanCarloNapoli"/>
 
 	<target name="help">
-		<echo>Usage: ant [idlj | build | tnameserv | scalaMilanoServer | client]</echo>
+		<echo>Usage: ant [idlj | build | tnameserv | scalaMilanoServer | rehearsalServer |client]</echo>
 	</target>
 
 	<target name="idlj" description="Builds IDL file">
@@ -39,6 +45,16 @@
 		<javac srcdir="${source.dir}" destdir="${build.dir}" classpath="${classpath}" deprecation="true" fork="true"/>
     </target>
     
+	<target name="rehearsalServer" description="Executes Rehearsal Server program">
+		<java classname="rehearsalServer.OperaRehearsalServer" classpath="${classpath}" fork="true">			
+			<jvmarg value="-Djava.security.policy=${policy.file}"/>			
+            <jvmarg value="-Djava.rmi.server.codebase=file:${build.dir}/ file:${lib.dir}/util_iso2.jar"/>
+			<arg value="${rmiregistry.IP}"/> 
+	 		<arg value="${rmiregistry.port}"/>
+	 		<arg value="${rehearsalServer.name}"/>
+        </java>
+    </target>
+	
 	<target name="scalaMilanoServer" description="Executes SscalaMilanoServer program">
 		<java classname="corbaServer.CorbaOperaHouse" classpath="${classpath}" fork="true">			
         	<arg value="${nameservice.IP}"/> 
