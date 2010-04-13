@@ -34,18 +34,13 @@ public class PruebaParaMAP {
 					System.out.println("       " + DTO.getOperaHouse() + " " + DTO.getOperaName() + " " + DTO.getDate()+ " " + DTO.getAvailableSeats());
 				}
 			}
-			
-			System.out.println("el usuario es: " + server.login("stud1", "1111"));
+		
 			
 		} 
 		
 		
 		catch (RemoteException e) 
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ValidationException e)
-{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -4,6 +4,7 @@ import RMIClient.RehearsalController;
 
 
 import rehearsalServer.RehearsalRMIDTO;
+import rehearsalServer.loginGateway.ValidationException;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -26,9 +27,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-
+import javax.swing.AbstractAction;
 
 /**
  * CHECK THE GUI SOURCE CODE PROVIDED AS A REFERENCE FEEL FREE TO ADD OR
@@ -49,7 +52,17 @@ import java.util.Observer;
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
 
-public class RMIClientGUI extends JFrame implements Observer, WindowListener, ActionListener {
+public class RMIClientGUI extends JFrame implements Observer, WindowListener {
+
+	{
+		//Set Look & Feel
+		try {
+			javax.swing.UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 	/**
 	 * 
@@ -57,9 +70,14 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener, Ac
 	private static final long serialVersionUID = 1L;
 
 	private RehearsalController controller;
-	
+	boolean authorized = false;
+	private AbstractAction ActionReserve;
+
 	private JPanel jPanel;
 	private JPanel jPanelLogin;
+	private AbstractAction ActionGetRehearsals;
+	private AbstractAction ActionLogin;
+	private AbstractAction ActionExit;
 	private JPanel jPanelSeats;
 	private JLabel jLabelUser;
 	private JTextField jTextFieldUser;
@@ -68,7 +86,7 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener, Ac
 	private JLabel jLabelSN;
 	private JTextField jTextFieldSN;
 	private JButton jButtonLogin;	
-	private JTable jTable;
+	private JTable table;
 	private JButton jButtonRehearsals;
 	private JButton jButtonRS;
 	private JButton jButtonEx;
@@ -121,7 +139,8 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener, Ac
 					{
 						jButtonLogin = new JButton();
 						jButtonLogin.setText("Login");
-						jButtonLogin.addActionListener(this);
+						jButtonLogin.setAction(getActionLogin());
+						//jButtonLogin.addActionListener(this);
 					}
 					{
 						jLabelSN = new JLabel();
@@ -183,44 +202,47 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener, Ac
 						jButtonRehearsals = new JButton();
 						jButtonRehearsals.setText("Get Scheduled Rehearsals");
 						jButtonRehearsals.setDefaultCapable(false);
-						jButtonRehearsals.addActionListener(this);
+						jButtonRehearsals.setAction(getActionGetRehearsals());
+						//jButtonRehearsals.addActionListener(this);
 					}
 					{
 						jButtonRS = new JButton();
 						jButtonRS.setText("Reserve Seat");
-						jButtonRS.addActionListener(this);
+						jButtonRS.setAction(getActionReserve());
+						//jButtonRS.addActionListener(this);
 					}
 					{
 						jButtonEx = new JButton();
 						jButtonEx.setText("Exit");
-						jButtonEx.addActionListener(this);
+						jButtonEx.setAction(getActionExit());
+						//jButtonEx.addActionListener(this);
 					}
 					{
 						TableModel jTableModel = 
 							new DefaultTableModel(
 									new String[][] { { "Opera House Name", "Opera Name", "Rehearsal Date", "Availability" }, { "5", "6", "7", "8" }, { "9", "10", "11", "12" }, { "13", "14", "15", "16" } },
 									new String[] { "Opera House Name", "Opera Name", "Rehearsal Date", "Availability" });
-						jTable = new JTable();
-						jTable.setModel(jTableModel);
+						table = new JTable();
+						table.setModel(jTableModel);
 					}
 
 						jPanelDownLayout.setHorizontalGroup(jPanelDownLayout.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(jPanelDownLayout.createParallelGroup()
 						    .addGroup(GroupLayout.Alignment.LEADING, jPanelDownLayout.createSequentialGroup()
-						        .addComponent(jButtonRehearsals, GroupLayout.PREFERRED_SIZE, 155, GroupLayout.PREFERRED_SIZE)
+						        .addComponent(jButtonRehearsals, GroupLayout.PREFERRED_SIZE, 200, GroupLayout.PREFERRED_SIZE)
 						        .addGap(25)
-						        .addComponent(jButtonRS, GroupLayout.PREFERRED_SIZE, 139, GroupLayout.PREFERRED_SIZE)
+						        .addComponent(jButtonRS, GroupLayout.PREFERRED_SIZE, 140, GroupLayout.PREFERRED_SIZE)
 						        .addGap(22)
-						        .addComponent(jButtonEx, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+						        .addComponent(jButtonEx, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
 						        .addGap(0, 34, Short.MAX_VALUE))
 						    .addGroup(jPanelDownLayout.createSequentialGroup()
-						        .addComponent(jTable, GroupLayout.PREFERRED_SIZE, 482, GroupLayout.PREFERRED_SIZE)
+						        .addComponent(table, GroupLayout.PREFERRED_SIZE, 482, GroupLayout.PREFERRED_SIZE)
 						        .addGap(0, 0, Short.MAX_VALUE)))
 						.addContainerGap(32, 32));
 						jPanelDownLayout.setVerticalGroup(jPanelDownLayout.createSequentialGroup()
 						.addContainerGap()
-						.addComponent(jTable, 0, 113, Short.MAX_VALUE)
+						.addComponent(table, 0, 113, Short.MAX_VALUE)
 						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 						.addGroup(jPanelDownLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 						    .addComponent(jButtonRehearsals, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
@@ -264,7 +286,27 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener, Ac
 		
 	}
 	
-	public void update(java.util.Observable o, Object arg) {
+	public void update(java.util.Observable o, Object arg) 
+	{
+		if(arg instanceof RehearsalRMIDTO)
+		{
+			RehearsalRMIDTO DTO = (RehearsalRMIDTO) arg;
+			DefaultTableModel rehearsalsTable = (DefaultTableModel)this.table.getModel();
+			
+			int rows = rehearsalsTable.getRowCount();
+			
+			boolean found = false;
+			
+			for(int i =0; i < rows && !found; i++)
+			{
+				if((rehearsalsTable.getValueAt(i+1, 0).equals(DTO.getOperaHouse())&&(rehearsalsTable.getValueAt(i+1, 1).equals(DTO.getOperaName()))))
+				{
+					found = true;
+					rehearsalsTable.setValueAt(DTO.getAvailableSeats(), i+1, 3);
+				}
+			}
+
+		}
 
 	}
 
@@ -309,9 +351,111 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener, Ac
 		// TODO Auto-generated method stub
 		
 	}
+	
+	private AbstractAction getActionExit() {
+		if(ActionExit == null) {
+			ActionExit = new AbstractAction("Exit", null) {
+				public void actionPerformed(ActionEvent evt) {
+					try {
+						controller.exit();
+					} catch (RemoteException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			};
+		}
+		return ActionExit;
+	}
+	
+	private AbstractAction getActionLogin() {
+		if(ActionLogin == null) {
+			ActionLogin = new AbstractAction("Login", null) {
+				public void actionPerformed(ActionEvent evt) {
+					
+					String userName = jTextFieldUser.getText();
+					String password = jTextFieldPass.getText();
+					
+					try 
+					{
+						String user = controller.login(userName, password);
+						jTextFieldSN.setText(user);
+						authorized = true;
+						statusBar.setText("login successful");
+						
+					} 
+					catch (RemoteException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						statusBar.setText("Error happened");
+					} 
+					catch (ValidationException e) 
+					{
+						
+						if(e.getMessage().contains("InvalidUserException"))
+							statusBar.setText("Error, user incorrect");
+						if(e.getMessage().contains("InvalidPasswordException"))
+							statusBar.setText("Error, password incorrect");
+						// TODO Auto-generated catch block
+						//e.printStackTrace();
+					}
+				}
+			};
+		}
+		return ActionLogin;
+	}
+	
+	private AbstractAction getActionGetRehearsals() {
+		if(ActionGetRehearsals == null) {
+			ActionGetRehearsals = new AbstractAction("Get Scheduled Rehearsals", null) {
+				public void actionPerformed(ActionEvent evt) {
+					
+					if(authorized == false)
+						statusBar.setText("You have to be logged to obtain the rehearsals");
+					else
+					{
+						List<RehearsalRMIDTO> DTOList = new ArrayList<RehearsalRMIDTO>();
+						DTOList = controller.getRehearsals();
+						DefaultTableModel rehearsalsTable = (DefaultTableModel)table.getModel();
+						rehearsalsTable.setRowCount(DTOList.size()+1);
+						for(int i = 0; i < DTOList.size(); i++)
+						{
+							table.setValueAt(DTOList.get(i).getOperaHouse(),i+1,0);
+							table.setValueAt(DTOList.get(i).getOperaName(),i+1,1);
+							table.setValueAt(DTOList.get(i).getDate(),i+1,2);
+							table.setValueAt(DTOList.get(i).getAvailableSeats(),i+1,3);
+						}
+					}
+				}
+			};
+		}
+		return ActionGetRehearsals;
+	}
+	
+	private AbstractAction getActionReserve() {
+		if(ActionReserve == null) {
+			ActionReserve = new AbstractAction("Reserve Seat", null) {
+				public void actionPerformed(ActionEvent evt) {
+					
+					if (authorized == false)
+						statusBar.setText("You have to be logged before reserving a seat");
+					else
+					{
+						int row = table.getSelectedRow();
+						String operaHouse = (String) table.getValueAt(row, 0);
+						String operaName = (String) table.getValueAt(row, 1);
+						controller.reserveSeat(operaHouse, operaName);
+						statusBar.setText("Servation done");
+					}
+				}
+			};
+		}
+		return ActionReserve;
+	}
 
-	@Override
-	public void actionPerformed(ActionEvent arg0) 
+	//@Override
+	/*public void actionPerformed(ActionEvent arg0) 
 	{
 		// TODO Auto-generated method stub
 		if (arg0.getSource().equals(jButtonEx))
@@ -319,11 +463,12 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener, Ac
 			controller.deleteLocalObserver(this);
 			try {
 				controller.exit();
+				System.exit(0);
 			} catch (RemoteException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		
-	}
+	}*/
 }

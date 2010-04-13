@@ -75,7 +75,7 @@
     </target>
 
 	<target name="run.client" description="Executes Client program">
-		<java classname="rehearsalServer.PruebaParaLogin" classpath="${classpath}" fork="true">			
+		<java classname="RMIClient.RehearsalController" classpath="${classpath}" fork="true">			
         	<arg value="${rmiregistry.IP}"/> 
 	 		<arg value="${rmiregistry.port}"/>
 	 		<arg value="${rehearsalServer.name}"/>
