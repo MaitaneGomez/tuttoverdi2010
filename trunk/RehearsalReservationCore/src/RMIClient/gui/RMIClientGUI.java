@@ -452,8 +452,12 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 						int row = table.getSelectedRow();
 						String operaHouse = (String) table.getValueAt(row, 0);
 						String operaName = (String) table.getValueAt(row, 1);
-						controller.reserveSeat(operaHouse, operaName);
-						statusBar.setText("Reservation done");
+						int status = controller.reserveSeat(operaHouse, operaName);
+						
+						if(status == 1)
+							statusBar.setText("Reservation done");
+						else
+							statusBar.setText("There are no places available");
 					}
 				}
 			};

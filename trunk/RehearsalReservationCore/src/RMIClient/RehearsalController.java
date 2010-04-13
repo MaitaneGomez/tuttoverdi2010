@@ -74,18 +74,21 @@ public class RehearsalController {
 		return rehearsals;
 	}
 
-	public void reserveSeat(String operaHouse, String operaName) {
+	public int reserveSeat(String operaHouse, String operaName) {
 		// add your code here
+		
+		int status=0;
 		
 		try 
 		{
-			server.reserveSeat(stuName, operaHouse, operaName);
+			status = server.reserveSeat(stuName, operaHouse, operaName);
 		} 
 		catch (RemoteException e) 
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return status;
 	}
 
 	// -------- Remote Observer Notification ---------------

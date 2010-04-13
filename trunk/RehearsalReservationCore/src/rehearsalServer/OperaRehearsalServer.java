@@ -162,7 +162,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 
 
 	@Override
-	public  void reserveSeat(String studName, String OperaHouse, String OperaName) throws RemoteException 
+	public  int reserveSeat(String studName, String OperaHouse, String OperaName) throws RemoteException 
 	{
 		
 		Map <String, RehearsalRMIDTO> internalMap = rehearsalCache.get(OperaHouse);
@@ -183,6 +183,11 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			//Notificamos a los demas clientes
 			System.out.println("Notifying to all conected users...");
 			this.notifyAll(DTO);	
+			return 1;
+		}
+		else
+		{
+			return -1;
 		}
 	}
 	
