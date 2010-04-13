@@ -17,7 +17,7 @@ import corbaServer.corba.ICorbaServer;
 import corbaServer.corba.ICorbaServerHelper;
 import corbaServer.corba.impCorbaServer;
 
-//en esta clase creamos un objeto CORBA y lo metemos en el NameService
+//En esta clase creamos un objeto CORBA y lo metemos en el NameService
 //atencion el nombre del objeto a registrar debe ser el mismo que el de la base de datos
 
 public class CorbaOperaHouse {
@@ -25,7 +25,7 @@ public class CorbaOperaHouse {
 	public static void main(String[] args) {
 		
 		//Nos creamos un objeto ORB para manejar todo lo siguiente
-		String [] orb_args = {"-ORBInitialHost" , args[0] , "_ORBInitialPort" , args[1]};
+		String [] orb_args = {"-ORBInitialHost" , args[0] , "-ORBInitialPort" , args[1]};
 		ORB orb = ORB.init(orb_args, null);
 		
 		try
@@ -39,11 +39,11 @@ public class CorbaOperaHouse {
 			//Activar el POAMAnager
 			poa.the_POAManager().activate();
 			
-			//crear un objeto CORBA (Llamaremos al constructor del servidor (impCorbaServer))
+			//Crear un objeto CORBA (Llamaremos al constructor del servidor (impCorbaServer))
 			impCorbaServer server = new impCorbaServer(args[2]);
 			
-			//vincular el objeto CORBA con el POA
-			//registrar el objeto CORBA en el POA
+			//Vincular el objeto CORBA con el POA
+			//Registrar el objeto CORBA en el POA
 			org.omg.CORBA.Object ref = poa.servant_to_reference(server);
 			//Convertir la referencia a una especifica
 			ICorbaServer operaRef = ICorbaServerHelper.narrow(ref);
@@ -51,17 +51,18 @@ public class CorbaOperaHouse {
 			//Registrar el objeto CORBA en el NameService
 			//Obtener una referencia al NaemService
 			org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
-			//transformamos la refenrecia a una especifica
+			//Transformamos la refenrecia a una especifica
 			NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
 			
-			//ponerle un nombre al objeto a registrar
+			//Ponerle un nombre al objeto a registrar
 			NameComponent [] path = ncRef.to_name(args[2]);
 			
-			//registro
+			//Registro
+			System.out.println("Initizaling Corba Server...");
 			ncRef.rebind(path, operaRef);
 			
-			//dejar el proceso servidor esperando peticiones
-			System.out.println("servidor"+ args[2]+ "funcionando y esperando peticiones...");
+			//Dejar el proceso servidor esperando peticiones
+			System.out.println("Server "+ args[2]+ " working and waiting for requests...");
 			orb.run();
 		}
 		

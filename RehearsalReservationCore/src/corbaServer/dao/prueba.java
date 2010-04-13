@@ -6,6 +6,9 @@ import java.util.List;
 
 import corbaServer.RehearsalDO;
 
+
+//Prueba para Corba, ya no la necesitamos
+
 public class prueba {
 
 	/**

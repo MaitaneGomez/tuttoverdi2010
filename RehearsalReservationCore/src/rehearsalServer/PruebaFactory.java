@@ -7,6 +7,8 @@ import rehearsalServer.houseGateway.IOperaHGateway;
 import rehearsalServer.houseGateway.OperasHGatewayFactory;
 import rehearsalServer.houseGateway.RehearsalDO;
 
+
+//Prueba para probar el factory, ya no nos hace falta
 public class PruebaFactory {
 
 	/**

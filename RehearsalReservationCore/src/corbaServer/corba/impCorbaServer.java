@@ -7,7 +7,7 @@ import java.util.List;
 import corbaServer.RehearsalDO;
 import corbaServer.dao.CorbaOperaHouseDAO;
 
-//esta clase es la que implementa el metodo remoto de la interfaz idl
+//Esta clase es la que implementa el metodo remoto de la interfaz idl
 
 public class impCorbaServer extends ICorbaServerPOA{
 	
@@ -21,16 +21,16 @@ public class impCorbaServer extends ICorbaServerPOA{
 	
 	public corbaServerRehearsalDTO[] getRehearsals() {
 		
-		//creaamos un obejto para llamar a los metodos de la base de datos
+		//Creamos un objeto para llamar a los metodos de la base de datos
 		CorbaOperaHouseDAO COHD = new CorbaOperaHouseDAO();
 		
 		//Creamos la lista para ser retornada por la base de datos:
 		List<RehearsalDO> DOList = new ArrayList<RehearsalDO>();
 		
-		//creamos la lista que va a ser retornada:
+		//Creamos la lista que va a ser retornada:
 		corbaServerRehearsalDTO [] DTOArray = null ; 
 		
-		//llevamos a cabo la invocacion de conectar, obtencion y desconexion
+		//Llevamos a cabo la invocacion de conectar, obtencion y desconexion
 		
 		try
 		{

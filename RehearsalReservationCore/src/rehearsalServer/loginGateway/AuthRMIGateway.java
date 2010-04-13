@@ -16,7 +16,7 @@ public class AuthRMIGateway implements IAuthorizeGateway {
 	 * AuthorizationRMIClient.jar THIS SECTION BELONGS TO THE FIRST ASSIGNMENT
 	 */
 	
-	//hemos creado una especie de puente (bridge) para poder pasar los args al metodo login,
+	//Hemos creado una especie de puente (bridge) para poder pasar los args al metodo login,
 	//por lo que nos creamos un metodo qeu nos devuleve una instancia del objeto
 	//rmi y lo guarda para invocaciones del metodo login
 

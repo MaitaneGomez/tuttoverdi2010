@@ -10,15 +10,6 @@ public class RMIServiceLocator
 {
 	private IOperaRehearsalServer service;
 	
-	
-
-	public RMIServiceLocator() 
-	{
-	
-	}
-
-
-
 	public IOperaRehearsalServer getService(String name) 
 	{
 		try 

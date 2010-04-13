@@ -5,12 +5,9 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.List;
 
-import authorizationRMI.IAuthorizationRMI;
-import authorizationRMI.InvalidPasswordException;
-import authorizationRMI.InvalidUserException;
-
 import rehearsalServer.loginGateway.ValidationException;
 
+//Prueba para el login, ya no nos hace falta
 public class PruebaParaLogin {
 
 	/**

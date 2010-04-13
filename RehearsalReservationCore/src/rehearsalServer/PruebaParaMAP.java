@@ -5,8 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import rehearsalServer.loginGateway.ValidationException;
-
+//Prueba para ver si funciona el map, ya no lo necesitamos
 public class PruebaParaMAP {
 
 	/**

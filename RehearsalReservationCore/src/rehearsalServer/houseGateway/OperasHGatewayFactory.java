@@ -1,5 +1,6 @@
 package rehearsalServer.houseGateway;
 
+//SINGLETON
 public class OperasHGatewayFactory {
 
 	/**
