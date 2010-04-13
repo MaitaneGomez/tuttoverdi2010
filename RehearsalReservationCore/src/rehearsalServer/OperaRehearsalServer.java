@@ -74,7 +74,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			scalaMilanoMAP.put(x.getOperaName(), newRehearsalsRMIDTO);
 		}
 		ReservationCounter.disconnect();
-		rehearsalsCache.put("ScalaMilano", scalaMilanoMAP);
+		rehearsalsCache.put("ScalaMILANO", scalaMilanoMAP);
 			
 		return rehearsalsCache;
 	}
@@ -142,12 +142,13 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	public List<RehearsalRMIDTO> getRehearsals() throws RemoteException 
 	{
 		
-		List<RehearsalRMIDTO> rehearsals = new ArrayList<RehearsalRMIDTO>();
+		List <RehearsalRMIDTO> rehearsals = new ArrayList<RehearsalRMIDTO>();
 		Iterator<Entry<String, Map<String, RehearsalRMIDTO>>> itGeneralMap = rehearsalCache.entrySet().iterator();
 		while(itGeneralMap.hasNext())
 		{
-			Map.Entry<String, Map<String, RehearsalRMIDTO>> entry = (Map.Entry<String, Map<String,RehearsalRMIDTO>>) itGeneralMap.next();
-			Map<String, RehearsalRMIDTO> internalMap = entry.getValue();
+			Map.Entry<String, Map<String, RehearsalRMIDTO>> entry = (Map.Entry<String, Map<String, RehearsalRMIDTO>>) itGeneralMap.next();
+			System.out.println(entry.getKey());
+			Map<String,RehearsalRMIDTO> internalMap = entry.getValue();
 			Iterator<Entry<String, RehearsalRMIDTO>> itInternalMap = internalMap.entrySet().iterator();
 			while(itInternalMap.hasNext())
 			{
@@ -161,10 +162,19 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 
 
 	@Override
-	public synchronized void reserveSeat(String studName, String OperaHouse, String OperaName) throws RemoteException 
+	public  void reserveSeat(String studName, String OperaHouse, String OperaName) throws RemoteException 
 	{
+		
 		Map <String, RehearsalRMIDTO> internalMap = rehearsalCache.get(OperaHouse);
 		RehearsalRMIDTO DTO = internalMap.get(OperaName);
+		
+		
+		
+		System.out.println(studName);
+		System.out.println(OperaHouse);
+		System.out.println(OperaName);
+		
+		
 		if(DTO.getAvailableSeats()>0) //hay asientos libres
 		{
 			DTO.setAvailableSeats(DTO.getAvailableSeats()-1);
@@ -178,6 +188,10 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			//notificamos a los demas clientes
 			this.notifyAll(DTO);
 
+	
+			
+			
+			
 		}
 		
 		

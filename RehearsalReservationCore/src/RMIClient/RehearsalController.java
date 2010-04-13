@@ -7,6 +7,8 @@ import rehearsalServer.RehearsalRMIDTO;
 import rehearsalServer.loginGateway.ValidationException;
 
 import util.observer.local.LocalObservable;
+
+import java.util.ArrayList;
 import java.util.Observer;
 import java.rmi.RemoteException;
 
@@ -32,7 +34,8 @@ public class RehearsalController {
 		observable = new LocalObservable();
 		try
 		{
-			RehearsalRemoteObserver remoteServer = new RehearsalRemoteObserver(server, this);
+			//RehearsalRemoteObserver remoteServer = new RehearsalRemoteObserver(server, this);
+			observer = new RehearsalRemoteObserver(server, this);
 		}
 		catch (RemoteException e)
 		{
@@ -50,17 +53,16 @@ public class RehearsalController {
 	public String login(String user, String pass)throws ValidationException, RemoteException {
 
 		stuName = server.login(user, pass);
-		
 		return stuName;
 	}
 
 	public List<RehearsalRMIDTO> getRehearsals() {
 		
-		List<RehearsalRMIDTO> subjects = null;
+		List<RehearsalRMIDTO> rehearsals = new ArrayList<RehearsalRMIDTO>();
 		
 		try 
 		{
-			subjects = server.getRehearsals();
+			rehearsals = server.getRehearsals();
 		} 
 		catch (RemoteException e) 
 		{
@@ -69,7 +71,7 @@ public class RehearsalController {
 		}
 		// add your code here
 		
-		return subjects;
+		return rehearsals;
 	}
 
 	public void reserveSeat(String operaHouse, String operaName) {
@@ -77,6 +79,7 @@ public class RehearsalController {
 		
 		try 
 		{
+			System.out.println(stuName);
 			server.reserveSeat(stuName, operaHouse, operaName);
 		} 
 		catch (RemoteException e) 
