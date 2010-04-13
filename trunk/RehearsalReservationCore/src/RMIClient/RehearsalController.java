@@ -34,7 +34,6 @@ public class RehearsalController {
 		observable = new LocalObservable();
 		try
 		{
-			//RehearsalRemoteObserver remoteServer = new RehearsalRemoteObserver(server, this);
 			observer = new RehearsalRemoteObserver(server, this);
 		}
 		catch (RemoteException e)
@@ -42,7 +41,8 @@ public class RehearsalController {
 			e.printStackTrace();
 		}
 		
-		//creating the GUI.....
+		//Creating the GUI...
+		System.out.println("Creating the gui...");
 		RMIClientGUI gui = new RMIClientGUI(this);
 		gui.setVisible(true);
 	}
@@ -79,7 +79,6 @@ public class RehearsalController {
 		
 		try 
 		{
-			System.out.println(stuName);
 			server.reserveSeat(stuName, operaHouse, operaName);
 		} 
 		catch (RemoteException e) 

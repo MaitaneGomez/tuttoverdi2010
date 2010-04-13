@@ -40,7 +40,6 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	 * CACHE OF RehearsalRMIDTO objects, organized by Opera House Name To be
 	 * loaded at the initialization process
 	 */
-	
 
 	
 	public OperaRehearsalServer(String[] args) throws RemoteException{
@@ -55,15 +54,15 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		List <RehearsalDO> rehearsalDOList;
 		Map<String, Map<String, RehearsalRMIDTO>> rehearsalsCache = new TreeMap<String, Map<String,RehearsalRMIDTO>>();
 		
+		System.out.println("Obtaining rehearsals from the server and creating the cache...");
+		
 		gateway= OperasHGatewayFactory.getInstance();
 		IOperaHGateway corbaGate= gateway.getOperaHGateway(args[0]+" "+args[1]+" "+args[2],"corba");
 		rehearsalDOList = corbaGate.getRehearsals();
 				
-			
-			
 		ReservationCounter.connect();
 			
-		//primero recorremos para scalaMilano y nos creamos su map interno
+		//Primero recorremos para scalaMilano y nos creamos su map interno
 		
 		Map<String, RehearsalRMIDTO> scalaMilanoMAP = new TreeMap<String, RehearsalRMIDTO>();
 		for(int i = 0; i<rehearsalDOList.size(); i++)
@@ -79,12 +78,13 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		return rehearsalsCache;
 	}
 	
+	
+	//Para la prueba
 	public Map<String, Map<String, RehearsalRMIDTO>> getRehearsalCache() 
 	{
 		return rehearsalCache;
 	}
 
-	
 	
 	public static void main(String[] args) 
 	{
@@ -101,7 +101,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			IOperaRehearsalServer server = new OperaRehearsalServer(args);
 			String name = "//" + args[3] + ":" + args[4] + "/" + args[5];
 			java.rmi.Naming.rebind(name, server);
-			System.out.println("registrado");
+			System.out.println("RMI Server working and waiting for requests...");
 		
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -113,8 +113,6 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		
 	}
 
-	
-	
 	
 	@Override
 	public void addRemoteObserver(IRemoteObserver observer) throws RemoteException 
@@ -144,10 +142,12 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		
 		List <RehearsalRMIDTO> rehearsals = new ArrayList<RehearsalRMIDTO>();
 		Iterator<Entry<String, Map<String, RehearsalRMIDTO>>> itGeneralMap = rehearsalCache.entrySet().iterator();
+		
+		System.out.println("Obtaning rehearsals from the cache...");
+		
 		while(itGeneralMap.hasNext())
 		{
 			Map.Entry<String, Map<String, RehearsalRMIDTO>> entry = (Map.Entry<String, Map<String, RehearsalRMIDTO>>) itGeneralMap.next();
-			System.out.println(entry.getKey());
 			Map<String,RehearsalRMIDTO> internalMap = entry.getValue();
 			Iterator<Entry<String, RehearsalRMIDTO>> itInternalMap = internalMap.entrySet().iterator();
 			while(itInternalMap.hasNext())
@@ -167,34 +167,23 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		
 		Map <String, RehearsalRMIDTO> internalMap = rehearsalCache.get(OperaHouse);
 		RehearsalRMIDTO DTO = internalMap.get(OperaName);
+		System.out.println("Making a reservation...");
 		
-		
-		
-		System.out.println(studName);
-		System.out.println(OperaHouse);
-		System.out.println(OperaName);
-		
-		
-		if(DTO.getAvailableSeats()>0) //hay asientos libres
+				
+		if(DTO.getAvailableSeats()>0) //Hay asientos libres
 		{
 			DTO.setAvailableSeats(DTO.getAvailableSeats()-1);
-			System.out.println(DTO.getOperaName() + " " + DTO.getOperaHouse() + " " + DTO.getAvailableSeats());
+			System.out.println("Reservation data: " + DTO.getOperaName() + " " + DTO.getOperaHouse() + " " + DTO.getAvailableSeats());
 			internalMap.put(OperaName, DTO);
 			rehearsalCache.put(OperaHouse, internalMap);
 			ReservationCounter.connect();
 			ReservationCounter.reserve(DTO, studName);
 			ReservationCounter.disconnect();
 			
-			//notificamos a los demas clientes
-			this.notifyAll(DTO);
-
-	
-			
-			
-			
+			//Notificamos a los demas clientes
+			System.out.println("Notifying to all conected users...");
+			this.notifyAll(DTO);	
 		}
-		
-		
 	}
 	
 	private void notifyAll(RehearsalRMIDTO DTO)

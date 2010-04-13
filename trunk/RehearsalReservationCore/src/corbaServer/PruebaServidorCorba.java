@@ -8,6 +8,7 @@ import corbaServer.corba.ICorbaServer;
 import corbaServer.corba.ICorbaServerHelper;
 import corbaServer.corba.corbaServerRehearsalDTO;
 
+//Esta es la prueba para Corba, ya no la necesitamos
 public class PruebaServidorCorba {
 
 	/**

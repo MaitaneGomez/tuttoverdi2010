@@ -2,6 +2,7 @@ package rehearsalServer.houseGateway;
 
 import java.util.List;
 
+//Prueba para el gateway de corba, ya no lo necesitamos
 public class PruebaGateway {
 
 	/**
