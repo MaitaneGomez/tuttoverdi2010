@@ -146,6 +146,7 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 					}
 					{
 						jTextFieldSN = new JTextField();
+						jTextFieldSN.setEditable(false);
 					}
 					{
 						jLabelPass = new JLabel();
@@ -201,13 +202,13 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 						jButtonRehearsals.setText("Get Scheduled Rehearsals");
 						jButtonRehearsals.setDefaultCapable(false);
 						jButtonRehearsals.setAction(getActionGetRehearsals());
-						//jButtonRehearsals.addActionListener(this);
+						jButtonRehearsals.setEnabled(false);
 					}
 					{
 						jButtonRS = new JButton();
 						jButtonRS.setText("Reserve Seat");
 						jButtonRS.setAction(getActionReserve());
-						//jButtonRS.addActionListener(this);
+						jButtonRS.setEnabled(false);
 					}
 					{
 						jButtonEx = new JButton();
@@ -374,11 +375,13 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 					
 					try 
 					{
+						statusBar.setText("Checking user...");
 						String user = controller.login(userName, password);
 						jTextFieldSN.setText(user);
 						jTextFieldSN.setEditable(false);
 						authorized = true;
 						statusBar.setText("login successful");
+						jButtonRehearsals.setEnabled(true);
 						
 					} 
 					catch (RemoteException e) 
@@ -395,7 +398,7 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 						if(e.getMessage().contains("InvalidPasswordException"))
 							statusBar.setText("Error, incorrect password");
 						// TODO Auto-generated catch block
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 				}
 			};
@@ -417,6 +420,7 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 						statusBar.setText("You have to be logged to obtain the rehearsals");
 					else
 					{
+						statusBar.setText("obtaining rehearsals...");
 						List<RehearsalRMIDTO> DTOList = new ArrayList<RehearsalRMIDTO>();
 						DTOList = controller.getRehearsals();
 						DefaultTableModel rehearsalsTable = (DefaultTableModel)table.getModel();
@@ -428,6 +432,8 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 							table.setValueAt(DTOList.get(i).getDate(),i,2);
 							table.setValueAt(DTOList.get(i).getAvailableSeats(),i,3);
 						}
+						jButtonRS.setEnabled(true);
+						statusBar.setText("Rehearsals obtained");
 					}
 				}
 			};
@@ -450,14 +456,19 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 					else
 					{
 						int row = table.getSelectedRow();
-						String operaHouse = (String) table.getValueAt(row, 0);
-						String operaName = (String) table.getValueAt(row, 1);
-						int status = controller.reserveSeat(operaHouse, operaName);
-						
-						if(status == 1)
-							statusBar.setText("Reservation done");
+						if(row == -1) //no se ha seleccionado ninguna opera
+							statusBar.setText("you have to select a rehearsal in order to make a reservation");
 						else
-							statusBar.setText("There are no places available");
+						{
+							String operaHouse = (String) table.getValueAt(row, 0);
+							String operaName = (String) table.getValueAt(row, 1);
+							int status = controller.reserveSeat(operaHouse, operaName);
+							
+							if(status == 1)
+								statusBar.setText("Reservation done");
+							else
+								statusBar.setText("There are no places available");
+						}
 					}
 				}
 			};
