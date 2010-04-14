@@ -18,6 +18,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
+import rehearsalServer.dao.RehearsalServerDAO;
 import rehearsalServer.houseGateway.IOperaHGateway;
 import rehearsalServer.houseGateway.OperasHGatewayFactory;
 import rehearsalServer.houseGateway.RehearsalDO;
@@ -60,7 +61,8 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		IOperaHGateway corbaGate= gateway.getOperaHGateway(args[0]+" "+args[1]+" "+args[2],"corba");
 		rehearsalDOList = corbaGate.getRehearsals();
 				
-		ReservationCounter.connect();
+		RehearsalServerDAO dao = new RehearsalServerDAO();
+		dao.connect();
 			
 		//Primero recorremos para scalaMilano y nos creamos su map interno
 		
@@ -68,11 +70,11 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		for(int i = 0; i<rehearsalDOList.size(); i++)
 		{
 			RehearsalDO x = rehearsalDOList.get(i);
-			int ocupiedSeats = ReservationCounter.obtainOcupiedSeats("ScalaMILANO", x.getOperaName());
+			int ocupiedSeats = dao.getReservationsCount("ScalaMILANO", x.getOperaName());
 			RehearsalRMIDTO newRehearsalsRMIDTO = new RehearsalRMIDTO("ScalaMILANO", x.getOperaName(),x.getDate(),x.getAvailableSeats()-ocupiedSeats);
 			scalaMilanoMAP.put(x.getOperaName(), newRehearsalsRMIDTO);
 		}
-		ReservationCounter.disconnect();
+		dao.disconnect();
 		rehearsalsCache.put("ScalaMILANO", scalaMilanoMAP);
 			
 		return rehearsalsCache;
@@ -173,12 +175,13 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		if(DTO.getAvailableSeats()>0) //Hay asientos libres
 		{
 			DTO.setAvailableSeats(DTO.getAvailableSeats()-1);
-			System.out.println("Reservation data: " + DTO.getOperaName() + " " + DTO.getOperaHouse() + " " + DTO.getAvailableSeats());
+			System.out.println("Reservation data: " + studName + " " + OperaName + " " + OperaHouse + " " + DTO.getAvailableSeats());
 			internalMap.put(OperaName, DTO);
 			rehearsalCache.put(OperaHouse, internalMap);
-			ReservationCounter.connect();
-			ReservationCounter.reserve(DTO, studName);
-			ReservationCounter.disconnect();
+			RehearsalServerDAO dao = new RehearsalServerDAO();
+			dao.connect();
+			dao.reserveSeat(studName, OperaHouse, OperaName);
+			dao.disconnect();
 			
 			//Notificamos a los demas clientes
 			System.out.println("Notifying to all conected users...");

@@ -7,7 +7,7 @@
 	<property name="source.dir" location="src"/>
     <property name="build.dir" location="bin"/>
     <property name="lib.dir" location="lib"/>	
-	<property name="classpath" location="bin;lib/AuthorizationRMIClient.jar;lib/sqlitejdbc-v056.jar;lib/util_iso2.jar"/>
+	<property name="classpath" location="bin;lib/AuthorizationRMIClient.jar;lib/sqlitejdbc-v056.jar;lib/util_iso2.jar;lib/looks-2.1.4.jar"/>
 	<property name="idl.file" location="idl/corbaServer.idl"/>
 	<property name="nameservice.IP" value="127.0.0.1"/>
 	<property name="nameservice.port" value="900"/>
@@ -23,7 +23,7 @@
 	<property name="rmiAuthServer" value="AuthorizationService" />
 
 	<target name="help">
-		<echo>Usage: ant [idlj | build | tnameserv | scalaMilanoServer | rehearsalServer |client]</echo>
+		<echo>Usage: ant [compile | idlj | tnameserv | run.reservations | run.scala | run.client]</echo>
 	</target>
 
 	<target name="idlj" description="Builds IDL file">
