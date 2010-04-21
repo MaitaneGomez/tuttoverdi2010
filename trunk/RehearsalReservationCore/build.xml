@@ -15,12 +15,13 @@
 	<property name="rmiregistry.port" value="1099"/>
 	<property name="policy.file" value="java.policy"/>	
 	<property name="rehearsalServer.name" value="rehearsal"/>
-	<property name="serverScalaMilano.name" value="scalaMilano"/>
+	<property name="serverScalaMilano.name" value="ScalaMILANO"/>
 	<property name="serverSanCarloNapoli.name" value="sanCarloNapoli"/>
 	<property name="RMIAuthServerTech" value="rmi"/>
 	<property name="rmiAuth.IP" value="127.0.0.1" />
 	<property name="rmiAuth.port" value="1099" />
 	<property name="rmiAuthServer" value="AuthorizationService" />
+	
 
 	<target name="help">
 		<echo>Usage: ant [compile | idlj | tnameserv | run.reservations | run.scala | run.client]</echo>
@@ -63,6 +64,8 @@
 			<arg value="${rmiAuth.IP}"/> 
 			<arg value="${rmiAuth.port}"/>
 			<arg value="${rmiAuthServer}"/>
+			<arg value="${serverSanCarloNapoli.name}"/>
+			
         </java>
     </target>
 	
@@ -73,6 +76,14 @@
 	 		<arg value="${serverScalaMilano.name}"/>
         </java>
     </target>
+	
+	<target name="run.napoli" description="Executes SscalaMilanoServer program">
+			<java classname="corbaServer.CorbaOperaHouse" classpath="${classpath}" fork="true">			
+	        	<arg value="${nameservice.IP}"/> 
+		 		<arg value="${nameservice.port}"/>
+		 		<arg value="${serverSanCarloNapoli.name}"/>
+	        </java>
+	    </target>
 
 	<target name="run.client" description="Executes Client program">
 		<java classname="RMIClient.RehearsalController" classpath="${classpath}" fork="true">			

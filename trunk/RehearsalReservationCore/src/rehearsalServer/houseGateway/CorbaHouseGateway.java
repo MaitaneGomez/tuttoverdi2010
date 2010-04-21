@@ -47,8 +47,14 @@ public class CorbaHouseGateway implements IOperaHGateway {
 		catch(Exception e)
 		{
 			System.err.println("Error: " + e);
+			
 		}
 
 		return result;
 	}
+
+	public String getServerName() {
+		return serverName;
+	}
+
 }
