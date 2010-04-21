@@ -9,4 +9,10 @@ public class WSHouseGateway implements IOperaHGateway {
 		
 		return result;
 	}
+
+	@Override
+	public String getServerName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

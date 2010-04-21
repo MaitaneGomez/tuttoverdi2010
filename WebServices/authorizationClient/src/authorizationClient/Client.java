@@ -7,7 +7,7 @@ public class Client {
 	public Client(String url) {
 		try {
 			AuthorizationWSStub stub = new AuthorizationWSStub(url);
-			String s = stub.login("stud1", "1111");
+			String s = stub.login("stud2", "2222");
 			System.out.println("Student " + s);
 		} catch (Exception e) {
 			System.out.println("Exception Type: " + e.getClass().getSimpleName());

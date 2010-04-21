@@ -32,9 +32,10 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 
 	private static final long serialVersionUID = 1L;
 	private util.observer.rmi.RemoteObservable remoteObservable;
-	private Map<String, Map<String, RehearsalRMIDTO>> rehearsalCache;
-	private OperasHGatewayFactory gateway = null; 
+	private static Map<String, Map<String, RehearsalRMIDTO>> rehearsalCache;
 	private static IAuthorizeGateway gatewayAuth = null;
+	private static ArrayList <IOperaHGateway> arrayGateways;
+	private static RehearsalServerDAO dao = null;
 
 
 	/**
@@ -46,36 +47,32 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	public OperaRehearsalServer(String[] args) throws RemoteException{
 		super();
 		this.remoteObservable = new RemoteObservable();
-		rehearsalCache = createCache(args);
+		//rehearsalCache = createCache();
 	}
 	
 	
-	private Map<String, Map<String, RehearsalRMIDTO>> createCache(String [] args)
+	private static Map<String, Map<String, RehearsalRMIDTO>> createCache()
 	{
 		List <RehearsalDO> rehearsalDOList;
 		Map<String, Map<String, RehearsalRMIDTO>> rehearsalsCache = new TreeMap<String, Map<String,RehearsalRMIDTO>>();
-		
-		System.out.println("Obtaining rehearsals from the server and creating the cache...");
-		
-		gateway= OperasHGatewayFactory.getInstance();
-		IOperaHGateway corbaGate= gateway.getOperaHGateway(args[0]+" "+args[1]+" "+args[2],"corba");
-		rehearsalDOList = corbaGate.getRehearsals();
-				
-		RehearsalServerDAO dao = new RehearsalServerDAO();
-		dao.connect();
 			
-		//Primero recorremos para scalaMilano y nos creamos su map interno
 		
-		Map<String, RehearsalRMIDTO> scalaMilanoMAP = new TreeMap<String, RehearsalRMIDTO>();
-		for(int i = 0; i<rehearsalDOList.size(); i++)
+		for(int i = 0; i < arrayGateways.size(); i++)
 		{
-			RehearsalDO x = rehearsalDOList.get(i);
-			int ocupiedSeats = dao.getReservationsCount("ScalaMILANO", x.getOperaName());
-			RehearsalRMIDTO newRehearsalsRMIDTO = new RehearsalRMIDTO("ScalaMILANO", x.getOperaName(),x.getDate(),x.getAvailableSeats()-ocupiedSeats);
-			scalaMilanoMAP.put(x.getOperaName(), newRehearsalsRMIDTO);
+			Map<String, RehearsalRMIDTO> internalMAP = new TreeMap<String, RehearsalRMIDTO>();
+			rehearsalDOList = arrayGateways.get(i).getRehearsals();
+			String serverName = null;
+			for(int j = 0; j<rehearsalDOList.size(); j++)
+			{	
+				serverName = arrayGateways.get(i).getServerName();
+				
+				RehearsalDO x = rehearsalDOList.get(j);
+				int ocupiedSeats = dao.getReservationsCount(serverName, x.getOperaName());
+				RehearsalRMIDTO newRehearsalsRMIDTO = new RehearsalRMIDTO(serverName, x.getOperaName(),x.getDate(),x.getAvailableSeats()-ocupiedSeats);
+				internalMAP.put(x.getOperaName(), newRehearsalsRMIDTO);
+			}
+			rehearsalsCache.put(serverName, internalMAP);
 		}
-		dao.disconnect();
-		rehearsalsCache.put("ScalaMILANO", scalaMilanoMAP);
 			
 		return rehearsalsCache;
 	}
@@ -90,9 +87,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	
 	public static void main(String[] args) 
 	{
-		
-		gatewayAuth = (AuthorizationGatewayFactory.getInstance()).getAuthGateway(args[6]);
-		gatewayAuth.initializeParameters(args);
+		System.out.println("REHEARSAL RESERVATION SERVER CONSOLE");
 		
 		
 		if (System.getSecurityManager() == null) {
@@ -103,7 +98,24 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			IOperaRehearsalServer server = new OperaRehearsalServer(args);
 			String name = "//" + args[3] + ":" + args[4] + "/" + args[5];
 			java.rmi.Naming.rebind(name, server);
-			System.out.println("RMI Server working and waiting for requests...");
+			System.out.println("Registration to the RMI Registry: OK");
+			
+			gatewayAuth = (AuthorizationGatewayFactory.getInstance()).getAuthGateway(args[6]);
+			gatewayAuth.initializeParameters(args);
+			
+			arrayGateways = new ArrayList<IOperaHGateway>();
+			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[0]+" "+args[1]+" "+args[2],"corba"));
+			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[0]+" "+args[1]+" "+args[10],"corba"));
+			
+			System.out.println("Connection to OPERA HOUSE COMPONENT: OK");
+			
+			dao = new RehearsalServerDAO();
+			System.out.println("Accesing to the Reservations DB");
+			dao.connect();
+			System.out.println("INIT Process: Loading the cache of RehearsalRMIDTO objects...");
+			rehearsalCache = createCache();
+			dao.disconnect();
+			System.out.println("Rehearsal Reservation Server Active and Running...");
 		
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
@@ -134,6 +146,8 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	public String login(String username, String password) throws ValidationException, RemoteException 
 	{
 		String studentName = gatewayAuth.login(username, password);
+		System.out.println("user trying to log in....");
+		System.out.println("authorized user: " + studentName);
 		return studentName;
 	}
 
@@ -178,7 +192,6 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			System.out.println("Reservation data: " + studName + " " + OperaName + " " + OperaHouse + " " + DTO.getAvailableSeats());
 			internalMap.put(OperaName, DTO);
 			rehearsalCache.put(OperaHouse, internalMap);
-			RehearsalServerDAO dao = new RehearsalServerDAO();
 			dao.connect();
 			dao.reserveSeat(studName, OperaHouse, OperaName);
 			dao.disconnect();

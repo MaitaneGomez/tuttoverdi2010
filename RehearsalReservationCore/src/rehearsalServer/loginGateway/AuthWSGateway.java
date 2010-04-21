@@ -10,6 +10,9 @@ public class AuthWSGateway implements IAuthorizeGateway {
 	 * ValidationException
 	 * 
 	 */
+	
+	private String authWSURL = "";
+	
 	public AuthWSGateway() {
 
 	}
@@ -23,6 +26,8 @@ public class AuthWSGateway implements IAuthorizeGateway {
 	@Override
 	public void initializeParameters(String[] args) {
 		// TODO Auto-generated method stub
+		
+		//authWSURL = args[];
 		
 	}
 
