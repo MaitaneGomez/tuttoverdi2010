@@ -1,96 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project basedir="." default="help" name="observerCORBA">
-	
-	<property environment="env"/>
-	<property name="idlDestination.dir" location="src"/>
-	<property name="source.dir" location="src"/>
+    <property environment="env"/>
+    <property name="idlDestination.dir" location="src"/>
+    <property name="classpath" location="bin"/>
+    <property name="source.dir" location="src"/>
     <property name="build.dir" location="bin"/>
-    <property name="lib.dir" location="lib"/>	
-	<property name="classpath" location="bin;lib/AuthorizationRMIClient.jar;lib/sqlitejdbc-v056.jar;lib/util_iso2.jar;lib/looks-2.1.4.jar"/>
-	<property name="idl.file" location="idl/corbaServer.idl"/>
-	<property name="nameservice.IP" value="127.0.0.1"/>
-	<property name="nameservice.port" value="900"/>
-	<property name="rmiregistry.IP" value="127.0.0.1"/>
-	<property name="rmiregistry.port" value="1099"/>
-	<property name="policy.file" value="java.policy"/>	
-	<property name="rehearsalServer.name" value="rehearsal"/>
-	<property name="serverScalaMilano.name" value="ScalaMILANO"/>
-	<property name="serverSanCarloNapoli.name" value="sanCarloNapoli"/>
-	<property name="RMIAuthServerTech" value="rmi"/>
-	<property name="rmiAuth.IP" value="127.0.0.1" />
-	<property name="rmiAuth.port" value="1099" />
-	<property name="rmiAuthServer" value="AuthorizationService" />
-	
-
-	<target name="help">
-		<echo>Usage: ant [compile | idlj | tnameserv | run.reservations | run.scala | run.client]</echo>
-	</target>
-
-	<target name="idlj" description="Builds IDL file">
-		<exec executable="${env.JAVA_HOME}\bin\idlj.exe">
-			<arg value="-fall" />
-			<arg value="-td" />
-			<arg value="${idlDestination.dir}" />
-			<arg value="${idl.file}" />
-		</exec>
-	</target>
-
-	<target name="tnameserv" description="Runs CORBA Name Service">
-		<echo message="CORBA Name Service running at port (${nameservice.port})..."/>
-		<exec executable="${env.JAVA_HOME}\bin\tnameserv.exe">
-			<arg value="-ORBInitialPort" />
-			<arg value="900" />
-		</exec>
-	</target>
-        
-	<target name="compile" depends="idlj" description="Builds the project">
-		<delete dir="${build.dir}"/>
-		<mkdir dir="${build.dir}"/>
-		<javac srcdir="${source.dir}" destdir="${build.dir}" classpath="${classpath}" deprecation="true" fork="true"/>
+    <property name="lib.dir" location="lib"/>
+    <property name="idl.file" location="idl/corbaServer.idl"/>
+    <property name="nameservice.IP" value="127.0.0.1"/>
+    <property name="nameservice.port" value="900"/>
+    <property name="rmiregistry.IP" value="127.0.0.1"/>
+    <property name="rmiregistry.port" value="1099"/>
+    <property name="policy.file" value="java.policy"/>
+    <property name="rehearsalServer.name" value="rehearsal"/>
+    <property name="serverScalaMilano.name" value="ScalaMILANO"/>
+    <property name="serverSanCarloNapoli.name" value="sanCarloNapoli"/>
+    <property name="RMIAuthServerTech" value="ws"/>
+    <property name="rmiAuth.IP" value="127.0.0.1"/>
+    <property name="rmiAuth.port" value="1099"/>
+    <property name="rmiAuthServer" value="AuthorizationService"/>
+    <property name="service.name" value="AuthorizationWS"/>
+    <property name="ws.uri" value="http://127.0.0.1:8080/axis2/services/${service.name}"/>
+    <property name="wsdl.uri" value="${ws.uri}?wsdl"/>
+    <property name="axis2.home" value="${env.AXIS2_HOME}"/>
+    <path id="full.classpath">
+        <pathelement path="${build.dir}"/>
+        <fileset dir="${lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${axis2.home}/lib">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    <target name="help">
+        <echo>Usage: ant [compile | idlj | tnameserv | run.reservations | run.scala | run.client]</echo>
     </target>
-    
-	<target name="run.reservations" description="Executes Rehearsal Server program">
-		<java classname="rehearsalServer.OperaRehearsalServer" classpath="${classpath}" fork="true">			
-			<jvmarg value="-Djava.security.policy=${policy.file}"/>			
+    <target name="idlj" description="Builds IDL file">
+        <exec executable="${env.JAVA_HOME}\bin\idlj.exe">
+            <arg value="-fall"/>
+            <arg value="-td"/>
+            <arg value="${idlDestination.dir}"/>
+            <arg value="${idl.file}"/>
+        </exec>
+    </target>
+    <target name="tnameserv" description="Runs CORBA Name Service">
+        <echo message="CORBA Name Service running at port (${nameservice.port})..."/>
+        <exec executable="${env.JAVA_HOME}\bin\tnameserv.exe">
+            <arg value="-ORBInitialPort"/>
+            <arg value="900"/>
+        </exec>
+    </target>
+    <target name="compile" depends="idlj" description="Builds the project">
+        <delete dir="${build.dir}"/>
+        <mkdir dir="${build.dir}"/>
+        <javac debug="true" srcdir="${source.dir}" destdir="${build.dir}">
+            <classpath refid="full.classpath"/>
+        </javac>
+    </target>
+    <target name="generate.stubs">
+        <java classname="org.apache.axis2.wsdl.WSDL2Java" classpathref="full.classpath">
+            <arg line="-uw"/>
+            <arg line="-uri ${wsdl.uri}"/>
+            <arg line="-ns2p  http://authorization=rehearsalServer.loginGateway.proxies"/>
+        </java>
+    </target>
+    <target name="run.reservations" description="Executes Rehearsal Server program">
+        <java classname="rehearsalServer.OperaRehearsalServer" classpath="${classpath}" fork="true">
+            <classpath refid="full.classpath"/>
+            <jvmarg value="-Djava.security.policy=${policy.file}"/>
             <jvmarg value="-Djava.rmi.server.codebase=file:${build.dir}/ file:${lib.dir}/util_iso2.jar"/>
-			<arg value="${nameservice.IP}"/>
+            <arg value="${nameservice.IP}"/>
             <arg value="${nameservice.port}"/>
             <arg value="${serverScalaMilano.name}"/>
-			<arg value="${rmiregistry.IP}"/> 
-	 		<arg value="${rmiregistry.port}"/>
-	 		<arg value="${rehearsalServer.name}"/>
-			<arg value="${RMIAuthServerTech}"/>
-			<arg value="${rmiAuth.IP}"/> 
-			<arg value="${rmiAuth.port}"/>
-			<arg value="${rmiAuthServer}"/>
-			<arg value="${serverSanCarloNapoli.name}"/>
-			
+            <arg value="${rmiregistry.IP}"/>
+            <arg value="${rmiregistry.port}"/>
+            <arg value="${rehearsalServer.name}"/>
+            <arg value="${RMIAuthServerTech}"/>
+            <arg value="${rmiAuth.IP}"/>
+            <arg value="${rmiAuth.port}"/>
+            <arg value="${rmiAuthServer}"/>
+            <arg value="${serverSanCarloNapoli.name}"/>
+            <arg value="${ws.uri}"/>
         </java>
     </target>
-	
-	<target name="run.scala" description="Executes SscalaMilanoServer program">
-		<java classname="corbaServer.CorbaOperaHouse" classpath="${classpath}" fork="true">			
-        	<arg value="${nameservice.IP}"/> 
-	 		<arg value="${nameservice.port}"/>
-	 		<arg value="${serverScalaMilano.name}"/>
+    <target name="run.scala" description="Executes SscalaMilanoServer program">
+        <java classname="corbaServer.CorbaOperaHouse">
+            <classpath refid="full.classpath"/>
+            <arg value="${nameservice.IP}"/>
+            <arg value="${nameservice.port}"/>
+            <arg value="${serverScalaMilano.name}"/>
         </java>
     </target>
-	
-	<target name="run.napoli" description="Executes SscalaMilanoServer program">
-			<java classname="corbaServer.CorbaOperaHouse" classpath="${classpath}" fork="true">			
-	        	<arg value="${nameservice.IP}"/> 
-		 		<arg value="${nameservice.port}"/>
-		 		<arg value="${serverSanCarloNapoli.name}"/>
-	        </java>
-	    </target>
-
-	<target name="run.client" description="Executes Client program">
-		<java classname="RMIClient.RehearsalController" classpath="${classpath}" fork="true">			
-        	<arg value="${rmiregistry.IP}"/> 
-	 		<arg value="${rmiregistry.port}"/>
-	 		<arg value="${rehearsalServer.name}"/>
+    <target name="run.napoli" description="Executes SscalaMilanoServer program">
+        <java classname="corbaServer.CorbaOperaHouse">
+            <classpath refid="full.classpath"/>
+            <arg value="${nameservice.IP}"/>
+            <arg value="${nameservice.port}"/>
+            <arg value="${serverSanCarloNapoli.name}"/>
         </java>
     </target>
-	
+    <target name="run.client" description="Executes Client program">
+        <java classname="RMIClient.RehearsalController" classpath="${classpath}" fork="true">
+            <classpath refid="full.classpath"/>
+            <arg value="${rmiregistry.IP}"/>
+            <arg value="${rmiregistry.port}"/>
+            <arg value="${rehearsalServer.name}"/>
+        </java>
+    </target>
 </project>
