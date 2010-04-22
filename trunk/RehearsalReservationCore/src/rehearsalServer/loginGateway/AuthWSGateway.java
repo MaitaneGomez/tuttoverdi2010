@@ -1,5 +1,7 @@
 package rehearsalServer.loginGateway;
 
+import rehearsalServer.loginGateway.proxies.*;
+
 public class AuthWSGateway implements IAuthorizeGateway {
 
 	/**
@@ -20,6 +22,14 @@ public class AuthWSGateway implements IAuthorizeGateway {
 	public String login(String user, String pass) throws ValidationException {
 		String studentName = null;
 		
+        try {
+        	AuthorizationWSStub stub = new AuthorizationWSStub(authWSURL);
+            studentName = stub.login(user,pass);    
+        }
+        catch (Exception e) {
+			throw new ValidationException(e.getMessage());
+		}
+		
 		return studentName;
 	}
 
@@ -27,7 +37,7 @@ public class AuthWSGateway implements IAuthorizeGateway {
 	public void initializeParameters(String[] args) {
 		// TODO Auto-generated method stub
 		
-		//authWSURL = args[];
+		authWSURL = args[11];
 		
 	}
 

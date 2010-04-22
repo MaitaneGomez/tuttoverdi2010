@@ -43,20 +43,20 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	 * loaded at the initialization process
 	 */
 
-	
+
 	public OperaRehearsalServer(String[] args) throws RemoteException{
 		super();
 		this.remoteObservable = new RemoteObservable();
 		//rehearsalCache = createCache();
 	}
-	
-	
+
+
 	private static Map<String, Map<String, RehearsalRMIDTO>> createCache()
 	{
 		List <RehearsalDO> rehearsalDOList;
 		Map<String, Map<String, RehearsalRMIDTO>> rehearsalsCache = new TreeMap<String, Map<String,RehearsalRMIDTO>>();
-			
-		
+
+
 		for(int i = 0; i < arrayGateways.size(); i++)
 		{
 			Map<String, RehearsalRMIDTO> internalMAP = new TreeMap<String, RehearsalRMIDTO>();
@@ -65,7 +65,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			for(int j = 0; j<rehearsalDOList.size(); j++)
 			{	
 				serverName = arrayGateways.get(i).getServerName();
-				
+
 				RehearsalDO x = rehearsalDOList.get(j);
 				int ocupiedSeats = dao.getReservationsCount(serverName, x.getOperaName());
 				RehearsalRMIDTO newRehearsalsRMIDTO = new RehearsalRMIDTO(serverName, x.getOperaName(),x.getDate(),x.getAvailableSeats()-ocupiedSeats);
@@ -73,42 +73,42 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			}
 			rehearsalsCache.put(serverName, internalMAP);
 		}
-			
+
 		return rehearsalsCache;
 	}
-	
-	
+
+
 	//Para la prueba
 	public Map<String, Map<String, RehearsalRMIDTO>> getRehearsalCache() 
 	{
 		return rehearsalCache;
 	}
 
-	
+
 	public static void main(String[] args) 
 	{
 		System.out.println("REHEARSAL RESERVATION SERVER CONSOLE");
-		
-		
+
+
 		if (System.getSecurityManager() == null) {
 			System.setSecurityManager(new RMISecurityManager());
 		}
-		
+
 		try {
 			IOperaRehearsalServer server = new OperaRehearsalServer(args);
 			String name = "//" + args[3] + ":" + args[4] + "/" + args[5];
 			java.rmi.Naming.rebind(name, server);
 			System.out.println("Registration to the RMI Registry: OK");
-			
+
 			gatewayAuth = (AuthorizationGatewayFactory.getInstance()).getAuthGateway(args[6]);
 			gatewayAuth.initializeParameters(args);
-			
+
 			arrayGateways = new ArrayList<IOperaHGateway>();
 			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[0]+" "+args[1]+" "+args[2],"corba"));
 			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[0]+" "+args[1]+" "+args[10],"corba"));
-			
+
 			System.out.println("Connection to OPERA HOUSE COMPONENT: OK");
-			
+
 			dao = new RehearsalServerDAO();
 			System.out.println("Accesing to the Reservations DB");
 			dao.connect();
@@ -116,7 +116,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			rehearsalCache = createCache();
 			dao.disconnect();
 			System.out.println("Rehearsal Reservation Server Active and Running...");
-		
+
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -124,15 +124,15 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	
+
 	@Override
 	public void addRemoteObserver(IRemoteObserver observer) throws RemoteException 
 	{
 		this.remoteObservable.addRemoteObserver(observer);
-		
+
 	}
 
 	@Override
@@ -155,12 +155,12 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	@Override
 	public List<RehearsalRMIDTO> getRehearsals() throws RemoteException 
 	{
-		
+
 		List <RehearsalRMIDTO> rehearsals = new ArrayList<RehearsalRMIDTO>();
 		Iterator<Entry<String, Map<String, RehearsalRMIDTO>>> itGeneralMap = rehearsalCache.entrySet().iterator();
-		
+
 		System.out.println("Obtaning rehearsals from the cache...");
-		
+
 		while(itGeneralMap.hasNext())
 		{
 			Map.Entry<String, Map<String, RehearsalRMIDTO>> entry = (Map.Entry<String, Map<String, RehearsalRMIDTO>>) itGeneralMap.next();
@@ -180,12 +180,12 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	@Override
 	public  int reserveSeat(String studName, String OperaHouse, String OperaName) throws RemoteException 
 	{
-		
+
 		Map <String, RehearsalRMIDTO> internalMap = rehearsalCache.get(OperaHouse);
 		RehearsalRMIDTO DTO = internalMap.get(OperaName);
 		System.out.println("Making a reservation...");
-		
-				
+
+
 		if(DTO.getAvailableSeats()>0) //Hay asientos libres
 		{
 			DTO.setAvailableSeats(DTO.getAvailableSeats()-1);
@@ -195,7 +195,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			dao.connect();
 			dao.reserveSeat(studName, OperaHouse, OperaName);
 			dao.disconnect();
-			
+
 			//Notificamos a los demas clientes
 			System.out.println("Notifying to all conected users...");
 			this.notifyAll(DTO);	
@@ -206,7 +206,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			return -1;
 		}
 	}
-	
+
 	private void notifyAll(RehearsalRMIDTO DTO)
 	{
 		this.remoteObservable.notifyRemoteObservers(DTO);
