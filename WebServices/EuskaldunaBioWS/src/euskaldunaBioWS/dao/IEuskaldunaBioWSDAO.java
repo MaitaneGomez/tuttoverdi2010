@@ -1,11 +1,14 @@
 package euskaldunaBioWS.dao;
 
-public interface IEuskaldunaBioWSDAO {
-	
-	public void connect() throws SQLException, ClassNotFoundException;
+import euskaldunaBioWS.RehearsalDTO;
 
-	public RehearsalDTO[] getRehearsals() throws SQLException;
-
-	public void disconnect() throws SQLException;
+public interface IEuskaldunaBioWSDAO 
+{
 	
+	public void connect();
+
+	public RehearsalDTO[] getRehearsals();
+
+	public void disconnect();
+
 }
