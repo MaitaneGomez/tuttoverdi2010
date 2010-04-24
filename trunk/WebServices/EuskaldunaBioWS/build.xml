@@ -19,18 +19,18 @@
             <include name="*.jar"/>
         </fileset>
     </path>
+	
     <target name="clean">
         <delete dir="${build.dir}"/>
         <delete dir="${dist.dir}"/>
-        <delete dir="${source.dir}client/stubs"/>
     </target>
-    <target name="prepare">
-        <mkdir dir="${build.dir}"/>
-        <mkdir dir="${dist.dir}"/>
-        <mkdir dir="${dist.dir}/${service.name}"/>
-        <mkdir dir="${dist.dir}/${service.name}/META-INF"/>
-    </target>
-    <target name="generate.service" depends="prepare">
+
+	
+    <target name="compile.service">
+    	<mkdir dir="${build.dir}"/>
+    	<mkdir dir="${dist.dir}"/>
+    	<mkdir dir="${dist.dir}/${service.name}"/>
+    	<mkdir dir="${dist.dir}/${service.name}/META-INF"/>
         <javac srcdir="${source.dir}" destdir="${build.dir}" includes="**/service/**">
             <classpath refid="classpath"/>
         </javac>
@@ -38,36 +38,26 @@
         <copy todir="${dist.dir}/${service.name}">
             <fileset dir="${build.dir}" includes="**/service/**"/>
         </copy>
-        <jar basedir="${dist.dir}/${service.name}" destfile="${dist.dir}/${service.name}.aar"/>
+    </target>
+	
+	
+	<target name="build.service">
+		<jar basedir="${dist.dir}/${service.name}" destfile="${dist.dir}/${service.name}.aar"/>
+	</target>	
+	
+	<target name="deploy.service">
         <copy file="${dist.dir}/${service.name}.aar" tofile="${deploy.dir}/${service.name}.aar" overwrite="true"/>
-    </target>
-    <target name="generate.stubs">
-        <java classname="org.apache.axis2.wsdl.WSDL2Java" classpathref="classpath">
-            <arg line="-uw"/>
-            <arg line="-uri ${wsdl.uri}"/>
-            <arg line="-ns2p  http://service=client.stubs"/>
-        </java>
-    </target>
-    <target name="build.client" depends="generate.stubs">
-        <javac srcdir="${source.dir}" destdir="${build.dir}" includes="**/client/**">
-            <classpath refid="classpath"/>
-        </javac>
-    </target>
-    <target name="run.client">
-        <java classname="client.EuskaldunaServiceClient">
-            <classpath refid="classpath"/>
-            <arg line="${service.URL}"/>
-        </java>
-    </target>
+	</target>
+	
+    
+  
     <target name="help">
         <echo>
 	  	Debes especificar la tarea a ejecutar: ant [tarea]
 	  	[tarea]:
-	  		- prepare
-	  		- generate.service
-	  		- generate.stubs
-	  		- build.client
-	  		- run.client
+	  		- compile.service
+	  		- build.service
+	  		- deploy.service
 	  		- clean
 	  		</echo>
     </target>
