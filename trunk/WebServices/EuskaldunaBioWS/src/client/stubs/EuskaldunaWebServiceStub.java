@@ -1,20 +1,20 @@
 
 /**
- * EuskaldunaBioWSStub.java
+ * EuskaldunaWebServiceStub.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.5.1  Built on : Oct 19, 2009 (10:59:00 EDT)
  */
-        package euskaldunabiows;
+        package client.stubs;
 
         
 
         /*
-        *  EuskaldunaBioWSStub java implementation
+        *  EuskaldunaWebServiceStub java implementation
         */
 
         
-        public class EuskaldunaBioWSStub extends org.apache.axis2.client.Stub
+        public class EuskaldunaWebServiceStub extends org.apache.axis2.client.Stub
         {
         protected org.apache.axis2.description.AxisOperation[] _operations;
 
@@ -38,7 +38,7 @@
     private void populateAxisService() throws org.apache.axis2.AxisFault {
 
      //creating the Service with a unique name
-     _service = new org.apache.axis2.description.AxisService("EuskaldunaBioWS" + getUniqueSuffix());
+     _service = new org.apache.axis2.description.AxisService("EuskaldunaWebService" + getUniqueSuffix());
      addAnonymousOperations();
 
         //creating the operations
@@ -49,7 +49,7 @@
                    __operation = new org.apache.axis2.description.OutInAxisOperation();
                 
 
-            __operation.setName(new javax.xml.namespace.QName("http://euskaldunaBioWS", "getRehearsals"));
+            __operation.setName(new javax.xml.namespace.QName("http://service", "getRehearsals"));
 	    _service.addOperation(__operation);
 	    
 
@@ -71,7 +71,7 @@
       *Constructor that takes in a configContext
       */
 
-    public EuskaldunaBioWSStub(org.apache.axis2.context.ConfigurationContext configurationContext,
+    public EuskaldunaWebServiceStub(org.apache.axis2.context.ConfigurationContext configurationContext,
        java.lang.String targetEndpoint)
        throws org.apache.axis2.AxisFault {
          this(configurationContext,targetEndpoint,false);
@@ -81,7 +81,7 @@
    /**
      * Constructor that takes in a configContext  and useseperate listner
      */
-   public EuskaldunaBioWSStub(org.apache.axis2.context.ConfigurationContext configurationContext,
+   public EuskaldunaWebServiceStub(org.apache.axis2.context.ConfigurationContext configurationContext,
         java.lang.String targetEndpoint, boolean useSeparateListener)
         throws org.apache.axis2.AxisFault {
          //To populate AxisService
@@ -104,25 +104,25 @@
     /**
      * Default Constructor
      */
-    public EuskaldunaBioWSStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
+    public EuskaldunaWebServiceStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
         
-                    this(configurationContext,"http://127.0.0.1:8080/axis2/services/EuskaldunaBioWS.EuskaldunaBioWSHttpSoap12Endpoint/" );
+                    this(configurationContext,"http://localhost:8080/axis2/services/EuskaldunaWebService.EuskaldunaWebServiceHttpSoap12Endpoint/" );
                 
     }
 
     /**
      * Default Constructor
      */
-    public EuskaldunaBioWSStub() throws org.apache.axis2.AxisFault {
+    public EuskaldunaWebServiceStub() throws org.apache.axis2.AxisFault {
         
-                    this("http://127.0.0.1:8080/axis2/services/EuskaldunaBioWS.EuskaldunaBioWSHttpSoap12Endpoint/" );
+                    this("http://localhost:8080/axis2/services/EuskaldunaWebService.EuskaldunaWebServiceHttpSoap12Endpoint/" );
                 
     }
 
     /**
      * Constructor taking the target endpoint
      */
-    public EuskaldunaBioWSStub(java.lang.String targetEndpoint) throws org.apache.axis2.AxisFault {
+    public EuskaldunaWebServiceStub(java.lang.String targetEndpoint) throws org.apache.axis2.AxisFault {
         this(null,targetEndpoint);
     }
 
@@ -132,12 +132,12 @@
                     /**
                      * Auto generated method signature
                      * 
-                     * @see euskaldunabiows.EuskaldunaBioWS#getRehearsals
+                     * @see client.stubs.EuskaldunaWebService#getRehearsals
                      */
 
                     
 
-                            public  euskaldunabiows.EuskaldunaBioWSStub.RehearsalDTO[] getRehearsals(
+                            public  client.stubs.EuskaldunaWebServiceStub.RehearsalDTO[] getRehearsals(
 
                             )
                         
@@ -188,11 +188,11 @@
                 
                                 java.lang.Object object = fromOM(
                                              _returnEnv.getBody().getFirstElement() ,
-                                             euskaldunabiows.EuskaldunaBioWSStub.GetRehearsalsResponse.class,
+                                             client.stubs.EuskaldunaWebServiceStub.GetRehearsalsResponse.class,
                                               getEnvelopeNamespaces(_returnEnv));
 
                                
-                                        return getGetRehearsalsResponse_return((euskaldunabiows.EuskaldunaBioWSStub.GetRehearsalsResponse)object);
+                                        return getGetRehearsalsResponse_return((client.stubs.EuskaldunaWebServiceStub.GetRehearsalsResponse)object);
                                    
          }catch(org.apache.axis2.AxisFault f){
 
@@ -248,13 +248,13 @@
                 /**
                 * Auto generated method signature for Asynchronous Invocations
                 * 
-                * @see euskaldunabiows.EuskaldunaBioWS#startgetRehearsals
+                * @see client.stubs.EuskaldunaWebService#startgetRehearsals
                 */
                 public  void startgetRehearsals(
 
                  
 
-                  final euskaldunabiows.EuskaldunaBioWSCallbackHandler callback)
+                  final client.stubs.EuskaldunaWebServiceCallbackHandler callback)
 
                 throws java.rmi.RemoteException{
 
@@ -294,10 +294,10 @@
                                 org.apache.axiom.soap.SOAPEnvelope resultEnv = resultContext.getEnvelope();
                                 
                                         java.lang.Object object = fromOM(resultEnv.getBody().getFirstElement(),
-                                                                         euskaldunabiows.EuskaldunaBioWSStub.GetRehearsalsResponse.class,
+                                                                         client.stubs.EuskaldunaWebServiceStub.GetRehearsalsResponse.class,
                                                                          getEnvelopeNamespaces(resultEnv));
                                         callback.receiveResultgetRehearsals(
-                                            getGetRehearsalsResponse_return((euskaldunabiows.EuskaldunaBioWSStub.GetRehearsalsResponse)object));
+                                            getGetRehearsalsResponse_return((client.stubs.EuskaldunaWebServiceStub.GetRehearsalsResponse)object));
                                         
                             } catch (org.apache.axis2.AxisFault e) {
                                 callback.receiveErrorgetRehearsals(e);
@@ -417,18 +417,18 @@
         }
         return false;
     }
-     //http://127.0.0.1:8080/axis2/services/EuskaldunaBioWS.EuskaldunaBioWSHttpSoap12Endpoint/
+     //http://localhost:8080/axis2/services/EuskaldunaWebService.EuskaldunaWebServiceHttpSoap12Endpoint/
         public static class RehearsalDTO
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
                 name = RehearsalDTO
-                Namespace URI = http://euskaldunaBioWS/xsd
+                Namespace URI = http://data.service/xsd
                 Namespace Prefix = ns1
                 */
             
 
         private static java.lang.String generatePrefix(java.lang.String namespace) {
-            if(namespace.equals("http://euskaldunaBioWS/xsd")){
+            if(namespace.equals("http://data.service/xsd")){
                 return "ns1";
             }
             return org.apache.axis2.databinding.utils.BeanUtil.getUniquePrefix();
@@ -652,7 +652,7 @@
                   if (serializeType){
                
 
-                   java.lang.String namespacePrefix = registerPrefix(xmlWriter,"http://euskaldunaBioWS/xsd");
+                   java.lang.String namespacePrefix = registerPrefix(xmlWriter,"http://data.service/xsd");
                    if ((namespacePrefix != null) && (namespacePrefix.trim().length() > 0)){
                        writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
                            namespacePrefix+":RehearsalDTO",
@@ -666,7 +666,7 @@
                
                    }
                 if (localDateTracker){
-                                    namespace = "http://euskaldunaBioWS/xsd";
+                                    namespace = "http://data.service/xsd";
                                     if (! namespace.equals("")) {
                                         prefix = xmlWriter.getPrefix(namespace);
 
@@ -700,7 +700,7 @@
                                     
                                    xmlWriter.writeEndElement();
                              } if (localOperaNameTracker){
-                                    namespace = "http://euskaldunaBioWS/xsd";
+                                    namespace = "http://data.service/xsd";
                                     if (! namespace.equals("")) {
                                         prefix = xmlWriter.getPrefix(namespace);
 
@@ -734,7 +734,7 @@
                                     
                                    xmlWriter.writeEndElement();
                              } if (localSeatsTracker){
-                                    namespace = "http://euskaldunaBioWS/xsd";
+                                    namespace = "http://data.service/xsd";
                                     if (! namespace.equals("")) {
                                         prefix = xmlWriter.getPrefix(namespace);
 
@@ -925,19 +925,19 @@
                  java.util.ArrayList attribList = new java.util.ArrayList();
 
                  if (localDateTracker){
-                                      elementList.add(new javax.xml.namespace.QName("http://euskaldunaBioWS/xsd",
+                                      elementList.add(new javax.xml.namespace.QName("http://data.service/xsd",
                                                                       "date"));
                                  
                                          elementList.add(localDate==null?null:
                                          org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localDate));
                                     } if (localOperaNameTracker){
-                                      elementList.add(new javax.xml.namespace.QName("http://euskaldunaBioWS/xsd",
+                                      elementList.add(new javax.xml.namespace.QName("http://data.service/xsd",
                                                                       "operaName"));
                                  
                                          elementList.add(localOperaName==null?null:
                                          org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localOperaName));
                                     } if (localSeatsTracker){
-                                      elementList.add(new javax.xml.namespace.QName("http://euskaldunaBioWS/xsd",
+                                      elementList.add(new javax.xml.namespace.QName("http://data.service/xsd",
                                                                       "seats"));
                                  
                                 elementList.add(
@@ -1021,7 +1021,7 @@
                                     
                                     while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
                                 
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://euskaldunaBioWS/xsd","date").equals(reader.getName())){
+                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://data.service/xsd","date").equals(reader.getName())){
                                 
                                        nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance","nil");
                                        if (!"true".equals(nillableValue) && !"1".equals(nillableValue)){
@@ -1048,7 +1048,7 @@
                                     
                                     while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
                                 
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://euskaldunaBioWS/xsd","operaName").equals(reader.getName())){
+                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://data.service/xsd","operaName").equals(reader.getName())){
                                 
                                        nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance","nil");
                                        if (!"true".equals(nillableValue) && !"1".equals(nillableValue)){
@@ -1075,7 +1075,7 @@
                                     
                                     while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
                                 
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://euskaldunaBioWS/xsd","seats").equals(reader.getName())){
+                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://data.service/xsd","seats").equals(reader.getName())){
                                 
                                     java.lang.String content = reader.getElementText();
                                     
@@ -1120,14 +1120,14 @@
         implements org.apache.axis2.databinding.ADBBean{
         
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(
-                "http://euskaldunaBioWS",
+                "http://service",
                 "getRehearsalsResponse",
                 "ns2");
 
             
 
         private static java.lang.String generatePrefix(java.lang.String namespace) {
-            if(namespace.equals("http://euskaldunaBioWS")){
+            if(namespace.equals("http://service")){
                 return "ns2";
             }
             return org.apache.axis2.databinding.utils.BeanUtil.getUniquePrefix();
@@ -1300,7 +1300,7 @@
                   if (serializeType){
                
 
-                   java.lang.String namespacePrefix = registerPrefix(xmlWriter,"http://euskaldunaBioWS");
+                   java.lang.String namespacePrefix = registerPrefix(xmlWriter,"http://service");
                    if ((namespacePrefix != null) && (namespacePrefix.trim().length() > 0)){
                        writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","type",
                            namespacePrefix+":getRehearsalsResponse",
@@ -1317,12 +1317,12 @@
                                        if (local_return!=null){
                                             for (int i = 0;i < local_return.length;i++){
                                                 if (local_return[i] != null){
-                                                 local_return[i].serialize(new javax.xml.namespace.QName("http://euskaldunaBioWS","return"),
+                                                 local_return[i].serialize(new javax.xml.namespace.QName("http://service","return"),
                                                            factory,xmlWriter);
                                                 } else {
                                                    
                                                             // write null attribute
-                                                            java.lang.String namespace2 = "http://euskaldunaBioWS";
+                                                            java.lang.String namespace2 = "http://service";
                                                             if (! namespace2.equals("")) {
                                                                 java.lang.String prefix2 = xmlWriter.getPrefix(namespace2);
 
@@ -1351,7 +1351,7 @@
                                      } else {
                                         
                                                 // write null attribute
-                                                java.lang.String namespace2 = "http://euskaldunaBioWS";
+                                                java.lang.String namespace2 = "http://service";
                                                 if (! namespace2.equals("")) {
                                                     java.lang.String prefix2 = xmlWriter.getPrefix(namespace2);
 
@@ -1542,12 +1542,12 @@
                                  for (int i = 0;i < local_return.length;i++){
 
                                     if (local_return[i] != null){
-                                         elementList.add(new javax.xml.namespace.QName("http://euskaldunaBioWS",
+                                         elementList.add(new javax.xml.namespace.QName("http://service",
                                                                           "return"));
                                          elementList.add(local_return[i]);
                                     } else {
                                         
-                                                elementList.add(new javax.xml.namespace.QName("http://euskaldunaBioWS",
+                                                elementList.add(new javax.xml.namespace.QName("http://service",
                                                                           "return"));
                                                 elementList.add(null);
                                             
@@ -1556,7 +1556,7 @@
                                  }
                              } else {
                                  
-                                        elementList.add(new javax.xml.namespace.QName("http://euskaldunaBioWS",
+                                        elementList.add(new javax.xml.namespace.QName("http://service",
                                                                           "return"));
                                         elementList.add(local_return);
                                     
@@ -1643,7 +1643,7 @@
                                     
                                     while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
                                 
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://euskaldunaBioWS","return").equals(reader.getName())){
+                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://service","return").equals(reader.getName())){
                                 
                                     
                                     
@@ -1671,7 +1671,7 @@
                                                                 //two continuous end elements means we are exiting the xml structure
                                                                 loopDone1 = true;
                                                             } else {
-                                                                if (new javax.xml.namespace.QName("http://euskaldunaBioWS","return").equals(reader.getName())){
+                                                                if (new javax.xml.namespace.QName("http://service","return").equals(reader.getName())){
                                                                     
                                                                       nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance","nil");
                                                                       if ("true".equals(nillableValue) || "1".equals(nillableValue)){
@@ -1730,7 +1730,7 @@
 
               
                   if (
-                  "http://euskaldunaBioWS/xsd".equals(namespaceURI) &&
+                  "http://data.service/xsd".equals(namespaceURI) &&
                   "RehearsalDTO".equals(typeName)){
                    
                             return  RehearsalDTO.Factory.parse(reader);
@@ -1744,12 +1744,12 @@
 
         }
     
-            private  org.apache.axiom.om.OMElement  toOM(euskaldunabiows.EuskaldunaBioWSStub.GetRehearsalsResponse param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(client.stubs.EuskaldunaWebServiceStub.GetRehearsalsResponse param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(euskaldunabiows.EuskaldunaBioWSStub.GetRehearsalsResponse.MY_QNAME,
+                             return param.getOMElement(client.stubs.EuskaldunaWebServiceStub.GetRehearsalsResponse.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -1760,8 +1760,8 @@
         
 
                                 
-                                private euskaldunabiows.EuskaldunaBioWSStub.RehearsalDTO[] getGetRehearsalsResponse_return(
-                                euskaldunabiows.EuskaldunaBioWSStub.GetRehearsalsResponse wrappedType){
+                                private client.stubs.EuskaldunaWebServiceStub.RehearsalDTO[] getGetRehearsalsResponse_return(
+                                client.stubs.EuskaldunaWebServiceStub.GetRehearsalsResponse wrappedType){
                                 
                                         return wrappedType.get_return();
                                     
@@ -1784,9 +1784,9 @@
 
         try {
         
-                if (euskaldunabiows.EuskaldunaBioWSStub.GetRehearsalsResponse.class.equals(type)){
+                if (client.stubs.EuskaldunaWebServiceStub.GetRehearsalsResponse.class.equals(type)){
                 
-                           return euskaldunabiows.EuskaldunaBioWSStub.GetRehearsalsResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return client.stubs.EuskaldunaWebServiceStub.GetRehearsalsResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
