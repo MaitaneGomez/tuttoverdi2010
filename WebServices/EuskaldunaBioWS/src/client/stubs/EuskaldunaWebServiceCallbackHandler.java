@@ -1,18 +1,18 @@
 
 /**
- * EuskaldunaBioWSCallbackHandler.java
+ * EuskaldunaWebServiceCallbackHandler.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.5.1  Built on : Oct 19, 2009 (10:59:00 EDT)
  */
 
-    package euskaldunabiows;
+    package client.stubs;
 
     /**
-     *  EuskaldunaBioWSCallbackHandler Callback class, Users can extend this class and implement
+     *  EuskaldunaWebServiceCallbackHandler Callback class, Users can extend this class and implement
      *  their own receiveResult and receiveError methods.
      */
-    public abstract class EuskaldunaBioWSCallbackHandler{
+    public abstract class EuskaldunaWebServiceCallbackHandler{
 
 
 
@@ -24,14 +24,14 @@
     * @param clientData Object mechanism by which the user can pass in user data
     * that will be avilable at the time this callback is called.
     */
-    public EuskaldunaBioWSCallbackHandler(Object clientData){
+    public EuskaldunaWebServiceCallbackHandler(Object clientData){
         this.clientData = clientData;
     }
 
     /**
     * Please use this constructor if you don't want to set any clientData
     */
-    public EuskaldunaBioWSCallbackHandler(){
+    public EuskaldunaWebServiceCallbackHandler(){
         this.clientData = null;
     }
 
@@ -49,7 +49,7 @@
             * override this method for handling normal response from getRehearsals operation
             */
            public void receiveResultgetRehearsals(
-                    euskaldunabiows.EuskaldunaBioWSStub.RehearsalDTO[] result
+                    client.stubs.EuskaldunaWebServiceStub.RehearsalDTO[] result
                         ) {
            }
 
