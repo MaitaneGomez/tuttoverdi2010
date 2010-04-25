@@ -61,10 +61,15 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		{
 			Map<String, RehearsalRMIDTO> internalMAP = new TreeMap<String, RehearsalRMIDTO>();
 			rehearsalDOList = arrayGateways.get(i).getRehearsals();
+			System.out.println("el tamaño es: ");
+			System.out.println(rehearsalDOList.size());
 			String serverName = null;
+			serverName = arrayGateways.get(i).getServerName();
+			System.out.println(serverName);
 			for(int j = 0; j<rehearsalDOList.size(); j++)
 			{	
-				serverName = arrayGateways.get(i).getServerName();
+				
+				
 
 				RehearsalDO x = rehearsalDOList.get(j);
 				int ocupiedSeats = dao.getReservationsCount(serverName, x.getOperaName());
@@ -106,6 +111,7 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			arrayGateways = new ArrayList<IOperaHGateway>();
 			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[0]+" "+args[1]+" "+args[2],"corba"));
 			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[0]+" "+args[1]+" "+args[10],"corba"));
+			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[12] + " " + args[13], "ws"));
 
 			System.out.println("Connection to OPERA HOUSE COMPONENT: OK");
 
