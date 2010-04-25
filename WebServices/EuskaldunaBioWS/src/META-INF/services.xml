@@ -1,4 +1,4 @@
-<service name="EuskaldunaWebService" scope="application">
+<service name="EuskaldunaBio" scope="application">
     <description>
         Weather Web Service
     </description>

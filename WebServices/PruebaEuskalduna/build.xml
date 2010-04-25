@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="AuthorizationClient" basedir="." default="help">
+<project name="EuskaldunaClient" basedir="." default="help">
     <property environment="env"/>
     <property name="source.dir" location="src"/>
     <property name="build.dir" location="bin"/>
     <property name="dist.dir" location="dist"/>
-    <property name="service.name" value="EuskaldunaWebService"/>
+    <property name="service.name" value="EuskaldunaBio"/>
     <property name="axis2.home" value="${env.AXIS2_HOME}"/>
     <property name="ws.uri" value="http://127.0.0.1:8080/axis2/services/${service.name}"/>
     <property name="wsdl.uri" value="${ws.uri}?wsdl"/>

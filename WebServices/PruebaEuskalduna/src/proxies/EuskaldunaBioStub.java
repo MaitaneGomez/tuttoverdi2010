@@ -1,6 +1,6 @@
 
 /**
- * EuskaldunaWebServiceStub.java
+ * EuskaldunaBioStub.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis2 version: 1.5.1  Built on : Oct 19, 2009 (10:59:00 EDT)
@@ -10,11 +10,11 @@
         
 
         /*
-        *  EuskaldunaWebServiceStub java implementation
+        *  EuskaldunaBioStub java implementation
         */
 
         
-        public class EuskaldunaWebServiceStub extends org.apache.axis2.client.Stub
+        public class EuskaldunaBioStub extends org.apache.axis2.client.Stub
         {
         protected org.apache.axis2.description.AxisOperation[] _operations;
 
@@ -38,7 +38,7 @@
     private void populateAxisService() throws org.apache.axis2.AxisFault {
 
      //creating the Service with a unique name
-     _service = new org.apache.axis2.description.AxisService("EuskaldunaWebService" + getUniqueSuffix());
+     _service = new org.apache.axis2.description.AxisService("EuskaldunaBio" + getUniqueSuffix());
      addAnonymousOperations();
 
         //creating the operations
@@ -71,7 +71,7 @@
       *Constructor that takes in a configContext
       */
 
-    public EuskaldunaWebServiceStub(org.apache.axis2.context.ConfigurationContext configurationContext,
+    public EuskaldunaBioStub(org.apache.axis2.context.ConfigurationContext configurationContext,
        java.lang.String targetEndpoint)
        throws org.apache.axis2.AxisFault {
          this(configurationContext,targetEndpoint,false);
@@ -81,7 +81,7 @@
    /**
      * Constructor that takes in a configContext  and useseperate listner
      */
-   public EuskaldunaWebServiceStub(org.apache.axis2.context.ConfigurationContext configurationContext,
+   public EuskaldunaBioStub(org.apache.axis2.context.ConfigurationContext configurationContext,
         java.lang.String targetEndpoint, boolean useSeparateListener)
         throws org.apache.axis2.AxisFault {
          //To populate AxisService
@@ -104,25 +104,25 @@
     /**
      * Default Constructor
      */
-    public EuskaldunaWebServiceStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
+    public EuskaldunaBioStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
         
-                    this(configurationContext,"http://127.0.0.1:8080/axis2/services/EuskaldunaWebService.EuskaldunaWebServiceHttpSoap12Endpoint/" );
+                    this(configurationContext,"http://127.0.0.1:8080/axis2/services/EuskaldunaBio.EuskaldunaBioHttpSoap12Endpoint/" );
                 
     }
 
     /**
      * Default Constructor
      */
-    public EuskaldunaWebServiceStub() throws org.apache.axis2.AxisFault {
+    public EuskaldunaBioStub() throws org.apache.axis2.AxisFault {
         
-                    this("http://127.0.0.1:8080/axis2/services/EuskaldunaWebService.EuskaldunaWebServiceHttpSoap12Endpoint/" );
+                    this("http://127.0.0.1:8080/axis2/services/EuskaldunaBio.EuskaldunaBioHttpSoap12Endpoint/" );
                 
     }
 
     /**
      * Constructor taking the target endpoint
      */
-    public EuskaldunaWebServiceStub(java.lang.String targetEndpoint) throws org.apache.axis2.AxisFault {
+    public EuskaldunaBioStub(java.lang.String targetEndpoint) throws org.apache.axis2.AxisFault {
         this(null,targetEndpoint);
     }
 
@@ -132,12 +132,12 @@
                     /**
                      * Auto generated method signature
                      * 
-                     * @see proxies.EuskaldunaWebService#getRehearsals
+                     * @see proxies.EuskaldunaBio#getRehearsals
                      */
 
                     
 
-                            public  proxies.EuskaldunaWebServiceStub.RehearsalDTO[] getRehearsals(
+                            public  proxies.EuskaldunaBioStub.RehearsalDTO[] getRehearsals(
 
                             )
                         
@@ -188,11 +188,11 @@
                 
                                 java.lang.Object object = fromOM(
                                              _returnEnv.getBody().getFirstElement() ,
-                                             proxies.EuskaldunaWebServiceStub.GetRehearsalsResponse.class,
+                                             proxies.EuskaldunaBioStub.GetRehearsalsResponse.class,
                                               getEnvelopeNamespaces(_returnEnv));
 
                                
-                                        return getGetRehearsalsResponse_return((proxies.EuskaldunaWebServiceStub.GetRehearsalsResponse)object);
+                                        return getGetRehearsalsResponse_return((proxies.EuskaldunaBioStub.GetRehearsalsResponse)object);
                                    
          }catch(org.apache.axis2.AxisFault f){
 
@@ -248,13 +248,13 @@
                 /**
                 * Auto generated method signature for Asynchronous Invocations
                 * 
-                * @see proxies.EuskaldunaWebService#startgetRehearsals
+                * @see proxies.EuskaldunaBio#startgetRehearsals
                 */
                 public  void startgetRehearsals(
 
                  
 
-                  final proxies.EuskaldunaWebServiceCallbackHandler callback)
+                  final proxies.EuskaldunaBioCallbackHandler callback)
 
                 throws java.rmi.RemoteException{
 
@@ -294,10 +294,10 @@
                                 org.apache.axiom.soap.SOAPEnvelope resultEnv = resultContext.getEnvelope();
                                 
                                         java.lang.Object object = fromOM(resultEnv.getBody().getFirstElement(),
-                                                                         proxies.EuskaldunaWebServiceStub.GetRehearsalsResponse.class,
+                                                                         proxies.EuskaldunaBioStub.GetRehearsalsResponse.class,
                                                                          getEnvelopeNamespaces(resultEnv));
                                         callback.receiveResultgetRehearsals(
-                                            getGetRehearsalsResponse_return((proxies.EuskaldunaWebServiceStub.GetRehearsalsResponse)object));
+                                            getGetRehearsalsResponse_return((proxies.EuskaldunaBioStub.GetRehearsalsResponse)object));
                                         
                             } catch (org.apache.axis2.AxisFault e) {
                                 callback.receiveErrorgetRehearsals(e);
@@ -417,7 +417,7 @@
         }
         return false;
     }
-     //http://127.0.0.1:8080/axis2/services/EuskaldunaWebService.EuskaldunaWebServiceHttpSoap12Endpoint/
+     //http://127.0.0.1:8080/axis2/services/EuskaldunaBio.EuskaldunaBioHttpSoap12Endpoint/
         public static class RehearsalDTO
         implements org.apache.axis2.databinding.ADBBean{
         /* This type was generated from the piece of schema that had
@@ -1744,12 +1744,12 @@
 
         }
     
-            private  org.apache.axiom.om.OMElement  toOM(proxies.EuskaldunaWebServiceStub.GetRehearsalsResponse param, boolean optimizeContent)
+            private  org.apache.axiom.om.OMElement  toOM(proxies.EuskaldunaBioStub.GetRehearsalsResponse param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(proxies.EuskaldunaWebServiceStub.GetRehearsalsResponse.MY_QNAME,
+                             return param.getOMElement(proxies.EuskaldunaBioStub.GetRehearsalsResponse.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -1760,8 +1760,8 @@
         
 
                                 
-                                private proxies.EuskaldunaWebServiceStub.RehearsalDTO[] getGetRehearsalsResponse_return(
-                                proxies.EuskaldunaWebServiceStub.GetRehearsalsResponse wrappedType){
+                                private proxies.EuskaldunaBioStub.RehearsalDTO[] getGetRehearsalsResponse_return(
+                                proxies.EuskaldunaBioStub.GetRehearsalsResponse wrappedType){
                                 
                                         return wrappedType.get_return();
                                     
@@ -1784,9 +1784,9 @@
 
         try {
         
-                if (proxies.EuskaldunaWebServiceStub.GetRehearsalsResponse.class.equals(type)){
+                if (proxies.EuskaldunaBioStub.GetRehearsalsResponse.class.equals(type)){
                 
-                           return proxies.EuskaldunaWebServiceStub.GetRehearsalsResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return proxies.EuskaldunaBioStub.GetRehearsalsResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }
