@@ -1,16 +1,16 @@
 package prueba;
 
-import proxies.EuskaldunaWebServiceStub;
-import proxies.EuskaldunaWebServiceStub.RehearsalDTO;
+import proxies.*;
+
 
 public class EuskaldunaServiceClient 
 {
     public static void main(String[] args) {
      
-            EuskaldunaWebServiceStub.RehearsalDTO[] array = null;
+            EuskaldunaBioStub.RehearsalDTO[] array = null;
 
             try {
-                EuskaldunaWebServiceStub stub = new EuskaldunaWebServiceStub(args[0]);
+                EuskaldunaBioStub stub = new EuskaldunaBioStub(args[0]);
                
 
                

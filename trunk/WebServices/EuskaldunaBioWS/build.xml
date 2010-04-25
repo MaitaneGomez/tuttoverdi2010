@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="EuskaldunaWebService" basedir="." default="help">
+<project name="EuskaldunaBio" basedir="." default="help">
     <property environment="env"/>
     <property name="axis2.home" location="${env.AXIS2_HOME}"/>
     <property name="tomcat.home" location="${env.TOMCAT_HOME}"/>
-    <property name="service.name" value="EuskaldunaWebService"/>
+    <property name="service.name" value="EuskaldunaBio"/>
     <property name="service.host" value="localhost"/>
     <property name="service.port" value="8080"/>
     <property name="source.dir" location="src"/>
@@ -11,7 +11,7 @@
     <property name="dist.dir" location="dist"/>
     <property name="deploy.dir" location="${tomcat.home}/webapps/axis2/WEB-INF/services"/>
     <property name="service.descriptor" location="${source.dir}/META-INF/services.xml"/>
-    <property name="service.URL" value="http://${service.host}:${service.port}/axis2/services/EuskaldunaWebService"/>
+    <property name="service.URL" value="http://${service.host}:${service.port}/axis2/services/EuskaldunaBio"/>
     <property name="wsdl.uri" value="${service.URL}?wsdl"/>
     <path id="classpath">
         <pathelement path="${build.dir}"/>

@@ -1,7 +1,13 @@
 package service.data;
 
-public class RehearsalDTO {
+import java.io.Serializable;
 
+public class RehearsalDTO implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String operaName;
 	private String date;
 	private int seats;
