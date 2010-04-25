@@ -19,9 +19,12 @@
     <property name="rmiAuth.IP" value="127.0.0.1"/>
     <property name="rmiAuth.port" value="1099"/>
     <property name="rmiAuthServer" value="AuthorizationService"/>
-    <property name="service.name" value="AuthorizationWS"/>
-    <property name="ws.uri" value="http://127.0.0.1:8080/axis2/services/${service.name}"/>
-    <property name="wsdl.uri" value="${ws.uri}?wsdl"/>
+    <property name="serviceAuth.name" value="AuthorizationWS"/>
+    <property name="wsAuth.uri" value="http://127.0.0.1:8080/axis2/services/${serviceAuth.name}"/>
+    <property name="wsdlAuth.uri" value="${wsAuth.uri}?wsdl"/>
+    <property name="serviceEuskalduna.name" value="EuskaldunaBio"/>
+    <property name="wsEuskalduna.uri" value="http://127.0.0.1:8080/axis2/services/${serviceEuskalduna.name}"/>
+    <property name="wsdlEuskalduna.uri" value="${wsEuskalduna.uri}?wsdl"/>
     <property name="axis2.home" value="${env.AXIS2_HOME}"/>
     <path id="full.classpath">
         <pathelement path="${build.dir}"/>
@@ -57,11 +60,18 @@
             <classpath refid="full.classpath"/>
         </javac>
     </target>
-    <target name="generate.stubs">
+    <target name="generate.stubs.AuthService">
         <java classname="org.apache.axis2.wsdl.WSDL2Java" classpathref="full.classpath">
             <arg line="-uw"/>
-            <arg line="-uri ${wsdl.uri}"/>
+            <arg line="-uri ${wsdlAuth.uri}"/>
             <arg line="-ns2p  http://authorization=rehearsalServer.loginGateway.proxies"/>
+        </java>
+    </target>
+    <target name="generate.stubs.WSService">
+        <java classname="org.apache.axis2.wsdl.WSDL2Java" classpathref="full.classpath">
+            <arg line="-uw"/>
+            <arg line="-uri ${wsdlEuskalduna.uri}"/>
+            <arg line="-ns2p  http://service=rehearsalServer.houseGateway.proxies"/>
         </java>
     </target>
     <target name="run.reservations" description="Executes Rehearsal Server program">
@@ -80,7 +90,9 @@
             <arg value="${rmiAuth.port}"/>
             <arg value="${rmiAuthServer}"/>
             <arg value="${serverSanCarloNapoli.name}"/>
-            <arg value="${ws.uri}"/>
+            <arg value="${wsAuth.uri}"/>
+            <arg value="${wsEuskalduna.uri}"/>
+            <arg value="${serviceEuskalduna.name}"/>
         </java>
     </target>
     <target name="run.scala" description="Executes SscalaMilanoServer program">
