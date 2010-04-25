@@ -18,6 +18,9 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
 import rehearsalServer.dao.RehearsalServerDAO;
 import rehearsalServer.houseGateway.IOperaHGateway;
 import rehearsalServer.houseGateway.OperasHGatewayFactory;
@@ -25,6 +28,9 @@ import rehearsalServer.houseGateway.RehearsalDO;
 import rehearsalServer.loginGateway.AuthorizationGatewayFactory;
 import rehearsalServer.loginGateway.IAuthorizeGateway;
 import rehearsalServer.loginGateway.ValidationException;
+import rehearsalServer.saxParser.ArrayGateways;
+import rehearsalServer.saxParser.GatewayObject;
+import rehearsalServer.saxParser.HouseGatewaysSAXHandler;
 import util.observer.rmi.IRemoteObserver;
 import util.observer.rmi.RemoteObservable;
 
@@ -50,7 +56,64 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		//rehearsalCache = createCache();
 	}
 
-
+	//*************************************************************************
+	
+	private static void parse(String xmlFile)
+	{
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		factory.setValidating(true);
+		
+		try
+		{
+			System.out.println("Parsing using SAX...");
+			
+			SAXParser saxParser = factory.newSAXParser();
+			HouseGatewaysSAXHandler handler = new HouseGatewaysSAXHandler();
+			saxParser.parse(xmlFile, handler);
+			
+			ArrayGateways arrayXMLGateways = new ArrayGateways();
+			arrayXMLGateways = handler.getArrayXMLGateways();
+			
+			//ahora nos creamos el array de gateways pero estos ya son gateways reales
+			//no son nodos del xml
+			
+			arrayGateways = new ArrayList<IOperaHGateway>();
+			
+			//ahora recorremos el arrayXML para coger los datos de los distintos
+			//servicios
+			
+			int size = arrayXMLGateways.getArrayXMLGateway().size();
+			for(int i = 0; i < size; i++)
+			{
+				GatewayObject gateway = new GatewayObject();
+				gateway = arrayXMLGateways.getArrayXMLGateway().get(i);
+				
+				String [] details = new String [gateway.getDetails().size() + 1];
+				
+				for(int j = 0; j < gateway.getDetails().size(); j++)
+					details[j] = gateway.getDetails().get(j);
+				details[gateway.getDetails().size()] = gateway.getName();
+				String tech = gateway.getTech();
+				
+				String serviceUri = "";
+				for(int j = 0; j < details.length; j++)
+					serviceUri = serviceUri + " " + gateway.getDetails().get(j);
+				arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(serviceUri,tech));
+				
+			}
+		}
+		catch (Exception e)
+		{
+			System.out.println("ERROR --> Main(): " + e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	//**************************************************************************
+	
+	
 	private static Map<String, Map<String, RehearsalRMIDTO>> createCache()
 	{
 		List <RehearsalDO> rehearsalDOList;
@@ -108,10 +171,13 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			gatewayAuth = (AuthorizationGatewayFactory.getInstance()).getAuthGateway(args[6]);
 			gatewayAuth.initializeParameters(args);
 
-			arrayGateways = new ArrayList<IOperaHGateway>();
+			parse(args[3]);
+			//--------------------------------------------------
+			/*arrayGateways = new ArrayList<IOperaHGateway>();
 			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[0]+" "+args[1]+" "+args[2],"corba"));
 			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[0]+" "+args[1]+" "+args[10],"corba"));
 			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[12] + " " + args[13], "ws"));
+			//--------------------------------------------------*/
 
 			System.out.println("Connection to OPERA HOUSE COMPONENT: OK");
 
