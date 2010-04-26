@@ -53,7 +53,6 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 	public OperaRehearsalServer(String[] args) throws RemoteException{
 		super();
 		this.remoteObservable = new RemoteObservable();
-		//rehearsalCache = createCache();
 	}
 
 	//*************************************************************************
@@ -85,21 +84,22 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			int size = arrayXMLGateways.getArrayXMLGateway().size();
 			for(int i = 0; i < size; i++)
 			{
+				String serviceUri = "";
 				GatewayObject gateway = new GatewayObject();
 				gateway = arrayXMLGateways.getArrayXMLGateway().get(i);
 				
-				String [] details = new String [gateway.getDetails().size() + 1];
 				
-				for(int j = 0; j < gateway.getDetails().size(); j++)
-					details[j] = gateway.getDetails().get(j);
-				details[gateway.getDetails().size()] = gateway.getName();
+				List <String> details = gateway.getDetails();
+				for(int j = 0; j < details.size(); j++)
+				{
+					serviceUri = serviceUri + " " + details.get(j);
+				}
+				serviceUri = serviceUri + " " + gateway.getName();
 				String tech = gateway.getTech();
 				
-				String serviceUri = "";
-				for(int j = 0; j < details.length; j++)
-					serviceUri = serviceUri + " " + gateway.getDetails().get(j);
+
 				arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(serviceUri,tech));
-				
+				System.out.println("Gateway to " + gateway.getName() + " service created");
 			}
 		}
 		catch (Exception e)
@@ -124,16 +124,11 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 		{
 			Map<String, RehearsalRMIDTO> internalMAP = new TreeMap<String, RehearsalRMIDTO>();
 			rehearsalDOList = arrayGateways.get(i).getRehearsals();
-			System.out.println("el tamaño es: ");
-			System.out.println(rehearsalDOList.size());
 			String serverName = null;
 			serverName = arrayGateways.get(i).getServerName();
-			System.out.println(serverName);
+			System.out.println("connection to " + serverName + " : OK");
 			for(int j = 0; j<rehearsalDOList.size(); j++)
 			{	
-				
-				
-
 				RehearsalDO x = rehearsalDOList.get(j);
 				int ocupiedSeats = dao.getReservationsCount(serverName, x.getOperaName());
 				RehearsalRMIDTO newRehearsalsRMIDTO = new RehearsalRMIDTO(serverName, x.getOperaName(),x.getDate(),x.getAvailableSeats()-ocupiedSeats);
@@ -171,15 +166,8 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 			gatewayAuth = (AuthorizationGatewayFactory.getInstance()).getAuthGateway(args[6]);
 			gatewayAuth.initializeParameters(args);
 
-			parse(args[3]);
-			//--------------------------------------------------
-			/*arrayGateways = new ArrayList<IOperaHGateway>();
-			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[0]+" "+args[1]+" "+args[2],"corba"));
-			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[0]+" "+args[1]+" "+args[10],"corba"));
-			arrayGateways.add(OperasHGatewayFactory.getInstance().getOperaHGateway(args[12] + " " + args[13], "ws"));
-			//--------------------------------------------------*/
+			parse(args[14]);
 
-			System.out.println("Connection to OPERA HOUSE COMPONENT: OK");
 
 			dao = new RehearsalServerDAO();
 			System.out.println("Accesing to the Reservations DB");

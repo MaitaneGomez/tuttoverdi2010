@@ -26,6 +26,7 @@
     <property name="wsEuskalduna.uri" value="http://127.0.0.1:8080/axis2/services/${serviceEuskalduna.name}"/>
     <property name="wsdlEuskalduna.uri" value="${wsEuskalduna.uri}?wsdl"/>
     <property name="axis2.home" value="${env.AXIS2_HOME}"/>
+    <property name="xml.file" value="${source.dir}/rehearsalServer/saxParser/gateway.xml"/>
     <path id="full.classpath">
         <pathelement path="${build.dir}"/>
         <fileset dir="${lib.dir}">
@@ -93,6 +94,7 @@
             <arg value="${wsAuth.uri}"/>
             <arg value="${wsEuskalduna.uri}"/>
             <arg value="${serviceEuskalduna.name}"/>
+            <arg value="${xml.file}"/>
         </java>
     </target>
     <target name="run.scala" description="Executes SscalaMilanoServer program">
