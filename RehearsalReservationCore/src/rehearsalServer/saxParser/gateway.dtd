@@ -1,0 +1,16 @@
+<!--GATEWAY elemento principal-->
+<!ELEMENT gateway (service+)>
+
+
+<!--SERVICE-->
+<!ELEMENT service (serviceName, details, tech)>
+
+
+<!ELEMENT serviceName (#PCDATA)>
+<!ELEMENT tech (#PCDATA)>
+
+
+<!--DETAILS-->
+<!ELEMENT details (detail+)>
+<!ELEMENT detail EMPTY>
+<!ATTLIST detail name CDATA #REQUIRED>
