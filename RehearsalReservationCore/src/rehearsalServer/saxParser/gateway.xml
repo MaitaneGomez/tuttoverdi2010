@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+
+
+	<!DOCTYPE gateway SYSTEM "gateway.dtd">
+
+
+<gateway>
+	<service>
+		<serviceName>ScalaMILANO</serviceName>
+		<details>
+			<detail name="127.0.0.1"/>
+			<detail name="900"/>
+		</details>
+		<tech>corba</tech>
+	</service>
+	
+	<service>
+		<serviceName>sanCarloNapoli</serviceName>
+		<details>
+			<detail name="127.0.0.1"/>
+			<detail name="900"/>
+		</details>
+		<tech>corba</tech>
+	</service>
+	
+	<service>
+		<serviceName>EuskaldunaBio</serviceName>
+		<details>
+			<detail name="http://127.0.0.1:8080/axis2/services/EuskaldunaBio"/>
+		</details>
+		<tech>ws</tech>
+	</service>	
+</gateway>
+
+ 

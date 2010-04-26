@@ -31,23 +31,17 @@ public class WSHouseGateway implements IOperaHGateway {
 		  EuskaldunaBioStub.RehearsalDTO[] array = null;
 
           try {
-        	  //String url = "http://localhost:8080/axis2/services/EuskaldunaBio";
-        	  System.out.println("justo antes de buscar la stub");
         	  EuskaldunaBioStub stub = new EuskaldunaBioStub(this.serviceUri);
-        	  System.out.println("tengo la stub");
-              //EuskaldunaBioStub stub = new EuskaldunaBioStub("http://localhost:8080/axis2/services/EuskaldunaBio");
               
               array = stub.getRehearsals();
-              System.out.println("el tamaño del array es: " + array.length);
               for(int i =0; i < array.length; i++)
               {
             	  RehearsalDO newDO = new RehearsalDO(array[i].getOperaName(), array[i].getDate(), array[i].getSeats());
-            	  System.out.println(array[i].getOperaName()+ " " + array[i].getDate() + " " + array[i].getSeats());
             	  result.add(newDO);
               }
                 
           } catch (Exception e) {
-              System.err.println("Peto al entrar: " + e.getMessage());
+              System.err.println("Error in accessing to the webService: " + e.getMessage());
           }
 
 		return result;
