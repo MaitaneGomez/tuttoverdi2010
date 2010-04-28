@@ -27,7 +27,11 @@
     <property name="wsdlEuskalduna.uri" value="${wsEuskalduna.uri}?wsdl"/>
     <property name="axis2.home" value="${env.AXIS2_HOME}"/>
     <property name="xml.file" value="${source.dir}/rehearsalServer/saxParser/gateway.xml"/>
+    <property name="activemq.dir" location="${env.ACTIVEMQ_HOME}"/>
+    <property name="activemq.jar" value="${activemq.dir}\activemq-all-5.3.1.jar"/>
+	<property name="queue.name" value="queueJMS"/>
     <path id="full.classpath">
+        <pathelement path="${activemq.jar}"/>
         <pathelement path="${build.dir}"/>
         <fileset dir="${lib.dir}">
             <include name="*.jar"/>
@@ -36,6 +40,22 @@
             <include name="*.jar"/>
         </fileset>
     </path>
+	
+	<target name="runJMSProducer" depends="compile" >                     
+		<java classname="JMSOperaHouse.JMSQueueSender" classpathref="full.classpath" fork="true">
+            <arg value="${queue.name}"/>
+	</java>
+	</target>
+    <target name="activemq.start" description="Starts Activemq">
+        <exec executable="${env.ACTIVEMQ_HOME}\bin\activemq-admin.bat">
+            <arg value="start"/>
+        </exec>
+    </target>
+    <target name="activemq.shutdown" description="Stops Activemq">
+        <exec executable="${env.ACTIVEMQ_HOME}\bin\activemq-admin.bat">
+            <arg value="stop"/>
+        </exec>
+    </target>
     <target name="help">
         <echo>Usage: ant [compile | idlj | tnameserv | run.reservations | run.scala | run.client]</echo>
     </target>

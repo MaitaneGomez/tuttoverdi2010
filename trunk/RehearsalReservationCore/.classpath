@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="lib/util_iso2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/looks-2.1.4.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Actimemq"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
