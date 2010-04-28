@@ -37,29 +37,47 @@ public class EuskaldunaBioWSDAO implements IEuskaldunaBioWSDAO {
 		stat.close();
 	}
 	
+	private int calculateSize() throws SQLException
+	{
+		int size = 0;
+        ResultSet rs = null;
+        
+        String query = "select count (*) from rehearsalsT";
+        
+        stat = conn.createStatement();
+        rs = stat.executeQuery(query);
+        
+        rs.next();
+        size = rs.getInt(1);
+        rs.close();
+        stat.close();
+        
+        return size;
+	}
+	
 	@Override
-	public List<RehearsalDTO> getRehearsals() throws SQLException
+	public RehearsalDTO[] getRehearsals() throws SQLException
 	{
 		ResultSet rs = null;
-		List<RehearsalDTO> DTOArray = new ArrayList<RehearsalDTO>();
-
-		String query = "SELECT * FROM rehearsalsT";
-
-	
-		stat = conn.createStatement();
-		rs = stat.executeQuery(query);
-		int i = 0;
-		while(rs.next())
-		{
-			String operaName = rs.getString(1);
-			String date = rs.getString(2);
-			int seats = rs.getInt(3) ;
-			RehearsalDTO newRehearsalDTO = new RehearsalDTO(operaName, date, seats);
-			DTOArray.add(newRehearsalDTO);
-			i++;
-		}
-		rs.close();
-		stat.close();
+        RehearsalDTO[] DTOArray = null ;
+        
+        DTOArray = new RehearsalDTO[this.calculateSize()]; 
+        String query = "SELECT * FROM rehearsalsT";
+        
+        stat = conn.createStatement();
+        rs = stat.executeQuery(query);
+        int i = 0;
+        while(rs.next())
+        {
+                String operaName = rs.getString(1);
+                String date = rs.getString(2);
+                int seats = rs.getInt(3) ;
+                RehearsalDTO newRehearsalDTO = new RehearsalDTO(operaName, date, seats);
+                DTOArray[i] = newRehearsalDTO;
+                i++;
+        }
+        rs.close();
+        stat.close();
 		
 		return DTOArray;
 		
