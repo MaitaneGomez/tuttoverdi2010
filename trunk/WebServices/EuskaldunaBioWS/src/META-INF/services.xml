@@ -1,6 +1,6 @@
 <service name="EuskaldunaBio" scope="application">
     <description>
-        Weather Web Service
+        EuskaldunaBio
     </description>
     <messageReceivers>
         <messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-only"
