@@ -16,20 +16,17 @@
     <property name="serverScalaMilano.name" value="ScalaMILANO"/>
     <property name="serverSanCarloNapoli.name" value="sanCarloNapoli"/>
     <property name="RMIAuthServerTech" value="ws"/>
-    <property name="rmiAuth.IP" value="127.0.0.1"/>
-    <property name="rmiAuth.port" value="1099"/>
     <property name="rmiAuthServer" value="AuthorizationService"/>
     <property name="serviceAuth.name" value="AuthorizationWS"/>
     <property name="wsAuth.uri" value="http://127.0.0.1:8080/axis2/services/${serviceAuth.name}"/>
     <property name="wsdlAuth.uri" value="${wsAuth.uri}?wsdl"/>
-    <property name="serviceEuskalduna.name" value="EuskaldunaBio"/>
     <property name="wsEuskalduna.uri" value="http://127.0.0.1:8080/axis2/services/${serviceEuskalduna.name}"/>
     <property name="wsdlEuskalduna.uri" value="${wsEuskalduna.uri}?wsdl"/>
     <property name="axis2.home" value="${env.AXIS2_HOME}"/>
     <property name="xml.file" value="${source.dir}/rehearsalServer/saxParser/gateway.xml"/>
     <property name="activemq.dir" location="${env.ACTIVEMQ_HOME}"/>
     <property name="activemq.jar" value="${activemq.dir}\activemq-all-5.3.1.jar"/>
-	<property name="queue.name" value="queueJMS"/>
+    <property name="queue.name" value="queueJMS"/>
     <path id="full.classpath">
         <pathelement path="${activemq.jar}"/>
         <pathelement path="${build.dir}"/>
@@ -40,12 +37,11 @@
             <include name="*.jar"/>
         </fileset>
     </path>
-	
-	<target name="runJMSProducer" depends="compile" >                     
-		<java classname="JMSOperaHouse.JMSQueueSender" classpathref="full.classpath" fork="true">
+    <target name="runJMSProducer" depends="compile">
+        <java classname="JMSOperaHouse.JMSQueueSender" classpathref="full.classpath" fork="true">
             <arg value="${queue.name}"/>
-		</java>
-	</target>
+        </java>
+    </target>
     <target name="activemq.start" description="Starts Activemq">
         <exec executable="${env.ACTIVEMQ_HOME}\bin\activemq-admin.bat">
             <arg value="start"/>
@@ -100,20 +96,12 @@
             <classpath refid="full.classpath"/>
             <jvmarg value="-Djava.security.policy=${policy.file}"/>
             <jvmarg value="-Djava.rmi.server.codebase=file:${build.dir}/ file:${lib.dir}/util_iso2.jar"/>
-            <arg value="${nameservice.IP}"/>
-            <arg value="${nameservice.port}"/>
-            <arg value="${serverScalaMilano.name}"/>
             <arg value="${rmiregistry.IP}"/>
             <arg value="${rmiregistry.port}"/>
             <arg value="${rehearsalServer.name}"/>
             <arg value="${RMIAuthServerTech}"/>
-            <arg value="${rmiAuth.IP}"/>
-            <arg value="${rmiAuth.port}"/>
             <arg value="${rmiAuthServer}"/>
-            <arg value="${serverSanCarloNapoli.name}"/>
             <arg value="${wsAuth.uri}"/>
-            <arg value="${wsEuskalduna.uri}"/>
-            <arg value="${serviceEuskalduna.name}"/>
             <arg value="${xml.file}"/>
         </java>
     </target>

@@ -53,7 +53,7 @@ public class AuthRMIGateway implements IAuthorizeGateway {
 	@Override
 	public void initializeParameters(String[] args) 
 	{
-		String name= "//" + args[7] + ":" + args[8] + "/" + args[9];
+		String name= "//" + args[0] + ":" + args[1] + "/" + args[2];
 		
 		if (System.getSecurityManager() == null) 
 		{
