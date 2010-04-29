@@ -44,7 +44,7 @@
 	<target name="runJMSProducer" depends="compile" >                     
 		<java classname="JMSOperaHouse.JMSQueueSender" classpathref="full.classpath" fork="true">
             <arg value="${queue.name}"/>
-	</java>
+		</java>
 	</target>
     <target name="activemq.start" description="Starts Activemq">
         <exec executable="${env.ACTIVEMQ_HOME}\bin\activemq-admin.bat">

@@ -28,22 +28,14 @@ public class JMSQueueSender
         Queue                   queue = null;
         QueueSender             queueSender = null;
         ObjectMessage			objectMessage = null;
-        final int               NUM_MSGS;
         
-        if ((args.length < 1) || (args.length > 2)) {
-            System.out.println("Usage: java SimpleQueueSender <queue-name> [<number-of-messages>]");
-            System.exit(1);
-        }
+
         
         queueName = new String(args[0]);
         
         System.out.println("Queue name is " + queueName);
         
-        if (args.length == 2) {
-            NUM_MSGS = (new Integer(args[1])).intValue();
-        } else {
-            NUM_MSGS = 2;
-        }
+     
         
         try {
            	Properties props = new Properties();

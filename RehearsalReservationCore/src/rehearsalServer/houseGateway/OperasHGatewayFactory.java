@@ -33,6 +33,8 @@ public class OperasHGatewayFactory {
 			the_gateway = new CorbaHouseGateway(serviceUri);
 		if(serverTech.equals("ws"))
 			the_gateway = new WSHouseGateway(serviceUri);
+		if(serverTech.equals("jms"))
+			the_gateway = new JMSHouseGateway(serviceUri);
 		return the_gateway;
 	}
 }
