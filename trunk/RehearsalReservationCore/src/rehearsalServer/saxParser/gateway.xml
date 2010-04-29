@@ -16,6 +16,14 @@
 	</service>
 	
 	<service>
+		<serviceName>RoyalOperaLondon</serviceName>
+		<details>
+			<detail name="queueJMS"/>
+		</details>
+		<tech>jms</tech>
+	</service>
+	
+	<service>
 		<serviceName>sanCarloNapoli</serviceName>
 		<details>
 			<detail name="127.0.0.1"/>
