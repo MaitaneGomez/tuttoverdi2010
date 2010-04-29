@@ -159,14 +159,14 @@ public class OperaRehearsalServer extends UnicastRemoteObject implements IOperaR
 
 		try {
 			IOperaRehearsalServer server = new OperaRehearsalServer(args);
-			String name = "//" + args[3] + ":" + args[4] + "/" + args[5];
+			String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
 			java.rmi.Naming.rebind(name, server);
 			System.out.println("Registration to the RMI Registry: OK");
 
-			gatewayAuth = (AuthorizationGatewayFactory.getInstance()).getAuthGateway(args[6]);
+			gatewayAuth = (AuthorizationGatewayFactory.getInstance()).getAuthGateway(args[3]);
 			gatewayAuth.initializeParameters(args);
 
-			parse(args[14]);
+			parse(args[6]);
 
 
 			dao = new RehearsalServerDAO();

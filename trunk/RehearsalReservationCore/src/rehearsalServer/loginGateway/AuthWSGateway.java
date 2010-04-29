@@ -37,7 +37,7 @@ public class AuthWSGateway implements IAuthorizeGateway {
 	public void initializeParameters(String[] args) {
 		// TODO Auto-generated method stub
 		
-		authWSURL = args[11];
+		authWSURL = args[5];
 		
 	}
 

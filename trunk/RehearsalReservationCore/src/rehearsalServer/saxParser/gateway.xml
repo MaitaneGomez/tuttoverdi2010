@@ -6,6 +6,7 @@
 
 
 <gateway>
+
 	<service>
 		<serviceName>ScalaMILANO</serviceName>
 		<details>
