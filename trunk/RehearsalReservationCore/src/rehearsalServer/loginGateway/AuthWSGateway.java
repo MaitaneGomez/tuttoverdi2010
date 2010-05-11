@@ -2,6 +2,12 @@ package rehearsalServer.loginGateway;
 
 import rehearsalServer.loginGateway.proxies.*;
 
+//THIS CLASS INVOKE THE LOGIN METHOD THAT OFFERS THE WEB SERVICE 
+//AUTHORIZATION
+//TO DO THAT, WE NEED A STUB AND A URL.
+// THE URL IS GIVEN BY THE BUILD.XML AND LOADED IN AN ATTRIBUTE
+//BY THE INITIALIZE PARAMETERS METHOD
+
 public class AuthWSGateway implements IAuthorizeGateway {
 
 	/**
@@ -19,10 +25,13 @@ public class AuthWSGateway implements IAuthorizeGateway {
 
 	}
 
+	//INVOKATION OF THE LOGIN METHOD IN THE WS
 	public String login(String user, String pass) throws ValidationException {
 		String studentName = null;
 		
         try {
+        	//THE CONSTRUCTOR OF THE STUB NEED THE URL WERE THE WS
+        	//IS DEPLOYED
         	AuthorizationWSStub stub = new AuthorizationWSStub(authWSURL);
             studentName = stub.login(user,pass);    
         }
@@ -34,6 +43,9 @@ public class AuthWSGateway implements IAuthorizeGateway {
 	}
 
 	@Override
+	//METHOD THAT INITIALIZES THE AUTHWSURL ATTRIBUTE TO KNOW
+	//THE URL WERE THE WS IS DEPLOYED. THIS DATA COMES FROM
+	//THE BUILD.XML FILE
 	public void initializeParameters(String[] args) {
 		// TODO Auto-generated method stub
 		

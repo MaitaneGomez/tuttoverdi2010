@@ -6,6 +6,9 @@ import java.rmi.RemoteException;
 
 import rehearsalServer.IOperaRehearsalServer;
 
+
+//THIS CLASS IS GOING TO LOOK FOR A RMI oBJECT IN THE RMIREGISTRY
+//THE RMI OBJECT IS THE REHEARSALS SERVER
 public class RMIServiceLocator 
 {
 	private IOperaRehearsalServer service;

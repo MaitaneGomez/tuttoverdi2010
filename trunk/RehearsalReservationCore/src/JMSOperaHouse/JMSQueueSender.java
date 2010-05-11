@@ -12,6 +12,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Properties;
 
+//THE AIM OF THIS CLASS IS TO OBTAIN THE REHEARSALS FROM LONDON
+//THROUGH ITS DAO AND PUT THE REHEARSALS OBJECTS IN A QUEUE
+//WHICH WILL BE READ LATER BY A GATEWAY IN ORDER TO OBTAIN
+//THE REHEARSALS OBJECTS
+
 public class JMSQueueSender 
 {
 
@@ -64,15 +69,20 @@ public class JMSQueueSender
             objectMessage = queueSession.createObjectMessage();
             
             
+            //HERE IS WHERE WE CONNECT TO THE DB OF LONDON THANKS ITS DAO
+            //AND WE PUT THE OBJECT IN THE QUEUE
+            
+            //CREATION OF A DAO, CONECCTION, RETRIEVING AND DISCONNECTION
             JMSOperaHouseDAO dao = new JMSOperaHouseDAO();
             dao.connect();
             List <RehearsalJMSDTO> DTOList = dao.getRehearsals();
             dao.disconnect();
             
+            //WE INTRODUCE EACH OBJECT IN THE QUEUE 
             for(int i=0; i<DTOList.size(); i++)
             {
             	objectMessage.setObject(DTOList.get(i));
-            	System.out.println("Sending object message number: " + i+1);
+            	System.out.println("Sending object message number: " + (i+1));
             	queueSender.send(objectMessage);  
             }
             

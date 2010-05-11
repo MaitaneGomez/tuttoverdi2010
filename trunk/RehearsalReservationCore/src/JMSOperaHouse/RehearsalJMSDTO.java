@@ -2,6 +2,10 @@ package JMSOperaHouse;
 
 import java.io.Serializable;
 
+//CLASS THAT REPRESENTS THE OBJECT WHICH ARE GOING TO BE RETURN 
+//BY THE DAO IN A LIST AND PUT IN THE QUEUE
+//IT HAS CONSTRUCTOR, GETTERS AND SETTERS
+
 public class RehearsalJMSDTO implements Serializable
 {
 

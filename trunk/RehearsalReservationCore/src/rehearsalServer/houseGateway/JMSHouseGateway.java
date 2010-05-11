@@ -22,13 +22,17 @@ import javax.naming.NamingException;
 
 import JMSOperaHouse.RehearsalJMSDTO;
 
+//THE AIM OF THIS CLASS IS TO OBTAIN THE REHEARSALS OBJECTS THAT ARE
+//STORED IN THE QUEUE. THE QUEUE HAS REHEARSALS FROM OPERALONDON
+
 public class JMSHouseGateway implements IOperaHGateway 
 {
-	
+	//ATTRIBUTES THAT ARE NEEDED IN ORDER TO ACCESS TO THE QUEUE
 	private String serviceName;
 	private String serviceUri;
 
-	
+	//CONSTRUCTOR TAHT RECIEVES SERVICEURI (IT IS THE NAME OF THE QUEUE)
+	//THE SERVICEuri IS OBTAINED FROM THE XML
 	public JMSHouseGateway(String serviceUri)
 	{
 		StringTokenizer st = new StringTokenizer(serviceUri);
@@ -36,6 +40,9 @@ public class JMSHouseGateway implements IOperaHGateway
 		this.serviceName = st.nextToken();
 	}
 
+	
+	//METHOS THAT ACCEESSES TO THE QUEUE AND RETRIEVES THE OBJECTS
+	//OF REHEARSALS IN LONDON AND TRANSFORM THEM
 	public List<RehearsalDO> getRehearsals() 
 	{
 		String                  queueName = null;
@@ -76,6 +83,7 @@ public class JMSHouseGateway implements IOperaHGateway
             queueSession = queueConnection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
             queueReceiver = queueSession.createReceiver(queue);
             queueConnection.start();
+            //OBTAINING THE OBJECTS FROM THE QUEUE
             while (true) {
                 Message m = queueReceiver.receive(1);
                 if (m != null) {
@@ -83,6 +91,7 @@ public class JMSHouseGateway implements IOperaHGateway
                     {
                     	objectMessage = (ObjectMessage) m;
                     	RehearsalJMSDTO reh = (RehearsalJMSDTO) objectMessage.getObject();
+                    	//TRANSFORM FROM REHEARSALJMSDTO TO REHEARSALDO
                     	RehearsalDO newRehearsalDO = new RehearsalDO(reh.getOperaName(), reh.getDate(), reh.getSeats());
                     	result.add(newRehearsalDO);
                     } 
@@ -107,6 +116,8 @@ public class JMSHouseGateway implements IOperaHGateway
 	}
 
 	@Override
+	//THIS METHOD IS USED TO KNOW EXCATLY THE NAME OF THE SERVICE THE GATEWAY
+	//IS ACCESSING TO, IN ORDER TO HAVE THE SAME NAME IN THE CACHE
 	public String getServerName() 
 	{
 		return this.serviceName;
