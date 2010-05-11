@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project name="AuthorizationManager" default="help" basedir=".">
+<project name="AuthorizationManagerRMI" default="help" basedir=".">
     <property environment="env"/>
     <property name="policy" location="java.policy" />
     <property name="auth.manager" location="AuthorizationService.jar" />
