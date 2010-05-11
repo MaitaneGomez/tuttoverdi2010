@@ -20,7 +20,7 @@
     <property name="serviceAuth.name" value="AuthorizationWS"/>
     <property name="wsAuth.uri" value="http://127.0.0.1:8080/axis2/services/${serviceAuth.name}"/>
     <property name="wsdlAuth.uri" value="${wsAuth.uri}?wsdl"/>
-	<property name="serviceEuskalduna.name" value="EuskaldunaBio"/>
+    <property name="serviceEuskalduna.name" value="EuskaldunaBio"/>
     <property name="wsEuskalduna.uri" value="http://127.0.0.1:8080/axis2/services/${serviceEuskalduna.name}"/>
     <property name="wsdlEuskalduna.uri" value="${wsEuskalduna.uri}?wsdl"/>
     <property name="axis2.home" value="${env.AXIS2_HOME}"/>

@@ -14,11 +14,16 @@ import java.rmi.RemoteException;
 
 import java.util.List;
 
+//THE AIM OF THIS CLASS IS TO OFFER FUNCTIONALITY TO THE 
+//ACTIONS THAT TAKE PLACE IN THE GUI.
+//IT CALLS THE REMOTE METHODS OF THE RESERVATION SERVER
+//*********IT IS THE ONE THAT IS GOING TO LAUNCH ALL THE SYSTEM
+
 public class RehearsalController {
 	// Some data you may need
 	// Feel free to add what you need
-	private static IOperaRehearsalServer server;
-	private LocalObservable observable;
+	private static IOperaRehearsalServer server; //SERVER TO CALL THE REMOTE METHODS
+	private LocalObservable observable; 
 	private RehearsalRemoteObserver observer;
 
 	// CLIENT SESSION STATE - state management field.
@@ -29,6 +34,8 @@ public class RehearsalController {
 	 * 
 	 * @throws RemoteException
 	 */
+	
+	//CONSTRUCTOR, INITIALIZE THE OBSERVABLE AND THE OBSERVER (SERVER, CONTROLLER)
 	public RehearsalController(){
 
 		observable = new LocalObservable();
@@ -50,12 +57,15 @@ public class RehearsalController {
 	// --------------- System Events - Remote Method Invocation --------
 	// TO BE COMPLETELY PROGRAMMED BY THE STUDENTS - 1st Assignment
 
+	//INVOCATION TO THE REMOTE METHOD
 	public String login(String user, String pass)throws ValidationException, RemoteException {
 
 		stuName = server.login(user, pass);
 		return stuName;
 	}
 
+	
+	//INVOCATION TO THE REMOTE METHOD
 	public List<RehearsalRMIDTO> getRehearsals() {
 		
 		List<RehearsalRMIDTO> rehearsals = new ArrayList<RehearsalRMIDTO>();
@@ -74,6 +84,8 @@ public class RehearsalController {
 		return rehearsals;
 	}
 
+	
+	//INVOCATION TO THE REMOTE METHOD
 	public int reserveSeat(String operaHouse, String operaName) {
 		// add your code here
 		
@@ -102,7 +114,7 @@ public class RehearsalController {
 
 	// ------------------ End of Remote Observer Notification --------
 	public void exit() throws RemoteException {
-		observer.stop();
+		observer.stop(); //STOPS THE OBSERVER BECAUSE IT IS GOING TO END THE SESSION
 		System.exit(0);
 	}
 
@@ -125,12 +137,20 @@ public class RehearsalController {
 	 *            the command line arguments
 	 * @throws RemoteException
 	 */
+	
+	//MAIN FUNCTION
 	public static void main(String[] args) throws RemoteException {
 		// TODO code application logic here
 		
+		
+		//WE HAVE TO LOOK FOR A SERVER WITH THE PARAMETERS THAT CAME FROM
+		//THE BUILD.XML FILE
+		//ARGS[0]:IP  ARGS[1]:PORT   ARGS[2]:NAME
 		String name = "//" + args[0] + ":" + args[1] + "/" + args[2];
 		RMIServiceLocator servLocator = new RMIServiceLocator();
-		server = servLocator.getService(name);
-		new RehearsalController();
+		server = servLocator.getService(name); //THE SERVICE LOCATOR IS THE ONE THAT 
+		//IS GOING TO LOOK FOR THE SERVER
+		new RehearsalController();//WE INVOKE THE CONSTRUCTOR
+		//TO INIZIALATE THE OBSERVER AND OBSERVABLE AND CREATE THE GUI
 	}
 }

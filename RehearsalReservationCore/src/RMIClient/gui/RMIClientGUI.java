@@ -66,8 +66,9 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private RehearsalController controller;
-	boolean authorized = false;
+	private RehearsalController controller; // WE NEED A CONTROLLER BECAUSE IT IS THE
+	//ONE WHICH IS GOING TO INVOKE ALL THE REMOTE METHODS OF THE RESERVATION SERVER
+	boolean authorized = false; //BOOLEAN ATTRIB TO CHECK IF SOME BUTTON SHOULD BE ACTIVATED OR NOT
 	private JScrollPane jScrollPane1;
 	private AbstractAction ActionReserve;
 
@@ -90,15 +91,18 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 	private JButton jButtonEx;
 	private JLabel statusBar;
 
+	//CONTRUCTOR WITH A CONTROLLER
 	public RMIClientGUI(RehearsalController controller)
 	{
-		//inicializar la ventana---lo podemos hacer en una funcion fuera
+		//INITIALIZES THE GUI AND ASIGN THE CONTROLLER
+		//AND ADD A LOCAL OBSERVER (THE GUI) TO THE LIST THE CONTROLLER HAS
 		this.controller = controller;
 		this.controller.addLocalObserver(this);
 		init();
 	}
 	
 
+	//JIGLOO...
 	private void init ()
 	{
 		try {
@@ -273,6 +277,11 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 		
 	}
 	
+	
+	//THIS METHOD IS EXECUTE WHEN THE OBSERVABLE INFORMS ITS OBSERVERS
+	//THAT SOMETHING HAS CHANGE, SO THEY HAVE TO APPLY THE CHANGE TO.
+	//THE RECIEVE THE OBJECT THAT HAS CHANGE, SO THE HAVE TO FIND
+	//WHICH IS THE CORRECT REHEARSAL IN ORDER TO UPDATES IT
 	public void update(java.util.Observable o, Object arg) 
 	{
 		if(arg instanceof RehearsalRMIDTO)
@@ -284,12 +293,13 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 			
 			boolean found = false;
 			
+			//IT HAS TO FIND WHICH IS THE CORRECT ROW
 			for(int i =0; i < rows && !found; i++)
 			{
 				if((rehearsalsTable.getValueAt(i, 0).equals(DTO.getOperaHouse())&&(rehearsalsTable.getValueAt(i, 1).equals(DTO.getOperaName()))))
 				{
 					found = true;
-					rehearsalsTable.setValueAt(DTO.getAvailableSeats(), i, 3);
+					rehearsalsTable.setValueAt(DTO.getAvailableSeats(), i, 3);//DE NEW DATA, THE ROW AND THE COLUMN
 				}
 			}
 
@@ -339,6 +349,7 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 		
 	}
 	
+	//ACTION OF THE EXIT BUTTON
 	private AbstractAction getActionExit() {
 		if(ActionExit == null) {
 			ActionExit = new AbstractAction("Exit", null) {
@@ -349,6 +360,7 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 
 				public void actionPerformed(ActionEvent evt) {
 					try {
+						//THE CONTROLLER IS THE ONE THAT ARE GOING TO DEAL WITH THE OPERATION
 						controller.exit();
 					} catch (RemoteException e) {
 						// TODO Auto-generated catch block
@@ -360,6 +372,8 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 		return ActionExit;
 	}
 	
+	
+	//ACTION OF THE LOGIN BUTTON
 	private AbstractAction getActionLogin() {
 		if(ActionLogin == null) {
 			ActionLogin = new AbstractAction("Login", null) {
@@ -369,17 +383,19 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 				private static final long serialVersionUID = 1L;
 
 				public void actionPerformed(ActionEvent evt) {
-					
+					//WE OBTAIN THE USER AND THE PASS FROM THE GUI
 					String userName = jTextFieldUser.getText();
 					String password = jTextFieldPass.getText();
 					
 					try 
 					{
 						statusBar.setText("Checking user...");
+						//THE CONTROLLER DELAS WITH THE INVOCATION OF THE REMOTE METHOD
+						//RMI OR WS
 						String user = controller.login(userName, password);
 						jTextFieldSN.setText(user);
 						jTextFieldSN.setEditable(false);
-						authorized = true;
+						authorized = true; //TO SET ACTIVE THE OTHER BUTTONS
 						statusBar.setText("login successful");
 						jButtonRehearsals.setEnabled(true);
 						
@@ -392,13 +408,12 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 					} 
 					catch (ValidationException e) 
 					{
-						
+						//EXCEPTIONS OF THE LOGIN
 						if(e.getMessage().contains("InvalidUserException"))
 							statusBar.setText("Error, incorrect user");
 						if(e.getMessage().contains("InvalidPasswordException"))
 							statusBar.setText("Error, incorrect password");
 						// TODO Auto-generated catch block
-						//e.printStackTrace();
 					}
 				}
 			};
@@ -406,6 +421,7 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 		return ActionLogin;
 	}
 	
+	//ACTION OF THE GET REHEARSALS BUTTON
 	private AbstractAction getActionGetRehearsals() {
 		if(ActionGetRehearsals == null) {
 			ActionGetRehearsals = new AbstractAction("Get Scheduled Rehearsals", null) {
@@ -422,12 +438,14 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 					{
 						statusBar.setText("obtaining rehearsals...");
 						List<RehearsalRMIDTO> DTOList = new ArrayList<RehearsalRMIDTO>();
-						DTOList = controller.getRehearsals();
+						DTOList = controller.getRehearsals(); //THE CONTROLLER CALLS THE REMOTE METHOD
+						//WE SET THE NUMER OF ROWS WITH THE SAME AS REHEARSALS
 						DefaultTableModel rehearsalsTable = (DefaultTableModel)table.getModel();
 						rehearsalsTable.setRowCount(DTOList.size());
+						//WE SCAN THE THE DTOLIST IN ORDER TO LOAD THE TABLE OF THE GUI
 						for(int i = 0; i < DTOList.size(); i++)
 						{
-							table.setValueAt(DTOList.get(i).getOperaHouse(),i,0);
+							table.setValueAt(DTOList.get(i).getOperaHouse(),i,0);//DATA, ROW, COLUMN
 							table.setValueAt(DTOList.get(i).getOperaName(),i,1);
 							table.setValueAt(DTOList.get(i).getDate(),i,2);
 							table.setValueAt(DTOList.get(i).getAvailableSeats(),i,3);
@@ -441,6 +459,8 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 		return ActionGetRehearsals;
 	}
 	
+	
+	//ACTION OF THE RESERV BUTTON
 	private AbstractAction getActionReserve() {
 		if(ActionReserve == null) {
 			ActionReserve = new AbstractAction("Reserve Seat", null) {
@@ -456,11 +476,11 @@ public class RMIClientGUI extends JFrame implements Observer, WindowListener {
 					else
 					{
 						int row = table.getSelectedRow();
-						if(row == -1) //no se ha seleccionado ninguna opera
+						if(row == -1) //THERE'S NO SELECTED ROW
 							statusBar.setText("you have to select a rehearsal in order to make a reservation");
 						else
 						{
-							String operaHouse = (String) table.getValueAt(row, 0);
+							String operaHouse = (String) table.getValueAt(row, 0);//ROW COLUMN
 							String operaName = (String) table.getValueAt(row, 1);
 							int status = controller.reserveSeat(operaHouse, operaName);
 							

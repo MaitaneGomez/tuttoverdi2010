@@ -17,51 +17,58 @@ import corbaServer.corba.ICorbaServer;
 import corbaServer.corba.ICorbaServerHelper;
 import corbaServer.corba.impCorbaServer;
 
-//En esta clase creamos un objeto CORBA y lo metemos en el NameService
-//atencion el nombre del objeto a registrar debe ser el mismo que el de la base de datos
+
+//CLASS WHERE WE CREATE A CORBA OBJECT (MILANO OR NAPOLI) AND WE REGISTER
+//THEM IN THE NAMESERVICE
 
 public class CorbaOperaHouse {
 
 	public static void main(String[] args) {
 		
-		//Nos creamos un objeto ORB para manejar todo lo siguiente
+		//WE CREATE AN ORB OBJECT TO DEAL WITH THE WHOLE OPERATION
+		//ARGS[0] WILL BE THE IP OF THE NAMESERVICE AND ARGS[1] WILL BE
+		//NAMESERVICE PORT NUMBER
 		String [] orb_args = {"-ORBInitialHost" , args[0] , "-ORBInitialPort" , args[1]};
 		ORB orb = ORB.init(orb_args, null);
 		
 		try
 		{
-			//Obtener una referencia al POA
+			//WE OBTAIN A REFERENCE TO THE POA
 			org.omg.CORBA.Object reference = orb.resolve_initial_references("RootPOA");
 			
-			//Convertir el reference en una referencia especifica
+			//WE CONVERT THE "REFERENCE" TO A SPECIFIC REFERENCE
 			POA poa = POAHelper.narrow(reference);
 			
-			//Activar el POAMAnager
+			//WE ACTIVATE THE POA MANAGER
 			poa.the_POAManager().activate();
 			
-			//Crear un objeto CORBA (Llamaremos al constructor del servidor (impCorbaServer))
+			//WE CREATE A CORBA OBJECT INVOKING THE CONSTRUCTOR OF THE SERVER
+			//(ImpCorvaServer) AND WE PASS AS A PARAMETER THE NAME OF THE DATABASE
+			//THIS OBJECT IS GOING TO ACCESS WHICH IS AT THE SAME TIME
+			//THE NAME THIS OBJECT IS GOING TO BE REGISTERED WITH (ARGS[2])
 			impCorbaServer server = new impCorbaServer(args[2]);
 			
-			//Vincular el objeto CORBA con el POA
-			//Registrar el objeto CORBA en el POA
+			//LINKING THE CORBA OBJECT WITH THE POA
+			//REGISTERING THE CORBA OBJECT IN THE POA
 			org.omg.CORBA.Object ref = poa.servant_to_reference(server);
-			//Convertir la referencia a una especifica
+			//WE CONVERT THE REFERENCE TO A SPECIFIC ONE
 			ICorbaServer operaRef = ICorbaServerHelper.narrow(ref);
 			
-			//Registrar el objeto CORBA en el NameService
-			//Obtener una referencia al NaemService
+			//REGISTERING THE CORBA OBJECT IN THE NAMESERVICE
+			//ONTAINING A REFERENCE TO THE NAMESERVICE
 			org.omg.CORBA.Object objRef = orb.resolve_initial_references("NameService");
-			//Transformamos la refenrecia a una especifica
+			//WE CONVERT THE REFERENCE TO A SPECIFIC ONE
 			NamingContextExt ncRef = NamingContextExtHelper.narrow(objRef);
 			
-			//Ponerle un nombre al objeto a registrar
+			//WE ASIGN A NAME TO THE OBJECT WHICH IS GOING TO BE REGISTERED
+			//THIS NAME IS ARGS[2]
 			NameComponent [] path = ncRef.to_name(args[2]);
 			
-			//Registro
+			//REGISTERING...
 			System.out.println("Initizaling Corba Server...");
 			ncRef.rebind(path, operaRef);
 			
-			//Dejar el proceso servidor esperando peticiones
+			//WE LEAVE THE OBJECT LISTENING TO REQUESTS
 			System.out.println("Server "+ args[2]+ " working and waiting for requests...");
 			orb.run();
 		}

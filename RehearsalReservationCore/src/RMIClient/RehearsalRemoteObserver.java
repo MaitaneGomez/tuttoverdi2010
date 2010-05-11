@@ -23,6 +23,7 @@ public class RehearsalRemoteObserver extends RemoteObserver {
 	 * NEEDED
 	 */
 
+	//CALLED FROM THE CONTROLLER IN ORDER TO ADD A REOMTE OBSERVER
 	public RehearsalRemoteObserver(IOperaRehearsalServer serv, RehearsalController controller) throws RemoteException 
 	{
 		super();

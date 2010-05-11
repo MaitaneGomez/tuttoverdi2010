@@ -5,7 +5,8 @@ import java.util.List;
 
 import JMSOperaHouse.RehearsalJMSDTO;
 
-
+//INTERFACE WHICH IS GOING TO DECLARE THE METHODS THAT ARE GOING 
+//TO BE IMPLEMENTED BY THE DAO OF JMS
 
 public interface IJMSOperaHouseDAO 
 {

@@ -3,6 +3,9 @@ package corbaServer;
 /* OBJECT NEEDED TO HOLD DETAILS THAT COME FROM THE DATABASE
  * BUT NEED TO BE TRANSMITED TO THE CORBA CLIENT INSIDE A STRUCT
  */
+
+
+//THIS CLASS WAS GIVEN
 public class RehearsalDO {
 	private String operaName;
 	private String date;
