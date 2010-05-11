@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="help" name="observerCORBA">
+<project basedir="." default="help" name="RehearsalServer">
     <property environment="env"/>
     <property name="idlDestination.dir" location="src"/>
     <property name="classpath" location="bin"/>
@@ -20,6 +20,7 @@
     <property name="serviceAuth.name" value="AuthorizationWS"/>
     <property name="wsAuth.uri" value="http://127.0.0.1:8080/axis2/services/${serviceAuth.name}"/>
     <property name="wsdlAuth.uri" value="${wsAuth.uri}?wsdl"/>
+	<property name="serviceEuskalduna.name" value="EuskaldunaBio"/>
     <property name="wsEuskalduna.uri" value="http://127.0.0.1:8080/axis2/services/${serviceEuskalduna.name}"/>
     <property name="wsdlEuskalduna.uri" value="${wsEuskalduna.uri}?wsdl"/>
     <property name="axis2.home" value="${env.AXIS2_HOME}"/>
@@ -53,7 +54,7 @@
         </exec>
     </target>
     <target name="help">
-        <echo>Usage: ant [compile | idlj | tnameserv | run.reservations | run.scala | run.client]</echo>
+        <echo>Usage: ant [idlj | compile | tnameserv | runJMSProducer | activemq.start | activemq.shutdown | generate.stubs.AuthService | generate.stubs.WSService | run.reservations | run.scala | run.napoli | run.client ]</echo>
     </target>
     <target name="idlj" description="Builds IDL file">
         <exec executable="${env.JAVA_HOME}\bin\idlj.exe">
