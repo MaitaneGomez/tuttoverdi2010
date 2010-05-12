@@ -1,14 +1,13 @@
 package service;
 
-import service.dao.*;
+import java.sql.SQLException;
+import javax.naming.NamingException;
+import service.dao.EuskaldunaBioWSDAO;
 import service.data.RehearsalDTO;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.naming.NamingException;
+//THIS CLASS IMPLEMENTS THE SERVICE THE EUSKALDUNABIO WS OFFERS
+//IT ONLY OFFERS ONE METHOD: GETREHEARSALS.
+//TO DO THIS, WE NEED A DAO, TO DEAL WITH THE DB
 
 
 public class EuskaldunaService {
