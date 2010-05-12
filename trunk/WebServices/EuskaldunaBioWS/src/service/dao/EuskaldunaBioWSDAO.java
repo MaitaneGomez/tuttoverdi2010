@@ -4,15 +4,14 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
-
 import service.data.RehearsalDTO;
+
+//THIS CLASS IMPLEMENTS ITS INTERFACE SO ITS GOING TO PROVIDE
+//ACCESS TO THE EUSKALDUNA DB; CONNECTION, OBTAINING AND DISCONNECTION
 
 public class EuskaldunaBioWSDAO implements IEuskaldunaBioWSDAO {
 	
@@ -20,6 +19,7 @@ public class EuskaldunaBioWSDAO implements IEuskaldunaBioWSDAO {
 	private static Statement stat;
 
 	@Override
+	//CONNECTION: PDF
 	public void connect() throws NamingException, SQLException 
 	{
 		Context iniCtx = new InitialContext();
@@ -31,12 +31,17 @@ public class EuskaldunaBioWSDAO implements IEuskaldunaBioWSDAO {
 	}
 
 	@Override
+	//DISCONNECTION
 	public void disconnect() throws SQLException
 	{
 		conn.close();
 		stat.close();
 	}
 	
+	//THIS METHOD IS PRIVATE BECAUSE IT'S ONLYE GOING TO BE USED FROM 
+	//THIS CLASS. ITS AIM IS TO CALCULATE THE NUMBER OF REHEARSALS THAT 
+	//THERE ARE IN THE DB IN ORDER TO USE IT, TO CREATE AN ARRAY
+	//WITH THE CORRECT SIZE
 	private int calculateSize() throws SQLException
 	{
 		int size = 0;
@@ -56,6 +61,8 @@ public class EuskaldunaBioWSDAO implements IEuskaldunaBioWSDAO {
 	}
 	
 	@Override
+	//THIS METHOD RETURN THE LIST (ARRAY) OF REHEARSALS THAT THERE ARE
+	//IN THE EUSKALDUNA DB
 	public RehearsalDTO[] getRehearsals() throws SQLException
 	{
 		ResultSet rs = null;
@@ -67,6 +74,7 @@ public class EuskaldunaBioWSDAO implements IEuskaldunaBioWSDAO {
         stat = conn.createStatement();
         rs = stat.executeQuery(query);
         int i = 0;
+        //TRANSFORM THE RESULTSET INTO REHEARSALDTO
         while(rs.next())
         {
                 String operaName = rs.getString(1);

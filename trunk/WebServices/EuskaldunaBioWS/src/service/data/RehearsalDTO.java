@@ -2,6 +2,10 @@ package service.data;
 
 import java.io.Serializable;
 
+//THE AIM OF THIS CLASS IS TO DEFINE THE OBJECTS THAT ARE GOING TO BE
+//RETRIVED FROM THE EUSKALDUNA BD BY THE GETREHEARSALS METHOD
+//IT HAS ITS CONSTRUCTOR, GETTERS AND SETTERS
+
 public class RehearsalDTO implements Serializable{
 
 	/**
